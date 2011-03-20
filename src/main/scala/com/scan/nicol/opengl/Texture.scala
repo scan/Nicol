@@ -13,6 +13,10 @@ trait Texture {
 
   def size: (Int, Int)
 
+  def widthRatio: Float
+
+  def heightRatio: Float
+
   def bind: Unit
 }
 
@@ -38,19 +42,11 @@ object Texture {
 
   private var textures: Map[String, Texture] = Map.empty
 
-  def apply(res: String): Texture = {
-    try {
-      textures(res)
-    } catch {
-      case e: NoSuchElementException => {
-        val tex = getTexture(res)
-        textures += ((res, tex))
-        tex
-      }
-    } finally {
-      null
-    }
-  }
+  def apply(res: String): Texture = textures.getOrElse(res, {
+    val tex = getTexture(res)
+    textures += ((res, tex))
+    tex
+  })
 
   private def getTexture(res: String, srcPixel: Int = GL_RGBA, minFilter: Int = GL_LINEAR, magFilter: Int = GL_LINEAR): Texture = {
     def get2fold(t: Int): Int = {
@@ -97,7 +93,7 @@ object Texture {
         throw new java.io.FileNotFoundException(res)
       } else {
         val img = new javax.swing.ImageIcon(url).getImage
-        val buf = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB)
+        val buf = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
         val g = buf.getGraphics
         g.drawImage(img, 0, 0, null)
         g.dispose
