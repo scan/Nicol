@@ -7,15 +7,13 @@ import java.awt.image._
 import java.nio._
 
 trait Texture {
-  def width: Int
+  def width: Float
 
-  def height: Int
+  def height: Float
 
-  def size: (Int, Int)
+  def size: (Float, Float)
 
-  def widthRatio: Float
-
-  def heightRatio: Float
+  def imageSize: (Int, Int)
 
   def bind: Unit
 }
@@ -23,19 +21,13 @@ trait Texture {
 object Texture {
 
   private class GLTexture(id: Int, imgSize: (Int, Int), texSize: (Int, Int)) extends Texture {
-    def width = imgSize._1
+    lazy val width = imgSize._1.toFloat / texSize._1.toFloat
 
-    def height = imgSize._2
+    lazy val height = imgSize._2.toFloat / texSize._2.toFloat
 
-    def size = imgSize
+    def size = (width, height)
 
-    def texWidth = texSize._1
-
-    def texHeight = texSize._2
-
-    def widthRatio = width.toFloat / texWidth.toFloat
-
-    def heightRatio = height.toFloat / texHeight.toFloat
+    def imageSize = imgSize
 
     def bind = glBindTexture(GL_TEXTURE_2D, id)
   }
