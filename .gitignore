@@ -2,6 +2,7 @@
 *.iml
 target/
 lib_managed/
+lib/
 src_managed/
 project/boot/
 project/build/target
