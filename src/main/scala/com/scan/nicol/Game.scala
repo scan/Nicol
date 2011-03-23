@@ -1,17 +1,17 @@
 package com.scan.nicol
 
 import org.lwjgl.opengl._
-import org.lwjgl.Sys._
+import org.lwjgl._
 import scala.actors._
 
 abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Application with Actor {
+  import Display._
+
   def size = (width, height)
 
   start
 
   def act = {
-    import Display._
-
     setDisplayMode(new DisplayMode(width, height))
     setTitle(title)
     create
@@ -38,10 +38,26 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       this.update
       Display.update
-      sync(60)
+      updateFPS
     }
 
     destroy
+  }
+
+  import Sys._
+
+  private var lastFPS = time
+  private var fps = 0
+
+  private def time = (getTime * 1000) / getTimerResolution
+
+  private def updateFPS = {
+    if (time - lastFPS > 1000) {
+      setTitle(title + " [" + fps + "]")
+      fps = 0
+      lastFPS += 1000
+    }
+    fps += 1
   }
 
   def init: Unit = {}
