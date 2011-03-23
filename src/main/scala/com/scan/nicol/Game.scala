@@ -24,7 +24,7 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
     glShadeModel(GL_SMOOTH)
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
-    glClearDepth(1.0f)
+    glClearDepth(1f)
     glDepthFunc(GL_LEQUAL)
     glEnable(GL_DEPTH_TEST)
 

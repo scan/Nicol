@@ -3,7 +3,7 @@ package com.scan.nicol.opengl
 import org.lwjgl.opengl._
 import GL11._
 
-sealed abstract class Texture(val resource: String) {
+sealed abstract class Texture(val resource: String) extends Immutable {
   def width: Float
 
   def height: Float
@@ -111,6 +111,7 @@ object Texture {
       (buf, texSize)
     }
 
+    @throws(classOf[java.io.FileNotFoundException])
     def loadImage(res: String) = {
       val url = classOf[Texture].getClassLoader.getResource(res)
       if (url == null) {
