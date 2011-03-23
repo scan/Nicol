@@ -2,25 +2,31 @@ package com.scan.nicol.opengl
 
 import org.lwjgl.opengl._
 import GL11._
-import java.awt._
-import java.awt.image._
-import java.nio._
 
-trait Texture {
+sealed abstract class Texture(val resource: String) {
   def width: Float
 
   def height: Float
 
+  /**
+   * Size as a ratio between the actual size and the size of the texture data.
+   */
   def size: (Float, Float)
 
+  /**
+   * The actual size of the image
+   */
   def imageSize: (Int, Int)
 
+  /**
+   * Binds this texture for usage. Usually, this does not have to be called by the user.
+   */
   def bind: Unit
 }
 
 object Texture {
 
-  private class GLTexture(id: Int, imgSize: (Int, Int), texSize: (Int, Int)) extends Texture {
+  private class GLTexture(res: String, id: Int, imgSize: (Int, Int), texSize: (Int, Int)) extends Texture(res) {
     lazy val width = imgSize._1.toFloat / texSize._1.toFloat
 
     lazy val height = imgSize._2.toFloat / texSize._2.toFloat
@@ -34,13 +40,39 @@ object Texture {
 
   private var textures: Map[String, Texture] = Map.empty
 
+  /**
+   * Requests a [[Texture]]. If the texture is not yet in the list, it will be loaded. Once loaded, this
+   * request comes to the cost of just a [[scala.Map]] search.
+   *
+   * It is not necessary for the resource image to be square or to have a size exponent of 2. See [[Texture]] for info.
+   *
+   * @note For texture loading, [[javax.swing.ImageIcon]] is used. Therefore, we are, up to now, limited to BMP, GIF, PNG and JPG images.
+   * @example Texture("hello.png")
+   * @throws java.io.FileNotFoundException If the resource is not found, the usual exception is thrown.
+   */
   def apply(res: String): Texture = textures.getOrElse(res, {
     val tex = getTexture(res)
     textures += ((res, tex))
     tex
   })
 
+  def apply(xs: String*): List[Texture] = xs.map(apply _).toList
+
+  def unapply(res: String) = textures.get(res)
+
+  /**
+   * Invalidates the entry in the list of resources. This will lead to reloading the [[Texture]] next time it is requested.
+   */
+  @inline
+  def invalidate_!(res: String) = {
+    textures -= res
+  }
+
   private def getTexture(res: String, srcPixel: Int = GL_RGBA, minFilter: Int = GL_LINEAR, magFilter: Int = GL_LINEAR): Texture = {
+    import java.awt._
+    import java.awt.image._
+    import java.nio._
+
     def get2fold(t: Int): Int = {
       def tmp(v: Int): Int = {
         if (v < t) tmp(v * 2)
@@ -108,7 +140,7 @@ object Texture {
 
     glTexImage2D(GL_TEXTURE_2D, 0, pixel, get2fold(img.getWidth), get2fold(img.getHeight), 0, srcPixel, GL_UNSIGNED_BYTE, buf)
 
-    new GLTexture(id, (img.getWidth, img.getHeight), texSize)
+    new GLTexture(res, id, (img.getWidth, img.getHeight), texSize)
   }
 
 }

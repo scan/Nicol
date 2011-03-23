@@ -30,7 +30,7 @@ object GLUtils {
     glEnd
   }
 
-  def vertex(x: Float, y: Float) = glVertex2f(x, y)
+  def vertex(x: Float, y: Float, z: Float = 0) = glVertex3f(x, y, z)
 
   def texCoord(t: Float, u: Float) = glTexCoord2f(t, u)
 

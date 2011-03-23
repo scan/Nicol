@@ -1,12 +1,11 @@
 package com.scan.nicol
 
 import org.lwjgl.opengl._
+import org.lwjgl.Sys._
 import scala.actors._
 
-trait Game extends Application with Actor {
-
-  val width = 800
-  val height = 600
+abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Application with Actor {
+  def size = (width, height)
 
   start
 
@@ -14,11 +13,19 @@ trait Game extends Application with Actor {
     import Display._
 
     setDisplayMode(new DisplayMode(width, height))
+    setTitle(title)
     create
 
     import GL11._
 
     glEnable(GL_TEXTURE_2D)
+
+    glShadeModel(GL_SMOOTH)
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+
+    glClearDepth(1.0f)
+    glDepthFunc(GL_LEQUAL)
+    glEnable(GL_DEPTH_TEST)
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
