@@ -4,7 +4,7 @@ import opengl.{GLUtils, Texture}
 import GLUtils._
 
 class Image(res: String, layer: Float = 0) extends Renderable {
-  def texture = Texture(res)
+  lazy val texture = Texture(res)
 
   def width = texture.imageSize._1
 
