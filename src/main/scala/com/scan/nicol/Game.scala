@@ -5,6 +5,7 @@ import org.lwjgl._
 import scala.actors._
 
 abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Application with Actor {
+
   import Display._
 
   def size = (width, height)
@@ -55,10 +56,12 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
     if (time - lastFPS > 1000) {
       setTitle(title + " [" + fps + "]")
       fps = 0
-      lastFPS += 1000
+      lastFPS = time
     }
     fps += 1
   }
+
+  def sync = Display.sync _
 
   def init: Unit = {}
 

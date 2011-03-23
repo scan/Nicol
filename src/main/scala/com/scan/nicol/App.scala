@@ -5,5 +5,7 @@ object App extends Game("Nicol example App", 800, 600) {
 
   def update = {
     image.draw(0, 0)
+
+    sync(60)
   }
 }
