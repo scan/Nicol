@@ -25,6 +25,8 @@ sealed case class Vector2(x: Float, y: Float) extends Immutable {
 }
 
 object Vector2 {
+  def apply(t: (Float, Float)): Vector2 = Vector2(t._1, t._2)
+
   implicit def asTuple(v: Vector2) = (v.x, v.y)
 
   implicit def asVector2(t: (Float, Float)) = Vector2(t._1, t._2)
