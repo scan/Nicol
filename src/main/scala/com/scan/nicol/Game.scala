@@ -42,6 +42,8 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
       updateFPS
     }
 
+    end
+
     destroy
   }
 
@@ -66,4 +68,6 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
   def init: Unit = {}
 
   def update: Unit
+
+  def end: Unit = {}
 }
