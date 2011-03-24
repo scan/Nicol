@@ -16,4 +16,23 @@ case class Rect(x: Int, y: Int, width: Int, height: Int) extends Immutable {
   def collides(r: Rect) = (right > r.left || left < r.right) && (bottom > r.top || top < r.bottom)
 
   def collides(t: (Int, Int)) = (t._1 > left && t._1 < right) && (t._2 > top && t._2 < bottom)
+
+  def +(r: Rect) = {
+    import math.{min, max}
+
+    val nx = min(x, r.x)
+    val ny = min(y, r.y)
+
+    Rect(nx, ny, max(right - nx, r.right - nx), max(bottom - ny, r.bottom - ny))
+  }
+
+  def area = width * height
+
+  override def toString = "[(" + left + ", " + top + "), (" + right + ", " + bottom + ")]"
+}
+
+object Rect {
+  implicit def asTuple4(r: Rect) = (r.x, r.y, r.width, r.right)
+
+  implicit def fromTuple4(t: (Int, Int, Int, Int)) = Rect(t._1, t._2, t._3, t._4)
 }
