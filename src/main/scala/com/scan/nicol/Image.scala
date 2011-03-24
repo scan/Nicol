@@ -20,6 +20,8 @@ sealed trait Image extends Renderable with Immutable {
 
 object Image {
 
+  import scala.math.min
+
   private class GLImage(res: String, layer: Float) extends Image {
     lazy val texture = Texture(res)
 
@@ -51,8 +53,8 @@ object Image {
     lazy val tx = (rect.left.toFloat / texture.imageSize._1.toFloat) * texture.width
     lazy val ty = (rect.top.toFloat / texture.imageSize._2.toFloat) * texture.height
 
-    lazy val tw = (rect.right.toFloat / texture.imageSize._1.toFloat) * texture.width
-    lazy val th = (rect.bottom.toFloat / texture.imageSize._2.toFloat) * texture.height
+    lazy val tw = min((rect.right.toFloat / texture.imageSize._1.toFloat) * texture.width, 1)
+    lazy val th = min((rect.bottom.toFloat / texture.imageSize._2.toFloat) * texture.height, 1)
 
     override def width = rect.width
 
@@ -72,8 +74,6 @@ object Image {
         vertex(x, y + height, layer)
       }
     }
-
-    import scala.math.min
 
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "], [(" + tx + ", " + ty + "), (" + tw + ", " + th + ")]>")
 
