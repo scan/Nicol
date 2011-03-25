@@ -16,6 +16,14 @@ case class Point(pos: Vector2) extends Shape {
   def area = 0
 }
 
+case class Line(p1: Vector2, p2: Vector2) extends Shape {
+  def center = p1
+
+  def pos = center
+
+  def area = (p2 - p1).length
+}
+
 case class Circle(center: Vector2, r: Float) extends Shape {
   def pos = center
 
