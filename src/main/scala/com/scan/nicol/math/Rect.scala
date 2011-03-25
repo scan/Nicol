@@ -1,9 +1,9 @@
 package com.scan.nicol.math
 
 case class Rect(x: Int, y: Int, width: Int, height: Int) extends Immutable {
-  lazy val center = Vector2(x + width / 2, y + height / 2)
+  lazy val center = (x + width / 2, y + height / 2)
 
-  lazy val pos = Vector2(x, y)
+  def pos = (x, y)
 
   def left = x
 
