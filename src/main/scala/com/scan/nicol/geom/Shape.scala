@@ -21,5 +21,5 @@ case class Circle(center: Vector2, r: Float) extends Shape {
 
   def *(f: Float) = Circle(center, r * f)
 
-  def area = scala.math.Pi * r * r
+  def area = scala.math.Pi.toFloat * r * r
 }

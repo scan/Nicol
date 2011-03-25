@@ -26,7 +26,12 @@ case class Rect(x: Int, y: Int, width: Int, height: Int) extends Immutable {
     Rect(nx, ny, max(right - nx, r.right - nx), max(bottom - ny, r.bottom - ny))
   }
 
-  def area = width * height
+  def normalise = {
+    import scala.math.abs
+    Rect(if (width < 0) x + width else x,
+      if (height < 0) y + height else y,
+      abs(width), abs(height))
+  }
 
   override def toString = "[(" + left + ", " + top + "), (" + right + ", " + bottom + ")]"
 }
