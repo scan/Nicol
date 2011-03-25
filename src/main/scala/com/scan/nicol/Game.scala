@@ -12,6 +12,11 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
 
   start
 
+  import opengl.Renderer
+
+  @inline
+  def draw[A](that: A, x: Float = 0, y: Float = 0)(implicit renderer: Renderer[A]) = renderer.draw(that, x, y)
+
   def act = {
     setDisplayMode(new DisplayMode(width, height))
     setTitle(title)

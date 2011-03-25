@@ -1,17 +1,13 @@
 package com.scan.nicol
 
 import math.Rect
-import opengl.{GLUtils, Texture}
+import opengl.{GLUtils, Texture, Renderer}
 import GLUtils._
 
-sealed trait Image extends Renderable with Immutable {
+sealed trait Image extends Immutable {
   def width: Int
 
   def height: Int
-
-  def draw(x: Float, y: Float) = draw(x, y, 1, 1, 1)
-
-  def draw(x: Float, y: Float, r: Float, g: Float, b: Float)
 
   def sub(r: Rect): Image
 
@@ -22,27 +18,12 @@ object Image {
 
   import scala.math.min
 
-  private class GLImage(res: String, layer: Float) extends Image {
+  private class GLImage(res: String, val layer: Float) extends Image {
     lazy val texture = Texture(res)
 
     def width = texture.imageSize._1
 
     def height = texture.imageSize._1
-
-    def draw(x: Float, y: Float, r: Float, g: Float, b: Float) = {
-      texture.bind
-      GLUtils.draw(Quads) {
-        colour(r, g, b)
-        texCoord(0, 0)
-        vertex(x, y, layer)
-        texCoord(texture.width, 0)
-        vertex(x + texture.imageSize._1, y, layer)
-        texCoord(texture.width, texture.height)
-        vertex(x + texture.imageSize._1, y + texture.imageSize._2, layer)
-        texCoord(0, texture.height)
-        vertex(x, y + texture.imageSize._2, layer)
-      }
-    }
 
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "]>")
 
@@ -60,21 +41,6 @@ object Image {
 
     override def height = rect.height
 
-    override def draw(x: Float, y: Float, r: Float, g: Float, b: Float) = {
-      texture.bind
-      GLUtils.draw(Quads) {
-        colour(r, g, b)
-        texCoord(tx, ty)
-        vertex(x, y, layer)
-        texCoord(tw, ty)
-        vertex(x + width, y, layer)
-        texCoord(tw, th)
-        vertex(x + width, y + height, layer)
-        texCoord(tx, th)
-        vertex(x, y + height, layer)
-      }
-    }
-
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "], [(" + tx + ", " + ty + "), (" + tw + ", " + th + ")]>")
 
     override def sub(r: Rect): Image = new GLSubImage(res, layer, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
@@ -85,4 +51,39 @@ object Image {
   def apply(res: String, layer: Float): Image = new GLImage(res, layer)
 
   def apply(tex: Texture, layer: Float = 0): Image = new GLImage(tex.resource, layer)
+
+  implicit object ImageRenderer extends Renderer[Image] {
+    def draw(that: Image, x: Float, y: Float) = that match {
+      case img: GLSubImage => {
+        val (tx, ty, tw, th) = (img.tx, img.ty, img.tw, img.th)
+        img.texture.bind
+        GLUtils.draw(Quads) {
+          colour(1, 1, 1)
+          texCoord(tx, ty)
+          vertex(x, y, img.layer)
+          texCoord(tw, ty)
+          vertex(x + img.width, y, img.layer)
+          texCoord(tw, th)
+          vertex(x + img.width, y + img.height, img.layer)
+          texCoord(tx, th)
+          vertex(x, y + img.height, img.layer)
+        }
+      }
+      case img: GLImage => {
+        val texture = img.texture
+        texture.bind
+        GLUtils.draw(Quads) {
+          colour(1, 1, 1)
+          texCoord(0, 0)
+          vertex(x, y, img.layer)
+          texCoord(texture.width, 0)
+          vertex(x + texture.imageSize._1, y, img.layer)
+          texCoord(texture.width, texture.height)
+          vertex(x + texture.imageSize._1, y + texture.imageSize._2, img.layer)
+          texCoord(0, texture.height)
+          vertex(x, y + texture.imageSize._2, img.layer)
+        }
+      }
+    }
+  }
 }
