@@ -25,13 +25,14 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
     import GL11._
 
     glEnable(GL_TEXTURE_2D)
+    glDisable(GL_DEPTH_TEST)
+    glDisable(GL_LIGHTING)
 
     glShadeModel(GL_SMOOTH)
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST)
 
-    glClearDepth(1f)
-    glDepthFunc(GL_LEQUAL)
-    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
@@ -41,7 +42,7 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
     this.init
 
     while (!isCloseRequested) {
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+      glClear(GL_COLOR_BUFFER_BIT)
       this.update
       Display.update
       updateFPS
