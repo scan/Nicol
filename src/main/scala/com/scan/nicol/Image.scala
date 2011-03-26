@@ -13,7 +13,7 @@ sealed trait Image extends Immutable {
 
   def sub(x: Int, y: Int, w: Int, h: Int): Image = sub(Rect(x, y, w, h))
 
-  def draw(x: Float, y: Float)
+  private[nicol] def draw(x: Float, y: Float)
 }
 
 object Image {
@@ -31,7 +31,7 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(res, layer, r)
 
-    private lazy val list = makeList(GLUtils.draw(Quads) {
+    lazy val list = makeList(GLUtils.draw(Quads) {
       colour(1, 1, 1)
       texCoord(0, 0)
       vertex(0, 0, layer)
@@ -52,34 +52,33 @@ object Image {
   }
 
   private class GLSubImage(res: String, layer: Float, rect: Rect) extends GLImage(res, layer) {
-    private lazy val list = makeList(GLUtils.draw(Quads) {
-      val tx = (rect.left.toFloat / texture.imageSize._1.toFloat) * texture.width
-      val ty = (rect.top.toFloat / texture.imageSize._2.toFloat) * texture.height
+    lazy val tx = (rect.left.toFloat / texture.imageSize._1.toFloat) * texture.width
+    lazy val ty = (rect.top.toFloat / texture.imageSize._2.toFloat) * texture.height
 
-      val tw = min((rect.right.toFloat / texture.imageSize._1.toFloat) * texture.width, 1)
-      val th = min((rect.bottom.toFloat / texture.imageSize._2.toFloat) * texture.height, 1)
-
-      colour(1, 1, 1)
-      texCoord(tx, ty)
-      vertex(0, 0, layer)
-      texCoord(tw, ty)
-      vertex(width, 0, layer)
-      texCoord(tw, th)
-      vertex(width, height, layer)
-      texCoord(tx, th)
-      vertex(0, height, layer)
-    })
+    lazy val tw = min((rect.right.toFloat / texture.imageSize._1.toFloat) * texture.width, 1)
+    lazy val th = min((rect.bottom.toFloat / texture.imageSize._2.toFloat) * texture.height, 1)
 
     override def width = rect.width
 
     override def height = rect.height
 
+    override def toString = ("<\"" + res + "\", [" + width + ", " + height + "], [(" + tx + ", " + ty + "), (" + tw + ", " + th + ")]>")
+
     override def sub(r: Rect): Image = new GLSubImage(res, layer, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(x: Float, y: Float) = preserve {
+    override def draw(x: Float, y: Float) = {
       texture.bind
-      translate(x, y)
-      list.call
+      GLUtils.draw(Quads) {
+        colour(1, 1, 1)
+        texCoord(tx, ty)
+        vertex(x, y, layer)
+        texCoord(tw, ty)
+        vertex(x + width, y, layer)
+        texCoord(tw, th)
+        vertex(x + width, y + height, layer)
+        texCoord(tx, th)
+        vertex(x, y + height, layer)
+      }
     }
   }
 
