@@ -24,7 +24,7 @@ object GLUtils {
     def glMode = GL_QUADS
   }
 
-  class DrawingList(id: Int) extends Immutable {
+  sealed case class DrawingList(id: Int) extends Immutable {
     def call = glCallList(id)
   }
 
@@ -49,6 +49,12 @@ object GLUtils {
   }
 
   def translate(x: Float, y: Float) = glTranslatef(x, y, 0)
+
+  def rotate(a: Float) = glRotatef(a.toDegrees, 0, 0, 1)
+
+  def scale(sx: Float, sy: Float) = glScalef(sx, sy, 1)
+
+  def scale(s: Float) = glScalef(s, s, 1)
 
   def vertex(x: Float, y: Float, z: Float = 0) = glVertex3f(x, y, z)
 
