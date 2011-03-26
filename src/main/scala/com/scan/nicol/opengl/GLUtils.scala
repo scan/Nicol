@@ -24,7 +24,7 @@ object GLUtils {
     def glMode = GL_QUADS
   }
 
-  sealed case class DrawingList(id: Int) extends Immutable {
+  sealed class DrawingList(id: Int) extends Immutable {
     def call = glCallList(id)
   }
 
