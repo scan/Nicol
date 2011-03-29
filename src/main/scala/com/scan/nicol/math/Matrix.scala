@@ -16,7 +16,7 @@ sealed case class Matrix(a: Float, b: Float, c: Float, d: Float) extends Immutab
 
   def *(f: Float) = Matrix(f * a, f * b, f * c, f * d)
 
-  def *(v: Vector2) = Vector2(a * v.x + c * v.y, b * v.x + d * v.y)
+  def *(v: Vector) = Vector(a * v.x + c * v.y, b * v.x + d * v.y)
 }
 
 object Matrix {
