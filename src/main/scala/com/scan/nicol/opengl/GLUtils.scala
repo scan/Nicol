@@ -24,11 +24,37 @@ object GLUtils {
     def glMode = GL_QUADS
   }
 
+  sealed class DrawingList(id: Int) extends Immutable {
+    def call = glCallList(id)
+  }
+
   def draw(mode: PrimitiveMode)(body: => Unit) = {
     glBegin(mode.glMode)
     body
     glEnd
   }
+
+  def preserve(body: => Unit) = {
+    glPushMatrix
+    body
+    glPopMatrix
+  }
+
+  def makeList(body: => Unit) = {
+    val id = glGenLists(1)
+    glNewList(id, GL_COMPILE)
+    body
+    glEndList
+    new DrawingList(id)
+  }
+
+  def translate(x: Float, y: Float) = glTranslatef(x, y, 0)
+
+  def rotate(a: Float) = glRotatef(a.toDegrees, 0, 0, 1)
+
+  def scale(sx: Float, sy: Float) = glScalef(sx, sy, 1)
+
+  def scale(s: Float) = glScalef(s, s, 1)
 
   def vertex(x: Float, y: Float, z: Float = 0) = glVertex3f(x, y, z)
 
