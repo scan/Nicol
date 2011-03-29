@@ -31,5 +31,7 @@ object Vector2 {
 
   implicit def asVector2(t: (Float, Float)) = Vector2(t._1, t._2)
 
+  implicit def intAsVector2(t: (Int, Int)) = Vector2(t._1.toFloat, t._2.toFloat)
+
   def zero = Vector2(0, 0)
 }
