@@ -1,5 +1,6 @@
 package com.scan.nicol.math
 
+@scala.annotation.strictfp
 sealed case class Matrix(a: Float, b: Float, c: Float, d: Float) extends Immutable {
   def transpose = Matrix((a, b), (c, d))
 
@@ -22,6 +23,7 @@ object Matrix {
 
   def apply(t1: (Float, Float), t2: (Float, Float)): Matrix = Matrix(t1._1, t2._1, t1._2, t2._2)
 
+  @scala.annotation.strictfp
   def apply(a: Float): Matrix = {
     val c = math.cos(a).toFloat
     val s = math.sin(a).toFloat
