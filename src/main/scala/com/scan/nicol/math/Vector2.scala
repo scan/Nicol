@@ -1,6 +1,5 @@
 package com.scan.nicol.math
 
-@scala.annotation.strictfp
 sealed case class Vector2(x: Float, y: Float) extends Immutable {
   def +(v: Vector2) = Vector2(x + v.x, y + v.y)
 
