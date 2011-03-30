@@ -9,6 +9,8 @@ sealed case class Vector(x: Float, y: Float) extends Immutable {
 
   def *(f: Float) = Vector(x * f, y * f)
 
+  def *(m: Matrix) = Vector(m.a * x + m.c * y, m.b * x + m.d * y)
+
   def /(f: Float) = Vector(x / f, y / f)
 
   def length = math.sqrt(x * x + y * y).toFloat
