@@ -4,9 +4,14 @@ import com.scan.nicol.math._
 
 sealed trait Shape extends Immutable {
   def bounds: AABox
+
+  def area: Float = 0
 }
 
 case class Line(start: Vector, end: Vector) extends Shape {
+  /**
+   * This line as a [Vector]
+   */
   val vec = end - start
 
   lazy val bounds = {
@@ -20,6 +25,12 @@ case class Line(start: Vector, end: Vector) extends Shape {
 
   def transform(m: Matrix) = Line(m * start, m * end)
 
+  /**
+   * Tests if this line intersects with a given line.
+   *
+   * @param that Line to test
+   * @return None, if there was no intersection, Some[Vector] with the point where they intersect
+   */
   def intersects(that: Line) = {
     val d1 = end - start
     val d2 = that.end - that.start
@@ -34,4 +45,10 @@ case class Line(start: Vector, end: Vector) extends Shape {
       Some(Vector(vx / d, vy / d))
     }
   }
+}
+
+case class Circle(center: Vector, radius: Float) extends Shape {
+  override def area = math.Pi.toFloat * radius * radius
+
+  def bounds = AABox(center.x - radius, center.y - radius, radius * 2, radius * 2)
 }
