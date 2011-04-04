@@ -6,6 +6,8 @@ sealed trait Shape extends Immutable {
   def bounds: AABox
 
   def area: Float = 0
+
+  def transposed(v: Vector): Shape
 }
 
 case class Line(start: Vector, end: Vector) extends Shape {
@@ -50,5 +52,9 @@ case class Line(start: Vector, end: Vector) extends Shape {
 case class Circle(center: Vector, radius: Float) extends Shape {
   override def area = math.Pi.toFloat * radius * radius
 
+  def transposed(v: Vector) = Circle(center + v, radius)
+
   def bounds = AABox(center.x - radius, center.y - radius, radius * 2, radius * 2)
+
+  def intersects(that: Circle) = (that.center - this.center).lengthSqr < (radius * radius + that.radius * that.radius)
 }
