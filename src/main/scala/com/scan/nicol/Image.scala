@@ -31,23 +31,19 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(res, layer, r)
 
-    lazy val list = makeList(GLUtils.draw(Quads) {
-      colour(1, 1, 1)
-      texCoord(0, 0)
-      vertex(0, 0, layer)
-      texCoord(texture.width, 0)
-      vertex(texture.imageSize._1, 0, layer)
-      texCoord(texture.width, texture.height)
-      vertex(texture.imageSize._1, texture.imageSize._2, layer)
-      texCoord(0, texture.height)
-      vertex(0, texture.imageSize._2, layer)
-    })
-
-
     def draw(x: Float, y: Float) = preserve {
       texture.bind
-      translate(x, y)
-      list.call
+      GLUtils.draw(Quads) {
+        colour(1, 1, 1)
+        texCoord(x, y)
+        vertex(x, y, layer)
+        texCoord(texture.width, 0)
+        vertex(x + texture.imageSize._1, y, layer)
+        texCoord(texture.width, texture.height)
+        vertex(x + texture.imageSize._1, y + texture.imageSize._2, layer)
+        texCoord(0, texture.height)
+        vertex(x, y + texture.imageSize._2, layer)
+      }
     }
   }
 
