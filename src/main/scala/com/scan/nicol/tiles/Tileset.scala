@@ -19,12 +19,8 @@ object Tileset {
   private def makeTileset(img: Image, tsize: (Int, Int)) = {
     val (num_x, num_y) = (img.width / tsize._1, img.height / tsize._2)
 
-    val arr = Array.ofDim[Tile](num_x * num_y)
-    for (y <- 0 to num_y) {
-      for (x <- 0 to num_x) {
-        arr(y * num_x + x) = Tile(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2))
-      }
-    }
-    new Tileset(img, arr)
+    val arr = for (y <- 0 to num_y-1;
+                   x <- 0 to num_x-1) yield Tile(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2))
+    new Tileset(img, arr.toArray)
   }
 }
