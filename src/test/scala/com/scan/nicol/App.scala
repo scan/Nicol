@@ -4,15 +4,15 @@ object App extends Game("Nicol example App", 800, 600) {
 
   import scala.util.Random._
 
-  val image = Image("sika.png") sub (10, 10, 20, 20)
+  val image = Image("sika.png") sub (10, 10, 32, 32)
 
-  val positions: Seq[(Float, Float)] = Seq.fill(1000)((nextInt(800), nextInt(600)))
+  val positions = Array.tabulate[(Float, Float)](800 / 32, 600 / 32)((x, y) => (x * 32, y * 32))
 
   def update = {
-    positions.foreach(p => {
+    positions.foreach(_.foreach(p => {
       draw(image, p._1, p._2)
-    })
+    }))
 
-    //sync(60)
+    sync(60)
   }
 }
