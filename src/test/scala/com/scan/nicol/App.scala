@@ -1,17 +1,17 @@
 package com.scan.nicol
 
+import tiles._
+
 object App extends Game("Nicol example App", 800, 600) {
 
   import scala.util.Random._
 
   val image = Image("sika.png") sub (10, 10, 32, 32)
 
-  val positions = Array.tabulate[(Float, Float)](800 / 32, 600 / 32)((x, y) => (x * 32, y * 32))
+  val tileset = Tileset("sometiles.png", (64, 64))
 
   def update = {
-    positions.foreach(_.foreach(p => {
-      draw(image, p._1, p._2)
-    }))
+    for (n <- 0 to tileset.length - 1) tileset(n).draw(0, n * 64)
 
     sync(60)
   }
