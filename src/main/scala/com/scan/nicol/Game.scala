@@ -4,18 +4,17 @@ import org.lwjgl.opengl._
 import org.lwjgl._
 import scala.actors._
 
-abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Application with Actor {
+abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Actor {
 
   import Display._
 
   def size = (width, height)
 
-  start
+  def main(args: Array[String]) = start
 
   import opengl.Renderer
 
-  @inline
-  def draw[A](that: A, x: Float = 0, y: Float = 0)(implicit renderer: Renderer[A]) = renderer.draw(that, x, y)
+  def draw[A](that: A, p: (Float, Float) = (0, 0))(implicit renderer: Renderer[A]) = renderer.draw(that, p._1, p._2)
 
   def act = {
     setDisplayMode(new DisplayMode(width, height))

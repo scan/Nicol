@@ -8,18 +8,12 @@ object App extends Game("Nicol example App", 800, 600) {
 
   val image = Image("sika.png")
 
-  val tileset = Tileset("sometiles.png", (16, 16))
-
-  override def init = {
-    println("Number of tiles: " + tileset.length + ": " + (tileset.num_x, tileset.num_y))
-    println("Tileimage: " + tileset.img)
-    println("SikaImage: " + image)
-
-    //tileset.tiles.foreach(t => println(t.area.toString))
-  }
+  val tileset = Tileset("sometiles.png", (64, 64))
 
   def update = {
     for (n <- 0 to tileset.length - 1) tileset(n).draw(n * tileset.tileWidth, 0)
+
+    draw(image, (400 - image.width / 2, 300 - image.height / 2))
 
     sync(60)
   }

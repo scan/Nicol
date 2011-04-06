@@ -35,7 +35,7 @@ object Image {
       texture.bind
       GLUtils.draw(Quads) {
         colour(1, 1, 1)
-        texCoord(x, y)
+        texCoord(0, 0)
         vertex(x, y, layer)
         texCoord(texture.width, 0)
         vertex(x + texture.imageSize._1, y, layer)
