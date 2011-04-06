@@ -25,7 +25,7 @@ object Image {
 
     def width = texture.imageSize._1
 
-    def height = texture.imageSize._1
+    def height = texture.imageSize._2
 
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "]>")
 
