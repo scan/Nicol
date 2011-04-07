@@ -5,6 +5,17 @@ import math.Rect
 
 case class Tile(area: Rect, walkable: Boolean = true)
 
+case class AnimatedTile(areas: Array[Tile], walkable: Boolean = true) extends Tile(areas(0), walkable) {
+  private var n = 0
+
+  override def area = areas(n)
+
+  def tick = {
+    n += 1
+    n %= areas.length
+  }
+}
+
 sealed class Tileset(res: String, tsize: (Int, Int)) {
   lazy val img = Image(res)
 
