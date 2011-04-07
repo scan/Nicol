@@ -3,9 +3,15 @@ package tiles
 
 import math.Rect
 
-case class Tile(area: Rect, walkable: Boolean = true)
+trait Tile {
+  def area: Rect
 
-case class AnimatedTile(areas: Array[Tile], walkable: Boolean = true) extends Tile(areas(0), walkable) {
+  def walkable: Boolean
+}
+
+case class StaticTile(area: Rect, walkable: Boolean = true) extends Tile
+
+case class AnimatedTile(areas: Array[Rect], walkable: Boolean = true) extends Tile {
   private var n = 0
 
   override def area = areas(n)
@@ -21,7 +27,7 @@ sealed class Tileset(res: String, tsize: (Int, Int)) {
 
   lazy val tiles = {
     for (y <- 0 to num_y;
-         x <- 0 to num_x) yield Tile(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2))
+         x <- 0 to num_x) yield StaticTile(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2))
   }.toArray
 
   private[nicol] lazy val (num_x, num_y) = (img.width / tsize._1 - 1, img.height / tsize._2 - 1)
@@ -35,6 +41,8 @@ sealed class Tileset(res: String, tsize: (Int, Int)) {
   def apply(n: Int) = img.sub(tiles(n).area)
 
   def apply(t: Tile) = img.sub(t.area)
+
+  def apply(row: Int, col: Int) = img.sub(tiles(row * num_x + col).area)
 
   def length = tiles.length
 

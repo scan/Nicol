@@ -1,6 +1,8 @@
-package com.scan.nicol.opengl
+package com.scan.nicol
+package opengl
 
 import org.lwjgl.opengl.GL11._
+import math.Vector
 
 object GLUtils {
 
@@ -38,6 +40,26 @@ object GLUtils {
     glPushMatrix
     body
     glPopMatrix
+  }
+
+  def translated(v: Vector)(body: => Unit) = preserve {
+    glTranslatef(v.x, v.y, 0)
+    body
+  }
+
+  def translated(x: Float, y: Float)(body: => Unit) = preserve {
+    glTranslatef(x, y, 0)
+    body
+  }
+
+  def rotated(a: Float)(body: => Unit) = preserve {
+    glRotatef(a.toDegrees, 0, 0, 1)
+    body
+  }
+
+  def scaled(x: Float, y: Float)(body: => Unit) = preserve {
+    glScalef(x, y, 1)
+    body
   }
 
   def makeList(body: => Unit) = {
