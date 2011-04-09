@@ -3,6 +3,7 @@ package com.scan.nicol
 import org.lwjgl.opengl._
 import org.lwjgl._
 import scala.actors._
+import opengl.GLUtils._
 
 abstract class Game(title: String, width: Int = 800, height: Int = 600) extends Actor {
 
@@ -14,7 +15,7 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
 
   import opengl.Renderer
 
-  def draw[A](that: A, p: (Float, Float) = (0, 0))(implicit renderer: Renderer[A]) = renderer.draw(that, p._1, p._2)
+  def draw[A](that: A, p: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, p._1, p._2, rgb)
 
   def act = {
     setDisplayMode(new DisplayMode(width, height))
@@ -42,6 +43,8 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
 
     while (!isCloseRequested) {
       glClear(GL_COLOR_BUFFER_BIT)
+      glLoadIdentity
+
       this.update
       Display.update
       updateFPS

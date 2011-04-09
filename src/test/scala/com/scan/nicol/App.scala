@@ -2,6 +2,8 @@ package com.scan.nicol
 
 import tiles._
 import input._
+import geom._
+import math._
 
 object App extends Game("Nicol example App", 800, 600) {
 
@@ -12,17 +14,14 @@ object App extends Game("Nicol example App", 800, 600) {
   val tileset = Tileset("sometiles.png", (64, 64))
 
   var (x, y) = (400, 300)
+  var a = 0f
 
   def update = {
     for (n <- 0 to tileset.length - 1) tileset(n).draw(n * tileset.tileWidth, 0)
 
     draw(image, (x - image.width / 2, y - image.height / 2))
 
-    import Key._
-    if (Left) x -= 5
-    if (Right) x += 5
-    if (Up) y -= 5
-    if (Down) y += 5
+    draw(that = Circle((x, y), 50), rgb = (1, 0, 0))
 
     sync(60)
   }

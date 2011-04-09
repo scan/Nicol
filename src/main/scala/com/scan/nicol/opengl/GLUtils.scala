@@ -47,17 +47,17 @@ object GLUtils {
     body
   }
 
-  def translated(x: Float, y: Float)(body: => Unit) = preserve {
+  def translated(x: Float, y: Float)(body: => Unit) = {
     glTranslatef(x, y, 0)
     body
   }
 
-  def rotated(a: Float)(body: => Unit) = preserve {
+  def rotated(a: Float)(body: => Unit) = {
     glRotatef(a.toDegrees, 0, 0, 1)
     body
   }
 
-  def scaled(x: Float, y: Float)(body: => Unit) = preserve {
+  def scaled(x: Float, y: Float)(body: => Unit) = {
     glScalef(x, y, 1)
     body
   }
@@ -85,4 +85,8 @@ object GLUtils {
   def colour(r: Float, g: Float, b: Float) = glColor3f(r, g, b)
 
   def colour(r: Float, g: Float, b: Float, a: Float) = glColor4f(r, g, b, a)
+
+  def enableTextures = glEnable(GL_TEXTURE_2D)
+
+  def disableTextures = glDisable(GL_TEXTURE_2D)
 }

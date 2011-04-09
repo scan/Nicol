@@ -151,6 +151,12 @@ object Key {
   def apply(c: Char): Key = CharKey(c)
 }
 
+/**
+ * This object represents the Keyboard. Usually, any computer will only have exactly one, not less, not more.
+ * It is actually not advisable to use the Keyboard object. The Key object will suffice for any need you can think of.
+ *
+ * @see Key
+ */
 object Keyboard {
   def apply(key: Key): Boolean = org.lwjgl.input.Keyboard.isKeyDown(key.key)
 

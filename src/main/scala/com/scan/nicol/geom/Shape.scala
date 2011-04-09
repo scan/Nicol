@@ -1,6 +1,7 @@
-package com.scan.nicol.geom
+package com.scan.nicol
+package geom
 
-import com.scan.nicol.math._
+import math._
 
 sealed trait Shape extends Immutable {
   def bounds: AABox
@@ -10,6 +11,62 @@ sealed trait Shape extends Immutable {
   def transposed(v: Vector): Shape
 }
 
+object Shape {
+
+  import opengl._
+  import GLUtils._
+
+  implicit object LineRenderer extends Renderer[Line] {
+    def draw(that: Line, x: Float, y: Float, rgb: (Float, Float, Float)) = {
+      disableTextures
+      GLUtils.draw(Lines) {
+        colour(rgb._1, rgb._2, rgb._3)
+        vertex(that.start.x + x, that.start.y + y)
+        vertex(that.end.x + x, that.end.y + y)
+      }
+      enableTextures
+    }
+  }
+
+  implicit object CircleRenderer extends Renderer[Circle] {
+    private val sections = 24
+    private val angles = for (a <- 0 to sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
+
+    import scala.math.{cos, sin}
+
+    def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
+      disableTextures
+      GLUtils.draw(Lines) {
+        translate(that.center.x + x, that.center.y + y)
+        colour(rgb._1, rgb._2, rgb._3)
+        val r = that.radius
+        for (i <- 0 until angles.length - 1) {
+          vertex(r * cos(angles(i)).toFloat, r * sin(angles(i)).toFloat)
+          vertex(r * cos(angles(i + 1)).toFloat, r * sin(angles(i + 1)).toFloat)
+        }
+
+      }
+      enableTextures
+    }
+  }
+
+  implicit object AABoxRenderer extends Renderer[AABox] {
+    def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
+      disableTextures
+      GLUtils.draw(Quads) {
+        translate(x, y)
+        colour(rgb._1, rgb._2, rgb._3)
+        vertex(that.left, that.top)
+        vertex(that.right, that.top)
+        vertex(that.right, that.bottom)
+        vertex(that.left, that.bottom)
+      }
+      enableTextures
+    }
+  }
+
+}
+
 case class Line(start: Vector, end: Vector) extends Shape {
   /**
    * This line as a [Vector]
@@ -17,7 +74,7 @@ case class Line(start: Vector, end: Vector) extends Shape {
   val vec = end - start
 
   lazy val bounds = {
-    val r = math.max(start.length, end.length)
+    val r = scala.math.max(start.length, end.length)
     AABox(r * 2, r * 2)
   }
 
@@ -50,7 +107,7 @@ case class Line(start: Vector, end: Vector) extends Shape {
 }
 
 case class Circle(center: Vector, radius: Float) extends Shape {
-  override def area = math.Pi.toFloat * radius * radius
+  override def area = scala.math.Pi.toFloat * radius * radius
 
   def transposed(v: Vector) = Circle(center + v, radius)
 

@@ -13,7 +13,7 @@ sealed trait Image extends Immutable {
 
   def sub(x: Int, y: Int, w: Int, h: Int): Image = sub(Rect(x, y, w, h))
 
-  def draw(x: Float, y: Float, layer: Float = 0)
+  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1))
 }
 
 object Image {
@@ -31,18 +31,19 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(res, r)
 
-    def draw(x: Float, y: Float, layer: Float) = preserve {
+    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float)) = {
       texture.bind
+      GLUtils.translate(x, y)
       GLUtils.draw(Quads) {
-        colour(1, 1, 1)
+        colour(rgb._1, rgb._2, rgb._3)
         texCoord(0, 0)
-        vertex(x, y, layer)
+        vertex(0, 0, layer)
         texCoord(texture.width, 0)
-        vertex(x + texture.imageSize._1, y, layer)
+        vertex(texture.imageSize._1, 0, layer)
         texCoord(texture.width, texture.height)
-        vertex(x + texture.imageSize._1, y + texture.imageSize._2, layer)
+        vertex(texture.imageSize._1, texture.imageSize._2, layer)
         texCoord(0, texture.height)
-        vertex(x, y + texture.imageSize._2, layer)
+        vertex(0, texture.imageSize._2, layer)
       }
     }
   }
@@ -62,10 +63,10 @@ object Image {
 
     override def sub(r: Rect): Image = new GLSubImage(res, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(x: Float, y: Float, layer: Float) = {
+    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float)) = {
       texture.bind
       GLUtils.draw(Quads) {
-        colour(1, 1, 1)
+        colour(rgb._1, rgb._2, rgb._3)
         texCoord(tx, ty)
         vertex(x, y, layer)
         texCoord(tw, ty)
@@ -83,7 +84,7 @@ object Image {
   def apply(tex: Texture): Image = new GLImage(tex.resource)
 
   implicit object ImageRenderer extends Renderer[Image] {
-    def draw(that: Image, x: Float, y: Float) = that.draw(x, y)
+    def draw(that: Image, x: Float, y: Float, colour: (Float, Float, Float)) = that.draw(x, y, 0, colour)
   }
 
 }
