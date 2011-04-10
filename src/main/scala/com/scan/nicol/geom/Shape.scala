@@ -36,8 +36,8 @@ object Shape {
 
     def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
       disableTextures
+      translate(that.center.x + x, that.center.y + y)
       GLUtils.draw(Lines) {
-        translate(that.center.x + x, that.center.y + y)
         colour(rgb._1, rgb._2, rgb._3)
         val r = that.radius
         for (i <- 0 until angles.length - 1) {
@@ -53,8 +53,8 @@ object Shape {
   implicit object AABoxRenderer extends Renderer[AABox] {
     def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
       disableTextures
+      translate(x, y)
       GLUtils.draw(Quads) {
-        translate(x, y)
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.left, that.top)
         vertex(that.right, that.top)

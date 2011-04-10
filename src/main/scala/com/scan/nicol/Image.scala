@@ -13,7 +13,7 @@ sealed trait Image extends Immutable {
 
   def sub(x: Int, y: Int, w: Int, h: Int): Image = sub(Rect(x, y, w, h))
 
-  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1))
+  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0)
 }
 
 object Image {
@@ -27,23 +27,26 @@ object Image {
 
     def height = texture.imageSize._2
 
+    private lazy val (w2, h2) = (width / 2, height / 2)
+
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "]>")
 
     def sub(r: Rect): Image = new GLSubImage(res, r)
 
-    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float)) = {
+    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float) = preserve {
       texture.bind
-      GLUtils.translate(x, y)
+      translate(x + w2, y + h2)
+      rotate(rotation)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(0, 0)
-        vertex(0, 0, layer)
+        vertex(-w2, -h2, layer)
         texCoord(texture.width, 0)
-        vertex(texture.imageSize._1, 0, layer)
+        vertex(w2, -h2, layer)
         texCoord(texture.width, texture.height)
-        vertex(texture.imageSize._1, texture.imageSize._2, layer)
+        vertex(w2, h2, layer)
         texCoord(0, texture.height)
-        vertex(0, texture.imageSize._2, layer)
+        vertex(-w2, h2, layer)
       }
     }
   }
@@ -59,22 +62,26 @@ object Image {
 
     override def height = rect.height
 
+    private lazy val (w2, h2) = (width / 2, height / 2)
+
     override def toString = ("<\"" + res + "\", [" + width + ", " + height + "], [(" + tx + ", " + ty + "), (" + tw + ", " + th + ")]>")
 
     override def sub(r: Rect): Image = new GLSubImage(res, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float)) = {
+    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float) = preserve {
       texture.bind
+      rotate(rotation)
+      translate(x + w2, y + h2)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(tx, ty)
-        vertex(x, y, layer)
+        vertex(-w2, -h2, layer)
         texCoord(tw, ty)
-        vertex(x + width, y, layer)
+        vertex(w2, -h2, layer)
         texCoord(tw, th)
-        vertex(x + width, y + height, layer)
+        vertex(w2, h2, layer)
         texCoord(tx, th)
-        vertex(x, y + height, layer)
+        vertex(-w2, h2, layer)
       }
     }
   }

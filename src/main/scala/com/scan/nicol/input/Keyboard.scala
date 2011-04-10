@@ -2,8 +2,10 @@ package com.scan.nicol.input
 
 import org.lwjgl.input.Keyboard._
 
-trait Key {
+trait Key extends Immutable {
   val key: Int
+
+  def apply: Boolean = Keyboard(this)
 
   def or(that: Key) = Keyboard(this) || Keyboard(that)
 
@@ -126,14 +128,20 @@ object Key {
 
   case object Down extends Key {
     val key = KEY_DOWN
+
+    override def apply: Boolean = Keyboard(key)
   }
 
   case object Left extends Key {
     val key = KEY_LEFT
+
+    override def apply: Boolean = Keyboard(key)
   }
 
   case object Right extends Key {
     val key = KEY_RIGHT
+
+    override def apply: Boolean = Keyboard(key)
   }
 
   case object Home extends Key {
@@ -146,7 +154,7 @@ object Key {
 
   implicit def charAsKey(c: Char) = CharKey(c)
 
-  implicit def keyAsBoolean(k: Key) = Keyboard(k)
+  implicit def keyAsBoolean(k: Key): Boolean = Keyboard(k)
 
   def apply(c: Char): Key = CharKey(c)
 }
@@ -158,7 +166,7 @@ object Key {
  * @see Key
  */
 object Keyboard {
-  def apply(key: Key): Boolean = org.lwjgl.input.Keyboard.isKeyDown(key.key)
+  private[nicol] def apply(key: Int): Boolean = org.lwjgl.input.Keyboard.isKeyDown(key)
 
   def apply(keys: Key*): Boolean = keys.forall(k => org.lwjgl.input.Keyboard.isKeyDown(k.key))
 }
