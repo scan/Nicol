@@ -15,7 +15,7 @@ sealed trait Image extends Immutable {
 
   def bounds = Rect(0, 0, width, height)
 
-  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0)
+  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, scale: Float = 1)
 }
 
 object Image {
@@ -35,10 +35,11 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(res, r)
 
-    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float) = preserve {
+    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
       texture.bind
       translate(x + w2, y + h2)
       rotate(rotation)
+      scale(s)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(0, 0)
@@ -70,10 +71,11 @@ object Image {
 
     override def sub(r: Rect): Image = new GLSubImage(res, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float) = preserve {
+    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
       texture.bind
-      rotate(rotation)
       translate(x + w2, y + h2)
+      rotate(rotation)
+      scale(s)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(tx, ty)
