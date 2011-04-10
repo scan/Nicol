@@ -13,6 +13,8 @@ sealed trait Image extends Immutable {
 
   def sub(x: Int, y: Int, w: Int, h: Int): Image = sub(Rect(x, y, w, h))
 
+  def bounds = Rect(0, 0, width, height)
+
   def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0)
 }
 
