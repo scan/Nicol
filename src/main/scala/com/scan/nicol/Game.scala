@@ -15,7 +15,7 @@ abstract class Game(title: String, width: Int = 800, height: Int = 600) extends 
 
   import opengl.Renderer
 
-  def draw[A](that: A, p: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, p._1, p._2, rgb)
+  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
 
   def act = {
     setDisplayMode(new DisplayMode(width, height))

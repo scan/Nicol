@@ -24,7 +24,7 @@ object App extends Game("Nicol example App", 800, 600) {
     if (left) a -= 0.1f
     if (right) a += 0.1f
 
-    draw(that = Circle((x, y), 50), rgb = (1, 0, 0))
+    draw(Circle((x, y), 50), rgb = (1, 0, 0))
 
     sync(60)
   }
