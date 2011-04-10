@@ -1,7 +1,7 @@
 package com.scan.nicol
 
 import tiles._
-import input._
+import input.Key._
 import geom._
 import math._
 
@@ -21,7 +21,8 @@ object App extends Game("Nicol example App", 800, 600) {
 
     image.draw(x - image.width / 2, y - image.height / 2, rotation = a)
 
-    a += 0.1f
+    if (left) a -= 0.1f
+    if (right) a += 0.1f
 
     draw(that = Circle((x, y), 50), rgb = (1, 0, 0))
 
