@@ -15,7 +15,7 @@ sealed trait Image extends Immutable {
 
   def bounds = Rect(0, 0, width, height)
 
-  def draw(x: Float, y: Float, layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, scale: Float = 1)
+  def draw(position: (Float, Float) = (0, 0), layer: Float = 0, colour: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, scale: Float = 1)
 }
 
 object Image {
@@ -35,7 +35,8 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(res, r)
 
-    def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+    def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+      val (x, y) = p
       texture.bind
       translate(x + w2, y + h2)
       rotate(rotation)
@@ -71,7 +72,8 @@ object Image {
 
     override def sub(r: Rect): Image = new GLSubImage(res, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(x: Float, y: Float, layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+    override def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+      val (x, y) = p
       texture.bind
       translate(x + w2, y + h2)
       rotate(rotation)
@@ -95,7 +97,7 @@ object Image {
   def apply(tex: Texture): Image = new GLImage(tex.resource)
 
   implicit object ImageRenderer extends Renderer[Image] {
-    def draw(that: Image, x: Float, y: Float, colour: (Float, Float, Float)) = that.draw(x, y, 0, colour)
+    def draw(that: Image, x: Float, y: Float, col: (Float, Float, Float)) = that.draw((x, y), 0, col)
   }
 
 }

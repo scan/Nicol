@@ -14,7 +14,7 @@ object Layer {
 class TileLayer(tset: Tileset, val tiles: Array[Array[Tile]], level: Float = 0) extends Layer(level) {
   def draw(sx: Float, sy: Float) = for (y <- 0 to tiles.length - 1;
                                         x <- 0 to tiles(0).length - 1) {
-    tset(tiles(y)(x)).draw(x * tset.tileWidth - sx, y * tset.tileHeight - sy)
+    tset(tiles(y)(x)).draw((x * tset.tileWidth - sx, y * tset.tileHeight - sy))
   }
 
   def update = {}

@@ -17,9 +17,9 @@ object App extends Game("Nicol example App", 800, 600) {
   var a = 0f
 
   def update = {
-    for (n <- 0 to tileset.length - 1) tileset(n).draw(n * tileset.tileWidth, 0)
+    for (n <- 0 to tileset.length - 1) tileset(n).draw((n * tileset.tileWidth, 0))
 
-    image.draw(x - image.width / 2, y - image.height / 2, rotation = a, scale = 5)
+    image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
 
     if (left) a -= 0.1f
     if (right) a += 0.1f
