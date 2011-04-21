@@ -70,6 +70,13 @@ object GLUtils {
     new DrawingList(id)
   }
 
+  def newList(id: Int)(body: => Unit) = {
+    glNewList(id, GL_COMPILE)
+    body
+    glEndList
+    new DrawingList(id)
+  }
+
   def translate(x: Float, y: Float) = glTranslatef(x, y, 0)
 
   def rotate(a: Float) = glRotatef(a.toDegrees, 0, 0, 1)
