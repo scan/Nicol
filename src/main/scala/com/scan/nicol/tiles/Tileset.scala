@@ -22,7 +22,7 @@ case class AnimatedTile(areas: Array[Rect], walkable: Boolean = true) extends Ti
   }
 }
 
-sealed class Tileset(res: String, tsize: (Int, Int)) {
+sealed class Tileset private (res: String, tsize: (Int, Int)) {
   lazy val img = Image(res)
 
   lazy val tiles = {
