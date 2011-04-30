@@ -37,5 +37,14 @@ object Vector {
 
   implicit def intAsVector(t: (Int, Int)) = Vector(t._1.toFloat, t._2.toFloat)
 
-  def zero = Vector(0, 0)
+  object zero extends Vector(0, 0)
+
+  object up extends Vector(0, 1)
+
+  object down extends Vector(0, -1)
+
+  object left extends Vector(-1, 0)
+
+  object right extends Vector(1, 0)
+
 }

@@ -20,7 +20,7 @@ sealed case class Matrix(a: Float, b: Float, c: Float, d: Float) extends Immutab
 }
 
 object Matrix {
-  def identity = Matrix((1, 0), (0, 1))
+  object identity extends Matrix(1, 0, 0, 1)
 
   def apply(t1: (Float, Float), t2: (Float, Float)): Matrix = Matrix(t1._1, t2._1, t1._2, t2._2)
 
