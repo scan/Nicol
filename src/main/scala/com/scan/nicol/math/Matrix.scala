@@ -23,9 +23,20 @@ object Matrix {
 
   object identity extends Matrix(1, 0, 0, 1)
 
-  case class rotated(a: Float) extends Matrix(math.cos(a).toFloat, -math.sin(a).toFloat, math.sin(a).toFloat, math.cos(a).toFloat)
+  // TODO: perhaps make these methods?
+  object rotated {
+    def apply(amount: Float) = Matrix (
+      math.cos(amount).toFloat,
+      math.sin(amount).toFloat * -1,
+      math.sin(amount).toFloat,
+      math.cos(amount).toFloat
+    )
+  }
 
-  case class scaled(sx: Float, sy: Float) extends Matrix(sx, 0, 0, sy)
+  // TODO: perhaps make these methods?
+  object scaled {
+    def apply(sx: Float, sy: Float) = Matrix(sx, 0, 0, sy)
+  }
 
   def apply(t1: (Float, Float), t2: (Float, Float)): Matrix = Matrix(t1._1, t2._1, t1._2, t2._2)
 }
