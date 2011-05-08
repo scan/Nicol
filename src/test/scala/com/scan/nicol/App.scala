@@ -6,7 +6,8 @@ import geom._
 import math._
 import font._
 
-object App extends Game("Nicol example App", 800, 600) { game =>
+object App extends Game("Nicol example App", 800, 600) {
+  game =>
 
   import scala.util.Random._
   import scala.math.{sin, cos}
@@ -33,18 +34,19 @@ object App extends Game("Nicol example App", 800, 600) { game =>
 
     bullets = bullets.filter(!_.finished)
 
-    bullets.foreach { b =>
-      b.update
-      b.draw
+    bullets.foreach {
+      b =>
+        b.update
+        b.draw
     }
 
     val r = 50
     val redCircle = Circle((x, y), r)
 
     val targetCircle = Circle((
-      x + (50 * cos(a)).toFloat,
-      y + (50 * sin(a)).toFloat
-      ), radius = 10
+      x + (r * cos(a)).toFloat,
+      y + (r * sin(a)).toFloat
+      ), radius = r / 5
     )
 
     draw(redCircle, rgb = (1, 0, 0))
@@ -67,4 +69,5 @@ object App extends Game("Nicol example App", 800, 600) { game =>
       game.draw(Circle((x, y), 3), rgb = (250, 250, 210))
     }
   }
+
 }

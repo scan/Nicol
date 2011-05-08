@@ -3,7 +3,7 @@ package com.scan.nicol.opengl
 import org.lwjgl.opengl._
 import GL11._
 
-sealed abstract class Texture(val resource: String) extends Immutable {
+sealed abstract class Texture private(val resource: String) extends Immutable {
   def width: Float
 
   def height: Float
@@ -112,12 +112,11 @@ object Texture {
     }
 
     @throws(classOf[java.io.FileNotFoundException])
-    def loadImage(res: String) = {
-      val url = classOf[Texture].getClassLoader.getResource(res)
-      if (url == null) {
+    def loadImage = {
+      val img = new javax.swing.ImageIcon(res).getImage
+      if (img == null)
         throw new java.io.FileNotFoundException(res)
-      } else {
-        val img = new javax.swing.ImageIcon(url).getImage
+      else {
         val buf = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB)
         val g = buf.getGraphics
         g.drawImage(img, 0, 0, null)
@@ -130,7 +129,7 @@ object Texture {
     val id = glGenTextures
     glBindTexture(GL_TEXTURE_2D, id)
 
-    val img = loadImage(res)
+    val img = loadImage
 
     val pixel = if (img.getColorModel.hasAlpha) GL_RGBA else GL_RGB
 
