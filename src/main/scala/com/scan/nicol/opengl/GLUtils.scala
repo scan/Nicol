@@ -96,4 +96,10 @@ object GLUtils {
   def enableTextures = glEnable(GL_TEXTURE_2D)
 
   def disableTextures = glDisable(GL_TEXTURE_2D)
+
+  def withoutTextures(body: => Unit) {
+    glDisable(GL_TEXTURE_2D)
+    body
+    glEnable(GL_TEXTURE_2D)
+  }
 }

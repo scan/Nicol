@@ -17,14 +17,12 @@ object Shape {
   import GLUtils._
 
   implicit object LineRenderer extends Renderer[Line] {
-    def draw(that: Line, x: Float, y: Float, rgb: (Float, Float, Float)) = {
-      disableTextures
+    def draw(that: Line, x: Float, y: Float, rgb: (Float, Float, Float)) = withoutTextures {
       GLUtils.draw(Lines) {
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.start.x + x, that.start.y + y)
         vertex(that.end.x + x, that.end.y + y)
       }
-      enableTextures
     }
   }
 
@@ -34,8 +32,7 @@ object Shape {
 
     import scala.math.{cos, sin}
 
-    def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
-      disableTextures
+    def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
       translate(that.center.x + x, that.center.y + y)
       GLUtils.draw(Lines) {
         colour(rgb._1, rgb._2, rgb._3)
@@ -46,13 +43,11 @@ object Shape {
         }
 
       }
-      enableTextures
-    }
+    })
   }
 
   implicit object AABoxRenderer extends Renderer[AABox] {
-    def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve {
-      disableTextures
+    def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
       translate(x, y)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
@@ -61,8 +56,7 @@ object Shape {
         vertex(that.right, that.bottom)
         vertex(that.left, that.bottom)
       }
-      enableTextures
-    }
+    })
   }
 
 }
