@@ -1,17 +1,34 @@
 package com.scan.nicol
 package font
 
+import opengl._
+import GLUtils._
+
 trait Font {
   def size: Int
 
   def name: String
+
+  def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))
 }
 
 object Font {
 
   lazy val arial = apply("Arial", 10)
 
-  private class GLFont(val name: String, val size: Int, base: Int) extends Font
+  private class GLFont(val name: String, val size: Int, lists: IndexedSeq[DrawingList]) extends Font {
+    private val d = 1f / 16f
+
+    def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1)) = preserve(
+      for (x <- 0 until str.length) {
+        translated(pos._1 + (x * d), pos._1)(lists(x).call)
+      })
+  }
+
+  implicit object StringRenderer extends Renderer[String] {
+    def draw(that: String, x: Float, y: Float, colour: (Float, Float, Float) = (1, 1, 1)) =
+      arial.write(that, (x, y), colour)
+  }
 
   def apply(name: String, size: Int): Font = {
     import java.awt._
@@ -44,7 +61,7 @@ object Font {
     buf.rewind
 
     import org.lwjgl.opengl.GL11._
-    import opengl.GLUtils._
+    import GLUtils._
 
     val tex = glGenTextures
     glBindTexture(GL_TEXTURE_2D, tex)
@@ -57,7 +74,7 @@ object Font {
 
     val d = 1f / 16f
 
-    for (i <- 0 until 256) {
+    val lists = for (i <- 0 until 256) yield {
       val (u, v) = ((i % 16).toFloat / 16f, 1f - ((i / 16).toFloat / 16f))
       newList(base + i) {
         glBindTexture(GL_TEXTURE_2D, tex)
@@ -74,6 +91,6 @@ object Font {
       }
     }
 
-    new GLFont(name, size, base)
+    new GLFont(name, size, lists)
   }
 }

@@ -24,10 +24,7 @@ object App extends Game("Nicol example App", 800, 600) {
   var bullets = collection.mutable.ListBuffer[Bullet]()
 
   def update = {
-    for (n <- 0 to tileset.length - 1) tileset(n).draw((n * tileset.tileWidth, 0))
-
-    image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
-
+    // for (n <- 0 to tileset.length - 1) tileset(n).draw((n * tileset.tileWidth, 0))
     if (left) a -= 0.1f
     if (right) a += 0.1f
     if (space) bullets += new Bullet(a)
@@ -51,6 +48,9 @@ object App extends Game("Nicol example App", 800, 600) {
 
     draw(redCircle, rgb = (1, 0, 0))
     draw(targetCircle, rgb = (0, 1, 0))
+    image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
+    draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))(font.Font.StringRenderer);
+
     sync(60)
   }
 
