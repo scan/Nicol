@@ -12,17 +12,44 @@ import org.lwjgl.opengl.Display._
  * at the same time.
  */
 trait Scene extends Mutable {
+  scene =>
+
   def run: Scene
+
+  /**
+   * The follow combinator makes a scene that first runs this scene, then the other,
+   * ignoring the returned Scene of this run.
+   */
+  def >:>(that: Scene) = Scene({
+    scene.run
+    that.run
+  })
+
+  /**
+   * The followedBy combinator makes a scene that first runs the other scene, then this,
+   * ignoring the returned Scene that other scene.
+   */
+  def <:<(that: Scene) = Scene({
+    that.run
+    scene.run
+  })
 }
 
 object Scene {
+  /**
+   * So you don't have to create a subclass all the time.
+   */
   def apply(f: => Scene) = new Scene {
+    @inline
     def run = f
   }
 }
 
 object EntryScene {
-  def apply(title: String, width: Int = 800, height: Int = 600)(init: => Scene) = Scene {
+  /**
+   * This should be the initial scene of the game. No drawing will be possible if this scene has not happened.
+   */
+  def apply(title: String, width: Int = 800, height: Int = 600) = Scene {
     import Display._
 
     setDisplayMode(new DisplayMode(width, height))
@@ -46,7 +73,7 @@ object EntryScene {
     glOrtho(0, width, height, 0, 1, -1)
     glMatrixMode(GL_MODELVIEW)
 
-    init
+    null
   }
 }
 
@@ -66,43 +93,4 @@ object End extends Scene {
     Display.destroy
     null
   }
-}
-
-abstract class GameScene extends Scene {
-  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
-
-  def update: Scene
-
-  def run = {
-    import GL11._
-    glClear(GL_COLOR_BUFFER_BIT)
-    glLoadIdentity
-
-    val r = this.update
-
-    Display.update
-    updateFPS
-
-    if (r == null) this else r
-  }
-
-  import Sys._
-
-  private var lastFPS = time
-  private var fps = 0
-
-  private def time = (getTime * 1000) / getTimerResolution
-
-  private lazy val title = Display.getTitle
-
-  private def updateFPS = {
-    if (time - lastFPS > 1000) {
-      Display.setTitle(title + " [" + fps + "]")
-      fps = 0
-      lastFPS = time
-    }
-    fps += 1
-  }
-
-  def sync = Display.sync _
 }

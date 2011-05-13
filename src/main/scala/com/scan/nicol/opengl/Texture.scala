@@ -41,10 +41,12 @@ object Texture {
   private var textures: Map[String, Texture] = Map.empty
 
   /**
-   * Requests a [[Texture]]. If the texture is not yet in the list, it will be loaded. Once loaded, this
+   * Requests a [[com.scan.nicol.opengl.Texture]]. If the texture is
+   * not yet in the list, it will be loaded. Once loaded, this
    * request comes to the cost of just a [[scala.Map]] search.
    *
-   * It is not necessary for the resource image to be square or to have a size exponent of 2. See [[Texture]] for info.
+   * It is not necessary for the resource image to be square or to have a size exponent of 2. See
+   * [[com.scan.nicol.opengl.Texture]] for info.
    *
    * @note For texture loading, [[javax.swing.ImageIcon]] is used. Therefore, we are, up to now, limited to BMP, GIF, PNG and JPG images.
    * @example Texture("hello.png")
@@ -61,7 +63,8 @@ object Texture {
   def unapply(res: String) = textures.get(res)
 
   /**
-   * Invalidates the entry in the list of resources. This will lead to reloading the [[Texture]] next time it is requested.
+   * Invalidates the entry in the list of resources. This will lead to reloading the [[com.scan.nicol.opengl.Texture]]
+   * next time it is requested.
    */
   @inline
   def invalidate_!(res: String) = {

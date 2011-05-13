@@ -4,9 +4,9 @@ import input.Key._
 import geom._
 import math._
 
-object App extends Game(EntryScene("Nicol example App", 800, 600)(Main))
+object App extends Game(EntryScene("Nicol example App", 800, 600) >:> Main)
 
-object Main extends GameScene {
+object Main extends GameScene with SyncableScene {
   scene =>
 
   import scala.math.{sin, cos}
@@ -48,7 +48,7 @@ object Main extends GameScene {
     image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
     draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))(font.Font.StringRenderer);
 
-    sync(60)
+    sync
 
     if (escape) return End else this
   }
