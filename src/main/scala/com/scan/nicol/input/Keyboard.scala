@@ -99,6 +99,8 @@ object Key {
 
   def right = Keyboard(KEY_RIGHT)
 
+  def escape = Keyboard(KEY_ESCAPE)
+
   def apply(c: Char) = char(c)
 }
 
