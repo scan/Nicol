@@ -2,7 +2,7 @@ package com.scan.nicol
 
 import scala.actors._
 
-abstract class Game(entry: EntryScene) extends Actor {
+abstract class Game(entry: Scene) extends Actor {
   private var curScene: Scene = entry
 
   def main(args: Array[String]) = start

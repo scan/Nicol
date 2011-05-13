@@ -15,11 +15,16 @@ trait Scene extends Mutable {
   def run: Scene
 }
 
-abstract class EntryScene(title: String, width: Int = 800, height: Int = 600)(init: => Scene) extends Scene {
+object Scene {
+  def apply(f: => Scene) = new Scene {
+    def run = f
+  }
+}
 
-  import Display._
+object EntryScene {
+  def apply(title: String, width: Int = 800, height: Int = 600)(init: => Scene) = Scene {
+    import Display._
 
-  def run = {
     setDisplayMode(new DisplayMode(width, height))
     setTitle(title)
     create
@@ -45,8 +50,8 @@ abstract class EntryScene(title: String, width: Int = 800, height: Int = 600)(in
   }
 }
 
-abstract class EndScene(end: => Unit) extends Scene {
-  def run = {
+object EndScene {
+  def apply(end: => Unit) = Scene {
     end
     Display.destroy
     null
@@ -56,7 +61,12 @@ abstract class EndScene(end: => Unit) extends Scene {
 /**
  * An end object without cleanup.
  */
-object End extends EndScene(() => ())
+object End extends Scene {
+  def run = {
+    Display.destroy
+    null
+  }
+}
 
 abstract class GameScene extends Scene {
   def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
