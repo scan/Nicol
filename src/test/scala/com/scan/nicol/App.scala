@@ -4,7 +4,7 @@ import input.Key._
 import geom._
 import math._
 
-object App extends Game(EntryScene("Nicol example App", 800, 600) >:> Main)
+object App extends Game(EntryScene("Nicol example App", 800, 600) >> Main)
 
 object Main extends GameScene with SyncableScene {
   scene =>

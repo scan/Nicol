@@ -20,19 +20,29 @@ trait Scene extends Mutable {
    * The follow combinator makes a scene that first runs this scene, then the other,
    * ignoring the returned Scene of this run.
    */
-  def >:>(that: Scene) = Scene({
+  def >>(that: Scene) = Scene {
     scene.run
-    that.run
-  })
+    that
+  }
 
   /**
    * The followedBy combinator makes a scene that first runs the other scene, then this,
    * ignoring the returned Scene that other scene.
    */
-  def <:<(that: Scene) = Scene({
+  def <<(that: Scene) = Scene {
     that.run
-    scene.run
-  })
+    scene
+  }
+
+  def ?>(that: Scene) = Scene {
+    val s = scene.run
+    if (s != null) s else that
+  }
+
+  def ?<(that: Scene) = Scene {
+    val s = that.run
+    if (s != null) s else scene
+  }
 }
 
 object Scene {

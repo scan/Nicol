@@ -7,7 +7,7 @@ import org.lwjgl.Sys
 /**
  * This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
  */
-abstract class GameScene extends Scene {
+trait GameScene extends Scene {
   def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
 
   def update: Scene
