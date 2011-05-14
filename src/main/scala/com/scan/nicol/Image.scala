@@ -1,7 +1,7 @@
 package com.scan.nicol
 
 import math.Rect
-import opengl.{GLUtils, Texture, Renderer}
+import opengl.{GLUtils, Texture}
 import GLUtils._
 
 sealed trait Image extends Immutable {
@@ -95,9 +95,4 @@ object Image {
   def apply(res: String): Image = new GLImage(res)
 
   def apply(tex: Texture): Image = new GLImage(tex.resource)
-
-  implicit object ImageRenderer extends Renderer[Image] {
-    def draw(that: Image, x: Float, y: Float, col: (Float, Float, Float)) = that.draw((x, y), 0, col)
-  }
-
 }

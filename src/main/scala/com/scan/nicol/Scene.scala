@@ -1,6 +1,5 @@
 package com.scan.nicol
 
-import opengl.Renderer
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.Sys

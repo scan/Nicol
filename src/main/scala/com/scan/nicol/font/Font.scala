@@ -25,11 +25,6 @@ object Font {
       })
   }
 
-  implicit object StringRenderer extends Renderer[String] {
-    def draw(that: String, x: Float, y: Float, colour: (Float, Float, Float) = (1, 1, 1)) =
-      arial.write(that, (x, y), colour)
-  }
-
   def apply(name: String, size: Int): Font = {
     import java.awt._
     import java.awt.geom._

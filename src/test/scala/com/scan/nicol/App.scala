@@ -6,7 +6,7 @@ import math._
 
 object App extends Game(EntryScene("Nicol example App", 800, 600) >> Main)
 
-object Main extends GameScene with SyncableScene {
+object Main extends GameScene with SyncableScene with StandardRenderer {
   scene =>
 
   import scala.math.{sin, cos}
@@ -46,7 +46,7 @@ object Main extends GameScene with SyncableScene {
     draw(redCircle, rgb = (1, 0, 0))
     draw(targetCircle, rgb = (0, 1, 0))
     image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
-    draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))(font.Font.StringRenderer);
+    draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))
 
     sync
 
