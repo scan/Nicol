@@ -13,6 +13,7 @@ trait GameScene extends Scene {
 
   def run = {
     import GL11._
+    input.Keyboard.poll
     glClear(GL_COLOR_BUFFER_BIT)
     glLoadIdentity
 

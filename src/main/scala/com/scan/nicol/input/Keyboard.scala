@@ -5,6 +5,10 @@ import org.lwjgl.input.Keyboard._
 object Key {
 
   // This is awful, but LWJGL keys are not consecutive values
+  /**
+   * Gets if a standard char key is pressed.
+   * Uppercase and lowercase letters make no difference here.
+   */
   def char(c: Char) = Keyboard(c.toLower match {
     case 'a' => KEY_A
     case 'b' => KEY_B
@@ -65,7 +69,10 @@ object Key {
     case _ => KEY_NONE
   })
 
-  def function(n: Int) = if (n < 1 || n > 15) {
+  /**
+   * Tests if one of the F keys is pressed.
+   */
+  def F(n: Int) = if (n < 1 || n > 15) {
     Keyboard(n match {
       case 1 => KEY_F1
       case 2 => KEY_F2
@@ -85,25 +92,59 @@ object Key {
     })
   } else false
 
+  /**
+   * Any of the shift keys.
+   */
   def shift = Keyboard(KEY_LSHIFT) || Keyboard(KEY_RSHIFT)
 
+  /**
+   * Any of the CTRL keys.
+   */
   def ctrl = Keyboard(KEY_LCONTROL) || Keyboard(KEY_RCONTROL)
 
+  /**
+   * Any of the WIN or META keys.
+   */
+  def meta = Keyboard(KEY_LMETA) || Keyboard(KEY_RMETA)
+
+  /**
+   * Space key. Is equal to char(' ').
+   */
   def space = Keyboard(KEY_SPACE)
 
+  /**
+   * The up arrow.
+   */
   def up = Keyboard(KEY_UP)
 
+  /**
+   * The down arrow.
+   */
   def down = Keyboard(KEY_DOWN)
 
+  /**
+   * The left arrow.
+   */
   def left = Keyboard(KEY_LEFT)
 
+  /**
+   * The right arrow.
+   */
   def right = Keyboard(KEY_RIGHT)
 
+  /**
+   * The Esc key.
+   */
   def escape = Keyboard(KEY_ESCAPE)
 
+  /**
+   * Shortcut for char.
+   */
   def apply(c: Char) = char(c)
 }
 
-private object Keyboard {
+private[nicol] object Keyboard {
+  def poll = org.lwjgl.input.Keyboard.poll
+
   def apply(key: Int): Boolean = org.lwjgl.input.Keyboard.isKeyDown(key)
 }
