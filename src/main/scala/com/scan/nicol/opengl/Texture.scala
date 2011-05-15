@@ -38,7 +38,7 @@ object Texture {
     def bind = glBindTexture(GL_TEXTURE_2D, id)
   }
 
-  private var textures: Map[String, Texture] = Map.empty
+  private val textures: scala.collection.mutable.Map[String, Texture] = scala.collection.mutable.Map.empty
 
   /**
    * Requests a [[com.scan.nicol.opengl.Texture]]. If the texture is
@@ -52,11 +52,7 @@ object Texture {
    * @example Texture("hello.png")
    * @throws java.io.FileNotFoundException If the resource is not found, the usual exception is thrown.
    */
-  def apply(res: String): Texture = textures.getOrElse(res, {
-    val tex = getTexture(res)
-    textures += ((res, tex))
-    tex
-  })
+  def apply(res: String): Texture = textures.getOrElseUpdate(res, getTexture(res))
 
   def apply(xs: String*): List[Texture] = xs.map(apply _).toList
 
