@@ -1,0 +1,12 @@
+.idea/
+lib/
+lib_managed/
+target/
+project/boot/
+project/plugins/target/
+project/plugins/lib_managed/
+project/plugins/src_managed/
+project/plugins/project/
+project/build/target/
+
+*.iml
