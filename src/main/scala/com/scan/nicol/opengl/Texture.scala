@@ -43,7 +43,7 @@ object Texture {
   /**
    * Requests a [[com.scan.nicol.opengl.Texture]]. If the texture is
    * not yet in the list, it will be loaded. Once loaded, this
-   * request comes to the cost of just a [[scala.Map]] search.
+   * request comes to the cost of just a [[scala.collections.mutable.Map]] search.
    *
    * It is not necessary for the resource image to be square or to have a size exponent of 2. See
    * [[com.scan.nicol.opengl.Texture]] for info.
