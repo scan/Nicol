@@ -1,11 +1,6 @@
 package com.scan.nicol
 
 import org.lwjgl.opengl.{GL11, DisplayMode, Display}
-import org.lwjgl.opengl.GL11._
-import org.lwjgl.Sys
-import org.lwjgl.Sys._
-import org.lwjgl.opengl.Display._
-import scala.Some
 
 /**
  * A Scene is an object that has a state and is a master to many other object. There may not be more than one Scene active
@@ -23,7 +18,7 @@ object Scene {
     def apply: Unit = body
   }
 
-  implicit def asOption(s:Scene): Option[Scene] = Some(s)
+  implicit def asOption(s: Scene): Option[Scene] = Some(s)
 }
 
 case class Init(title: String, width: Int = 800, height: Int = 600) extends Scene {
@@ -82,8 +77,23 @@ trait LoopScene extends Scene {
       Display.update
     }
 
-    next.getOrElse(() => ()).apply
+    next.get.apply
   }
 
   def update: Option[Scene]
+}
+
+trait RefererScene extends Scene {
+  def next: Scene
+
+  /**
+   * This special combinator first runs this scene, then runs the scene that is defined in `next`
+   * whereupon it calls the scene given. This way, a dynamic way of scene management can be
+   * achieved.
+   */
+  def ?>(that: Scene) = Scene {
+    this.apply
+    if(next != null) next.apply
+    that.apply
+  }
 }
