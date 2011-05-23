@@ -11,7 +11,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
 
   import scala.math.{sin, cos}
 
-  val image = Image("sika.png")
+  lazy val image = Image("sika.png")
 
   val gameRect = Rect(0, 0, 800, 600)
 
