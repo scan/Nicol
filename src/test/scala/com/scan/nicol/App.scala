@@ -59,13 +59,13 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
     var finished = false
     val speed = 10
 
-    def update {
+    def update = {
       bx += (speed * cos(d)).toInt
       by += (speed * sin(d)).toInt
       finished = !gameRect.collides((bx, by))
     }
 
-    def draw {
+    def draw = {
       scene.draw(Circle((bx, by), 3), rgb = (250, 250, 210))
     }
   }
