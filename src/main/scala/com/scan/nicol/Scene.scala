@@ -5,60 +5,29 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.Sys
 import org.lwjgl.Sys._
 import org.lwjgl.opengl.Display._
+import scala.Some
 
 /**
  * A Scene is an object that has a state and is a master to many other object. There may not be more than one Scene active
  * at the same time.
  */
-trait Scene extends Mutable {
-  scene =>
-
-  def run: Scene
-
-  /**
-   * The follow combinator makes a scene that first runs this scene, then the other,
-   * ignoring the returned Scene of this run.
-   */
+trait Scene extends Function0[Unit] with Mutable {
   def >>(that: Scene) = Scene {
-    scene.run
-    that
-  }
-
-  /**
-   * The followedBy combinator makes a scene that first runs the other scene, then this,
-   * ignoring the returned Scene that other scene.
-   */
-  def <<(that: Scene) = Scene {
-    that.run
-    scene
-  }
-
-  def ?>(that: Scene) = Scene {
-    val s = scene.run
-    if (s != null) s else that
-  }
-
-  def ?<(that: Scene) = Scene {
-    val s = that.run
-    if (s != null) s else scene
+    this.apply
+    that.apply
   }
 }
 
 object Scene {
-  /**
-   * So you don't have to create a subclass all the time.
-   */
-  def apply(f: => Scene) = new Scene {
-    @inline
-    def run = f
+  def apply(body: => Unit): Scene = new Scene {
+    def apply: Unit = body
   }
+
+  implicit def asOption(s:Scene): Option[Scene] = Some(s)
 }
 
-object EntryScene {
-  /**
-   * This should be the initial scene of the game. No drawing will be possible if this scene has not happened.
-   */
-  def apply(title: String, width: Int = 800, height: Int = 600) = Scene {
+case class Init(title: String, width: Int = 800, height: Int = 600) extends Scene {
+  def apply = {
     import Display._
 
     setDisplayMode(new DisplayMode(width, height))
@@ -68,8 +37,9 @@ object EntryScene {
     import GL11._
 
     glEnable(GL_TEXTURE_2D)
-    glDisable(GL_DEPTH_TEST)
+
     glDisable(GL_LIGHTING)
+    glDisable(GL_DEPTH_TEST)
 
     glShadeModel(GL_SMOOTH)
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST)
@@ -81,25 +51,39 @@ object EntryScene {
     glLoadIdentity
     glOrtho(0, width, height, 0, 1, -1)
     glMatrixMode(GL_MODELVIEW)
-
-    null
+    glLoadIdentity
   }
 }
 
-object EndScene {
-  def apply(end: => Unit) = Scene {
-    end
-    Display.destroy
-    null
-  }
-}
-
-/**
- * An end object without cleanup.
- */
 object End extends Scene {
-  def run = {
+  def apply = {
     Display.destroy
-    null
   }
+}
+
+trait StaticScene extends Scene {
+  def run: Unit
+
+  def apply = run
+}
+
+trait LoopScene extends Scene {
+  val clearColour: (Float, Float, Float, Float) = (0, 0, 0, 0)
+
+  def apply = {
+    var next: Option[Scene] = None
+
+    while (next == None) {
+      GL11.glClearColor(clearColour._1, clearColour._2, clearColour._3, clearColour._4)
+      GL11.glClear(GL11.GL_COLOR_BUFFER_BIT)
+      GL11.glLoadIdentity
+
+      next = update
+      Display.update
+    }
+
+    next.getOrElse(() => ()).apply
+  }
+
+  def update: Option[Scene]
 }

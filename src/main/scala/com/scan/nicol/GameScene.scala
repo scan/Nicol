@@ -6,30 +6,15 @@ import org.lwjgl.Sys
 /**
  * This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
  */
-trait GameScene extends Scene {
+trait GameScene extends LoopScene {
   def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
-
-  def update: Scene
-
-  def run = {
-    import GL11._
-    input.Keyboard.poll
-    glClear(GL_COLOR_BUFFER_BIT)
-    glLoadIdentity
-
-    val r = this.update
-
-    Display.update
-
-    if (r == null) this else r
-  }
 }
 
 object GameScene {
   /**
    * This should be used to make small scenes. For bigger ones, a real GameScene child is recommended.
    */
-  def apply(f: => Scene) = new GameScene {
+  def apply(f: => Option[Scene]) = new GameScene {
     @inline
     def update = f
   }
@@ -41,6 +26,11 @@ object GameScene {
  */
 trait SyncableScene {
   val targetFPS = 60
+
+  def sync = Display.sync(targetFPS)
+}
+
+trait ShowFPS {
 
   import Sys._
 
@@ -60,8 +50,5 @@ trait SyncableScene {
     fps += 1
   }
 
-  def sync = {
-    Display.sync(targetFPS)
-    updateFPS
-  }
+  def showFPS = updateFPS
 }

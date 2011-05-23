@@ -4,9 +4,9 @@ import input.Key._
 import geom._
 import math._
 
-object App extends Game(EntryScene("Nicol example App", 800, 600) >> Main)
+object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 
-object Main extends GameScene with SyncableScene with StandardRenderer {
+object Main extends GameScene with SyncableScene with StandardRenderer with ShowFPS {
   scene =>
 
   import scala.math.{sin, cos}
@@ -20,7 +20,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer {
 
   var bullets = collection.mutable.ListBuffer[Bullet]()
 
-  def update: Scene = {
+  def update: Option[Scene] = {
     // for (n <- 0 to tileset.length - 1) tileset(n).draw((n * tileset.tileWidth, 0))
     if (left) a -= 0.1f
     if (right) a += 0.1f
@@ -49,8 +49,9 @@ object Main extends GameScene with SyncableScene with StandardRenderer {
     draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))
 
     sync
+    showFPS
 
-    if (escape) return End else this
+    if (escape) End else None
   }
 
   class Bullet(d: Float) extends Entity {
