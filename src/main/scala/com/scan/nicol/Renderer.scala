@@ -2,6 +2,7 @@ package com.scan.nicol
 
 import geom._
 import font._
+import opengl._
 
 trait Renderer[A] {
   def draw(that: A, x: Float = 0, y: Float = 0, colour: (Float, Float, Float) = (1, 1, 1)): Unit
@@ -9,7 +10,6 @@ trait Renderer[A] {
 
 trait StandardRenderer {
 
-  import opengl.GLUtils
   import GLUtils._
 
   implicit object ImageRenderer extends Renderer[Image] {
@@ -33,18 +33,18 @@ trait StandardRenderer {
 
   implicit object CircleRenderer extends Renderer[Circle] {
     private val sections = 24
-    private val angles = for (a <- 0 to sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
+    private val angles = for (a <- 0 until sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
 
     import scala.math.{cos, sin}
 
     def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
       translate(that.center.x + x, that.center.y + y)
-      GLUtils.draw(Lines) {
+      GLUtils.draw(LineLoop) {
         colour(rgb._1, rgb._2, rgb._3)
         val r = that.radius
-        for (i <- 0 until angles.length - 1) {
-          vertex(r * cos(angles(i)).toFloat, r * sin(angles(i)).toFloat)
-          vertex(r * cos(angles(i + 1)).toFloat, r * sin(angles(i + 1)).toFloat)
+        angles.foreach {
+          a =>
+            vertex(r * cos(a).toFloat, r * sin(a).toFloat)
         }
       }
     })
@@ -59,6 +59,32 @@ trait StandardRenderer {
         vertex(that.right, that.top)
         vertex(that.right, that.bottom)
         vertex(that.left, that.bottom)
+      }
+    })
+  }
+
+  implicit object QuadRenderer extends Renderer[Quad] {
+    def draw(that: Quad, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
+      translate(x, y)
+      GLUtils.draw(LineLoop) {
+        colour(rgb._1, rgb._2, rgb._3)
+        vertex(that.p1.x, that.p1.y)
+        vertex(that.p2.x, that.p2.y)
+        vertex(that.p3.x, that.p3.y)
+        vertex(that.p4.x, that.p4.y)
+      }
+    })
+  }
+
+  object FilledQuadRenderer extends Renderer[Quad] {
+    def draw(that: Quad, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
+      translate(x, y)
+      GLUtils.draw(Quads) {
+        colour(rgb._1, rgb._2, rgb._3)
+        vertex(that.p1.x, that.p1.y)
+        vertex(that.p2.x, that.p2.y)
+        vertex(that.p3.x, that.p3.y)
+        vertex(that.p4.x, that.p4.y)
       }
     })
   }

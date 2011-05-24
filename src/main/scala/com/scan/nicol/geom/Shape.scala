@@ -59,3 +59,22 @@ case class Circle(center: Vector, radius: Float) extends Shape {
 
   def intersects(that: Circle) = (that.center - this.center).lengthSqr < (radius * radius + that.radius * that.radius)
 }
+
+case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
+  def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
+
+  def bounds = AABox(min_x, min_y, max_x - min_x, max_y - min_y)
+
+  private lazy val (min_x, max_x) = {
+    val tmp = Seq(p1.x, p2.x, p3.x, p4.x)
+    (tmp.min, tmp.max)
+  }
+
+  private lazy val (min_y, max_y) = {
+    val tmp = Seq(p1.y, p2.y, p3.y, p4.y)
+    (tmp.min, tmp.max)
+  }
+
+  val min = (min_x, min_y)
+  val max = (min_x, min_y)
+}
