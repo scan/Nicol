@@ -92,9 +92,6 @@ object Font {
       glyph
     }
 
-    import javax.imageio.ImageIO.write
-    write(img, "png", new java.io.File(name + size + ".png"))
-
     val data = img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
 
     val buf = ByteBuffer.allocateDirect(data.length)
