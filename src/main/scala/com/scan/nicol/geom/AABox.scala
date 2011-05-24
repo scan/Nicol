@@ -8,6 +8,14 @@ import com.scan.nicol.math.Rect
 sealed class AABox(val x: Float, val y: Float, val width: Float, val height: Float) extends Immutable {
   def overlaps(that: AABox) = ((this.width + that.width) / 2 > math.abs(this.x - that.x)) && ((this.height + that.height) / 2 > math.abs(this.y - that.y))
 
+  def top = y
+
+  def bottom = y + height
+
+  def left = x
+
+  def right = x + width
+
   def transposed(dx: Float, dy: Float) = new AABox(x + dx, y + dx, width, height)
 
   override def toString = "[AABox: " + width + " by " + height + "]"

@@ -2,7 +2,6 @@ package com.scan.nicol
 package font
 
 import opengl._
-import scala.Float._
 
 trait Font {
   def size: Int
@@ -94,9 +93,8 @@ object Font {
         vertex(0, height)
       })
 
-      val glyph = GLGlyph(list, off)
       w += off
-      glyph
+      GLGlyph(list, off)
     }
 
     val data = img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
@@ -115,7 +113,7 @@ object Font {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getWidth(), img.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buf)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getWidth, img.getHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf)
 
     new GLFont(name, size, tex, glyphs.toIndexedSeq)
   }

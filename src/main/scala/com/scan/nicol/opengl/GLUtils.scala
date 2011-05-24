@@ -18,12 +18,24 @@ object GLUtils {
     def glMode = GL_LINES
   }
 
+  case object LineStrip extends PrimitiveMode {
+    def glMode = GL_LINE_STRIP
+  }
+
+  case object LineLoop extends PrimitiveMode {
+    def glMode = GL_LINE_LOOP
+  }
+
   case object Triangles extends PrimitiveMode {
     def glMode = GL_TRIANGLES
   }
 
   case object Quads extends PrimitiveMode {
     def glMode = GL_QUADS
+  }
+
+  case object Polygon extends PrimitiveMode {
+    def glMode = GL_POLYGON
   }
 
   sealed class DrawingList(id: Int) extends Immutable {

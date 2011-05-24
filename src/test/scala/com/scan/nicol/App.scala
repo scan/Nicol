@@ -35,7 +35,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
     }
 
     val r = 50f
-    val redCircle = Circle((x, y), r)
+    val redCircle = AABox(x - r / 2, y - r / 2, r, r)
 
     val targetCircle = Circle((
       x + (r * cos(a)).toFloat,
@@ -43,10 +43,10 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
       ), radius = r / 5
     )
 
-    draw(redCircle, rgb = (1, 0, 0))
+    draw(redCircle, rgb = (1, 0, 0))(FilledAABoxRenderer)
     draw(targetCircle, rgb = (0, 1, 0))
     image.draw(position = (x - image.width / 2, y - image.height / 2), rotation = a)
-    draw("Hello, Nicol!", position = (30, 30), rgb = (1, 1, 1))
+    draw("Hello, Nicol!", position = (30, 30), rgb = (0.7f, 0.7f, 1f))
 
     sync
     showFPS
@@ -66,7 +66,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
     }
 
     def draw = {
-      scene.draw(Circle((bx, by), 3), rgb = (250, 250, 210))
+      scene.draw(Circle((bx, by), 3), rgb = (250, 250, 210))(FilledCircleRenderer)
     }
   }
 
