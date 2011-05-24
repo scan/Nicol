@@ -18,31 +18,37 @@ object Font {
 
   lazy val arial = apply("Arial", 15)
 
-  private class GLFont(val name: String, val size: Int, tex: Int, woff: Float, hoff: Float) extends Font {
+  private class GLFont(val name: String, val size: Int, tex: Int, height: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
 
     def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1)) = {
       glBindTexture(GL_TEXTURE_2D, tex)
       var m = 0
       str.foreach {
         c =>
-          val i = c.toInt
-          val (u, v) = ((i % 16) * woff, (i / 16) * hoff)
+          val g = glyphs(c.toInt)
+          val (x,y) = (pos._1+m,pos._2)
           draw(Quads) {
             colour(rgb._1, rgb._2, rgb._3)
-            texCoord(u, v)
-            vertex(pos._1 + m, pos._2)
-            texCoord(u + woff, v)
-            vertex(pos._1 + m + size, pos._2)
-            texCoord(u + woff, v + hoff)
-            vertex(pos._1 + m + size, pos._2 + size)
-            texCoord(u, v + hoff)
-            vertex(pos._1 + m, pos._2 + size)
+
+            texCoord(g.x, g.y)
+            vertex(x, y)
+
+            texCoord(g.x + g.w, g.y)
+            vertex(x + g.off, y)
+
+            texCoord(g.x + g.w, g.y + g.h)
+            vertex(x + g.off, y + height)
+
+            texCoord(g.x, g.y + g.h)
+            vertex(x, y + height)
           }
-          m += size
+          m += g.off
       }
     }
 
   }
+
+  private case class GLGlyph(x: Float, y: Float, w: Float, h: Float, off: Int)
 
   def apply(name: String, size: Int): Font = {
     import java.awt._
@@ -64,8 +70,10 @@ object Font {
     g.setFont(font)
 
     val fm = g.getFontMetrics
-    val (width, height) = (fm.stringWidth("W"), fm.getHeight)
-    val (rw, rh) = (get2fold(width * 16 + 1), get2fold(height * 16 + fm.getAscent))
+    val width = (for (c <- 0 until 256) yield (fm.charWidth(c.toChar))).sum
+    val h = fm.getHeight
+
+    val (rw, rh) = (get2fold(width), get2fold(fm.getHeight))
 
     g.dispose
     img = new BufferedImage(rw, rh, BufferedImage.TYPE_4BYTE_ABGR)
@@ -76,16 +84,16 @@ object Font {
     g.setColor(new Color(0xFFFFFFFF, true));
     g.setBackground(new Color(0x00000000, true));
 
-    for (i <- 0 until 256) {
-      val (x, y) = (i % 16, i / 16)
-      g.drawString(i.toChar.toString, (x * width) + 1, (y * height) + fm.getAscent)
+    var w = 0
+    val glyphs = for (i <- 0 until 256) yield {
+      g.drawString(i.toChar.toString, w + 1, fm.getAscent)
+      val glyph = GLGlyph((w.toFloat / rw.toFloat), 0, (fm.charWidth(i.toChar).toFloat / rw.toFloat), (fm.getHeight.toFloat / rh.toFloat), fm.charWidth(i.toChar))
+      w += fm.charWidth(i.toChar)
+      glyph
     }
 
     import javax.imageio.ImageIO.write
     write(img, "png", new java.io.File(name + size + ".png"))
-
-    println(rw.toString + "x" + rh.toString)
-    println(width.toString + "x" + height.toString)
 
     val data = img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
 
@@ -93,6 +101,8 @@ object Font {
     buf.order(ByteOrder.nativeOrder)
     buf.put(data, 0, data.length)
     buf.flip
+
+    g.dispose
 
     import org.lwjgl.opengl.GL11._
 
@@ -103,7 +113,6 @@ object Font {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getWidth(), img.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buf)
 
-    new GLFont(name, size, tex,
-      (width.toFloat / rw.toFloat), (height.toFloat / rh.toFloat))
+    new GLFont(name, size, tex, h, glyphs.toIndexedSeq)
   }
 }
