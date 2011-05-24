@@ -62,15 +62,8 @@ object GLUtils {
     body
   }
 
-  def makeList(body: => Unit) = {
+  def newList(body: => Unit) = {
     val id = glGenLists(1)
-    glNewList(id, GL_COMPILE)
-    body
-    glEndList
-    new DrawingList(id)
-  }
-
-  def newList(id: Int)(body: => Unit) = {
     glNewList(id, GL_COMPILE)
     body
     glEndList
