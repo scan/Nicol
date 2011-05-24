@@ -18,6 +18,8 @@ object Scene {
     def apply: Unit = body
   }
 
+  def sequence(scenes: Scene*) = scenes.foldLeft(Scene())(_ >> _)
+
   implicit def asOption(s: Scene): Option[Scene] = Some(s)
 }
 
@@ -93,7 +95,7 @@ trait RefererScene extends Scene {
    */
   def ?>(that: Scene) = Scene {
     this.apply
-    if(next != null) next.apply
+    if (next != null) next.apply
     that.apply
   }
 }
