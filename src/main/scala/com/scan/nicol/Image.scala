@@ -4,11 +4,19 @@ import math.Rect
 import opengl.{GLUtils, Texture}
 import GLUtils._
 
+/**
+ * Represents a loaded Image. It is very recommended to only create lazy vals of this.
+ * Currently, the [[java.awt.Image]] facilities are used to load the image, therefore
+ * any format is supported that Java supports: PNG, JPEG, GIF and BMP.
+ */
 sealed trait Image extends Immutable {
   def width: Int
 
   def height: Int
 
+  /**
+   * Creates an independent sub-image. If the coordinates are outside of the original, they're clipped.
+   */
   def sub(r: Rect): Image
 
   def sub(x: Int, y: Int, w: Int, h: Int): Image = sub(Rect(x, y, w, h))

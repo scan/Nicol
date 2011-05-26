@@ -3,15 +3,31 @@ package font
 
 import opengl._
 
-trait Font {
+/**
+ * Represents a loaded font. Currently, BitmapFonts are not yet supported. For Font loading,
+ * the [[java.awt.Font]] system is used.
+ */
+sealed trait Font extends Immutable {
+  /**
+   * @note Not the actual pixel height!
+   */
   def size: Int
 
   def name: String
 
+  /**
+   * Actual height in pixels
+   */
   def height: Int
 
+  /**
+   * Writes a string with this font
+   */
   def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))
 
+  /**
+   * Gives the width of a string using this font.
+   */
   def stringWidth(str: String): Int
 }
 
@@ -20,7 +36,10 @@ object Font {
   import org.lwjgl.opengl.GL11._
   import GLUtils._
 
-  lazy val arial = apply("Arial", 15)
+  /**
+   * This the standard rendering font, should be available on every system: Arial, size 12.
+   */
+  lazy val arial = apply("Arial", 12)
 
   private class GLFont(val name: String, val size: Int, val height: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
 

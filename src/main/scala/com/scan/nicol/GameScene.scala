@@ -9,7 +9,7 @@ import renderer._
  * This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
  */
 trait GameScene extends LoopScene {
-  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]) = renderer.draw(that, position._1, position._2, rgb)
+  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]): Unit = renderer.draw(that, position._1, position._2, rgb)
 }
 
 object GameScene {
@@ -32,6 +32,9 @@ trait SyncableScene {
   def sync = Display.sync(targetFPS)
 }
 
+/**
+ * This mixin gives you a method to write the current FPS into the title bar.
+ */
 trait ShowFPS {
 
   import Sys._
