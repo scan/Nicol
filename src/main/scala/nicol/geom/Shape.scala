@@ -4,16 +4,31 @@ package geom
 import math._
 
 sealed trait Shape extends Immutable {
+  /**
+   * General bounds of this Shape.
+   *
+   * @note This is only useful for general collision testing, not exact tests.
+   */
   def bounds: AABox
 
+  /**
+   * The area of this Shape. Could be useful to someone.
+   */
   def area: Float = 0
 
+  /**
+   * Same shape, somewhere else.
+   */
   def transposed(v: Vector): Shape
 }
 
+/**
+ * This is a straight, not-interrupted line, in the mathematical and
+ * graphical sense.
+ */
 case class Line(start: Vector, end: Vector) extends Shape {
   /**
-   * This line as a [Vector]
+   * This line as a [[nicol.math.Vector]]
    */
   val vec = end - start
 
@@ -33,6 +48,7 @@ case class Line(start: Vector, end: Vector) extends Shape {
    *
    * @param that Line to test
    * @return None, if there was no intersection, Some[Vector] with the point where they intersect
+   * @note This is as untested as it is complex.
    */
   def intersects(that: Line) = {
     val d1 = end - start
@@ -50,6 +66,9 @@ case class Line(start: Vector, end: Vector) extends Shape {
   }
 }
 
+/**
+ * Circle shape, in strict mathematical sense. Graphical rendering may vary.
+ */
 case class Circle(center: Vector, radius: Float) extends Shape {
   override def area = scala.math.Pi.toFloat * radius * radius
 
@@ -60,6 +79,9 @@ case class Circle(center: Vector, radius: Float) extends Shape {
   def intersects(that: Circle) = (that.center - this.center).lengthSqr < (radius * radius + that.radius * that.radius)
 }
 
+/**
+ * A Shape with four edges without any restrictions.
+ */
 case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
   def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
 
@@ -75,6 +97,17 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
     (tmp.min, tmp.max)
   }
 
+  /**
+   * Minimal point
+   *
+   * @note may or may not be inside the Shape.
+   */
   val min = (min_x, min_y)
+
+  /**
+   * Maximal point
+   *
+   * @note May or may not be inside the Shape.
+   */
   val max = (min_x, min_y)
 }
