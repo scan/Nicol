@@ -8,7 +8,11 @@ trait Font {
 
   def name: String
 
+  def height: Int
+
   def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))
+
+  def stringWidth(str: String): Int
 }
 
 object Font {
@@ -18,7 +22,7 @@ object Font {
 
   lazy val arial = apply("Arial", 15)
 
-  private class GLFont(val name: String, val size: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
+  private class GLFont(val name: String, val size: Int, val height: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
 
     def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1)) = {
       glBindTexture(GL_TEXTURE_2D, tex)
@@ -34,6 +38,7 @@ object Font {
       }
     }
 
+    def stringWidth(str: String) = str.map(c => glyphs(c.toInt).off).sum
   }
 
   private case class GLGlyph(list: DrawingList, off: Int)
@@ -115,6 +120,6 @@ object Font {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getWidth, img.getHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf)
 
-    new GLFont(name, size, tex, glyphs.toIndexedSeq)
+    new GLFont(name, size, height, tex, glyphs.toIndexedSeq)
   }
 }
