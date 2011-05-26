@@ -3,6 +3,8 @@ package com.scan.nicol
 import org.lwjgl.opengl.{Display, GL11}
 import org.lwjgl.Sys
 
+import renderer._
+
 /**
  * This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
  */

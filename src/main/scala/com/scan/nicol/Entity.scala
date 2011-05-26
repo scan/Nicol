@@ -12,7 +12,7 @@ object DrawableEntity {
 
   import opengl._
 
-  implicit object EntityRenderer extends Renderer[DrawableEntity] {
+  implicit object EntityRenderer extends renderer.Renderer[DrawableEntity] {
     def draw(that: DrawableEntity, x: Float, y: Float, rgb: (Float, Float, Float)) = that.draw(x, y)
   }
 

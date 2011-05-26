@@ -1,26 +1,11 @@
 package com.scan.nicol
+package renderer
 
-import geom._
-import font._
-import opengl._
+import opengl.GLUtils
+import geom.{Quad, AABox, Circle, Line}
+import com.scan.nicol.opengl.GLUtils._
 
-trait Renderer[A] {
-  def draw(that: A, x: Float = 0, y: Float = 0, colour: (Float, Float, Float) = (1, 1, 1)): Unit
-}
-
-trait StandardRenderer {
-
-  import GLUtils._
-
-  implicit object ImageRenderer extends Renderer[Image] {
-    def draw(that: Image, x: Float, y: Float, col: (Float, Float, Float)) = that.draw((x, y), 0, col)
-  }
-
-  implicit object StringRenderer extends Renderer[String] {
-    def draw(that: String, x: Float, y: Float, colour: (Float, Float, Float) = (1, 1, 1)) =
-      Font.arial.write(that, (x, y), colour)
-  }
-
+trait StandardGeometryRenderer {
   implicit object LineRenderer extends Renderer[Line] {
     def draw(that: Line, x: Float, y: Float, rgb: (Float, Float, Float)) = withoutTextures {
       GLUtils.draw(Lines) {
@@ -120,5 +105,4 @@ trait StandardRenderer {
       }
     })
   }
-
 }
