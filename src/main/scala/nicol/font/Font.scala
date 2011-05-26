@@ -49,10 +49,11 @@ object Font {
       str.foreach {
         c =>
           val g = glyphs(c.toInt)
-          preserve(translated(pos._1 + m, pos._2) {
+          preserve {
+            translate(pos._1 + m, pos._2)
             colour(rgb._1, rgb._2, rgb._3)
             g.list.call
-          })
+          }
           m += g.off
       }
     }
