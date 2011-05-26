@@ -118,13 +118,13 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li visbl="pub" name="com.scan.nicol.opengl.Texture#apply" data-isabs="false">
-      <a id="apply(String*):List[Texture]"></a>
+      <a id="apply(String*):Seq[Texture]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol"> 
         <span class="name">apply</span>
         
-        <span class="params">(<span name="xs">xs: String*</span>)</span><span class="result">: List[<a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>]</span>
+        <span class="params">(<span name="xs">xs: String*</span>)</span><span class="result">: Seq[<a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>]</span>
       </span>
       </h4>
       
@@ -138,13 +138,7 @@
         <span class="params">(<span name="res">res: String</span>)</span><span class="result">: <a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Requests a <a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>.</p><div class="fullcomment"><div class="comment cmt"><p>Requests a <a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>. If the texture is
-not yet in the list, it will be loaded. Once loaded, this
-request comes to the cost of just a scala.Map search.</p><p>It is not necessary for the resource image to be square or to have a size exponent of 2. See
-<a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a> for info.
-</p></div><dl class="attributes block"> <div class="block">Example:
-                <ol><li class="cmt"><p>Texture(&quot;hello.png&quot;)</p></li></ol>
-              </div></dl></div>
+      
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
@@ -228,22 +222,6 @@ request comes to the cost of just a scala.Map search.</p><p>It is not necessary 
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.opengl.Texture#invalidate_!" data-isabs="false">
-      <a id="invalidate_!(String):Unit"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">invalidate_!</span>
-        
-        <span class="params">(<span name="res">res: String</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Invalidates the entry in the list of resources.</p><div class="fullcomment"><div class="comment cmt"><p>Invalidates the entry in the list of resources. This will lead to reloading the <a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>
-next time it is requested.
-</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
-        </dd></dl></div>
     </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <h4 class="signature">
@@ -310,17 +288,6 @@ next time it is requested.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.opengl.Texture#unapply" data-isabs="false">
-      <a id="unapply(String):Option[Texture]"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">unapply</span>
-        
-        <span class="params">(<span name="res">res: String</span>)</span><span class="result">: <span name="scala.Option" class="extype">Option</span>[<a name="com.scan.nicol.opengl.Texture" class="extype" href="Texture.html">Texture</a>]</span>
-      </span>
-      </h4>
-      
     </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
       <a id="wait():Unit"></a>
       <h4 class="signature">

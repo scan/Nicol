@@ -24,14 +24,14 @@
       <span class="symbol"> 
         <span class="name">GameScene</span>
         
-        <span class="result"> extends <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
+        <span class="result"> extends <a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a></span>
       </span>
       </h4>
       
           <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a>, <span name="scala.Mutable" class="extype">Mutable</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a>, <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a>, <span name="scala.Mutable" class="extype">Mutable</span>, () ⇒ <span name="scala.Unit" class="extype">Unit</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
         
 
@@ -47,7 +47,7 @@
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall out"><span>Hide All</span></li>
                 <li class="showall in"><span>Show all</span></li></ol>
-                <ol id="linearization"><li name="com.scan.nicol.GameScene" class="in"><span>GameScene</span></li><li name="com.scan.nicol.Scene" class="in"><span>Scene</span></li><li name="scala.Mutable" class="in"><span>Mutable</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+                <ol id="linearization"><li name="com.scan.nicol.GameScene" class="in"><span>GameScene</span></li><li name="com.scan.nicol.LoopScene" class="in"><span>LoopScene</span></li><li name="com.scan.nicol.Scene" class="in"><span>Scene</span></li><li name="scala.Mutable" class="in"><span>Mutable</span></li><li name="scala.Function0" class="in"><span>Function0</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
               </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
@@ -61,17 +61,17 @@
         
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
-              <ol><li visbl="pub" name="com.scan.nicol.GameScene#update" data-isabs="true">
-      <a id="update:Scene"></a>
+              <ol><li visbl="pub" name="com.scan.nicol.LoopScene#update" data-isabs="true">
+      <a id="update:Option[Scene]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol"> 
         <span class="name">update</span>
         
-        <span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
+        <span class="result">: <span name="scala.Option" class="extype">Option</span>[<a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd><dt>Definition Classes</dt><dd><a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -110,20 +110,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Scene#&lt;&lt;" data-isabs="false">
-      <a id="&lt;&lt;(Scene):Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">&lt;&lt;</span>
-        
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">The followedBy combinator makes a scene that first runs the other scene, then this,
-ignoring the returned Scene that other scene.</p><div class="fullcomment"><div class="comment cmt"><p>The followedBy combinator makes a scene that first runs the other scene, then this,
-ignoring the returned Scene that other scene.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
       <a id="==(AnyRef):Boolean"></a>
       <h4 class="signature">
@@ -156,32 +142,18 @@ ignoring the returned Scene that other scene.
         <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">The follow combinator makes a scene that first runs this scene, then the other,
-ignoring the returned Scene of this run.</p><div class="fullcomment"><div class="comment cmt"><p>The follow combinator makes a scene that first runs this scene, then the other,
-ignoring the returned Scene of this run.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Scene#?&lt;" data-isabs="false">
-      <a id="?&lt;(Scene):Scene"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.LoopScene#apply" data-isabs="false">
+      <a id="apply():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol"> 
-        <span class="name">?&lt;</span>
+        <span class="name">apply</span>
         
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
+        <span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Scene#?&gt;" data-isabs="false">
-      <a id="?&gt;(Scene):Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">?&gt;</span>
-        
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a> → Function0</dd></dl></div>
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
@@ -193,6 +165,17 @@ ignoring the returned Scene of this run.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.LoopScene#clearColour" data-isabs="false">
+      <a id="clearColour:(Float, Float, Float, Float)"></a>
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol"> 
+        <span class="name">clearColour</span>
+        
+        <span class="result">: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>)</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a></dd></dl></div>
     </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
       <a id="clone():AnyRef"></a>
       <h4 class="signature">
@@ -214,7 +197,7 @@ ignoring the returned Scene of this run.
       <span class="symbol"> 
         <span class="name">draw</span>
         <span class="tparams">[<span name="A">A</span>]</span>
-        <span class="params">(<span name="that">that: A</span>, <span name="position">position: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>)</span>, <span name="rgb">rgb: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>)</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="renderer">renderer: <a name="com.scan.nicol.Renderer" class="extype" href="Renderer.html">Renderer</a>[A]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+        <span class="params">(<span name="that">that: A</span>, <span name="position">position: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>)</span>, <span name="rgb">rgb: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>)</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="renderer">renderer: <a name="com.scan.nicol.renderer.Renderer" class="extype" href="renderer/Renderer.html">Renderer</a>[A]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
       </span>
       </h4>
       
@@ -320,17 +303,6 @@ ignoring the returned Scene of this run.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.GameScene#run" data-isabs="false">
-      <a id="run:Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">run</span>
-        
-        <span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.GameScene" class="extype" href="">GameScene</a> → <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
       <a id="synchronized[T0](⇒ T0):T0"></a>
       <h4 class="signature">
@@ -342,7 +314,7 @@ ignoring the returned Scene of this run.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+    </li><li visbl="pub" name="scala.Function0#toString" data-isabs="false">
       <a id="toString():String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
@@ -352,7 +324,7 @@ ignoring the returned Scene of this run.
         <span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function0 → AnyRef → Any</dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
       <a id="wait():Unit"></a>
       <h4 class="signature">
@@ -398,10 +370,14 @@ ignoring the returned Scene of this run.
     </li></ol>
             </div>
 
-        <div name="com.scan.nicol.Scene" class="parent">
+        <div name="com.scan.nicol.LoopScene" class="parent">
+              <h3>Inherited from <a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a></h3>
+            </div><div name="com.scan.nicol.Scene" class="parent">
               <h3>Inherited from <a name="com.scan.nicol.Scene" class="extype" href="Scene.html">Scene</a></h3>
             </div><div name="scala.Mutable" class="parent">
               <h3>Inherited from <span name="scala.Mutable" class="extype">Mutable</span></h3>
+            </div><div name="scala.Function0" class="parent">
+              <h3>Inherited from () ⇒ <span name="scala.Unit" class="extype">Unit</span></h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">

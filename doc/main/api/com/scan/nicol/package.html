@@ -57,7 +57,7 @@
         <span class="result"> extends Entity</span>
       </span>
       </h4>
-      
+      <p class="comment cmt">This is an entity that can be drawn also.</p>
     </li><li visbl="pub" name="com.scan.nicol.Entity" data-isabs="true">
       <a id="Entity:Entity"></a>
       <h4 class="signature">
@@ -68,7 +68,8 @@
         <span class="result"> extends Mutable</span>
       </span>
       </h4>
-      
+      <p class="comment cmt">An Entity is an unimportant base class for anything that should have an update
+method.</p>
     </li><li visbl="pub" name="com.scan.nicol.Game" data-isabs="true">
       <a id="Game:Game"></a>
       <h4 class="signature">
@@ -76,7 +77,7 @@
       <span class="symbol"> 
         <a href="Game.html"><span class="name">Game</span></a>
         
-        <span class="result"> extends Actor</span>
+        <span class="result"> extends App with Actor</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
@@ -87,7 +88,7 @@
       <span class="symbol"> 
         <a href="GameScene.html"><span class="name">GameScene</span></a>
         
-        <span class="result"> extends Scene</span>
+        <span class="result"> extends LoopScene</span>
       </span>
       </h4>
       <p class="comment cmt">This is the base class for any non-empty scene, any real game scene.</p>
@@ -101,15 +102,37 @@
         <span class="result"> extends Immutable</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>sealed </dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Renderer" data-isabs="true">
-      <a id="Renderer:Renderer[A]"></a>
+      <p class="comment cmt">Represents a loaded Image.</p>
+    </li><li visbl="pub" name="com.scan.nicol.Init" data-isabs="false">
+      <a id="Init:Init"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="Init.html"><span class="name">Init</span></a>
+        
+        <span class="params">(<span name="title">title: String</span>, <span name="width">width: Int</span>, <span name="height">height: Int</span>)</span><span class="result"> extends Scene with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.LoopScene" data-isabs="true">
+      <a id="LoopScene:LoopScene"></a>
       <h4 class="signature">
       <span class="kind">trait</span>
       <span class="symbol"> 
-        <a href="Renderer.html"><span class="name">Renderer</span></a>
-        <span class="tparams">[<span name="A">A</span>]</span>
-        <span class="result"> extends AnyRef</span>
+        <a href="LoopScene.html"><span class="name">LoopScene</span></a>
+        
+        <span class="result"> extends Scene</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.RefererScene" data-isabs="true">
+      <a id="RefererScene:RefererScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="RefererScene.html"><span class="name">RefererScene</span></a>
+        
+        <span class="result"> extends Scene</span>
       </span>
       </h4>
       
@@ -120,10 +143,21 @@
       <span class="symbol"> 
         <a href="Scene.html"><span class="name">Scene</span></a>
         
-        <span class="result"> extends Mutable</span>
+        <span class="result"> extends () ⇒ Unit with Mutable</span>
       </span>
       </h4>
       <p class="comment cmt">A Scene is an object that has a state and is a master to many other object.</p>
+    </li><li visbl="pub" name="com.scan.nicol.ShowFPS" data-isabs="true">
+      <a id="ShowFPS:ShowFPS"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="ShowFPS.html"><span class="name">ShowFPS</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This mixin gives you a method to write the current FPS into the title bar.</p>
     </li><li visbl="pub" name="com.scan.nicol.StandardRenderer" data-isabs="true">
       <a id="StandardRenderer:StandardRenderer"></a>
       <h4 class="signature">
@@ -131,7 +165,18 @@
       <span class="symbol"> 
         <a href="StandardRenderer.html"><span class="name">StandardRenderer</span></a>
         
-        <span class="result"> extends AnyRef</span>
+        <span class="result"> extends StandardGeometryRenderer with StringRenderer</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.StaticScene" data-isabs="true">
+      <a id="StaticScene:StaticScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="StaticScene.html"><span class="name">StaticScene</span></a>
+        
+        <span class="result"> extends Scene</span>
       </span>
       </h4>
       
@@ -172,28 +217,6 @@
         <a href="End$.html"><span class="name">End</span></a>
         
         <span class="result"> extends Scene</span>
-      </span>
-      </h4>
-      <p class="comment cmt">An end object without cleanup.</p>
-    </li><li visbl="pub" name="com.scan.nicol.EndScene" data-isabs="false">
-      <a id="EndScene:EndScene"></a>
-      <h4 class="signature">
-      <span class="kind">object</span>
-      <span class="symbol"> 
-        <a href="EndScene$.html"><span class="name">EndScene</span></a>
-        
-        <span class="result"> extends AnyRef</span>
-      </span>
-      </h4>
-      
-    </li><li visbl="pub" name="com.scan.nicol.EntryScene" data-isabs="false">
-      <a id="EntryScene:EntryScene"></a>
-      <h4 class="signature">
-      <span class="kind">object</span>
-      <span class="symbol"> 
-        <a href="EntryScene$.html"><span class="name">EntryScene</span></a>
-        
-        <span class="result"> extends AnyRef</span>
       </span>
       </h4>
       
@@ -280,6 +303,17 @@
       <span class="kind">package</span>
       <span class="symbol"> 
         <a href="opengl/package.html"><span class="name">opengl</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.renderer" data-isabs="false">
+      <a id="renderer:renderer"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="renderer/package.html"><span class="name">renderer</span></a>
         
         
       </span>

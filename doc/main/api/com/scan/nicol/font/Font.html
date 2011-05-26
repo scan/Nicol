@@ -24,13 +24,15 @@
       <span class="symbol"> 
         <span class="name">Font</span>
         
-        <span class="result"> extends AnyRef</span>
+        <span class="result"> extends <span name="scala.Immutable" class="extype">Immutable</span></span>
       </span>
       </h4>
       
-          <div class="fullcommenttop" id="comment"><div class="toggleContainer block">
+          <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Represents a loaded font. Currently, BitmapFonts are not yet supported. For Font loading,
+the java.awt.Font system is used.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>sealed </dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><span name="scala.Immutable" class="extype">Immutable</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
         
 
@@ -46,7 +48,7 @@
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall out"><span>Hide All</span></li>
                 <li class="showall in"><span>Show all</span></li></ol>
-                <ol id="linearization"><li name="com.scan.nicol.font.Font" class="in"><span>Font</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+                <ol id="linearization"><li name="com.scan.nicol.font.Font" class="in"><span>Font</span></li><li name="scala.Immutable" class="in"><span>Immutable</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
               </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
@@ -60,7 +62,20 @@
         
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
-              <ol><li visbl="pub" name="com.scan.nicol.font.Font#name" data-isabs="true">
+              <ol><li visbl="pub" name="com.scan.nicol.font.Font#height" data-isabs="true">
+      <a id="height:Int"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">height</span>
+        
+        <span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Actual height in pixels
+</p><div class="fullcomment"><div class="comment cmt"><p>Actual height in pixels
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.font.Font#name" data-isabs="true">
       <a id="name:String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
@@ -81,7 +96,19 @@
         <span class="result">: <span name="scala.Int" class="extype">Int</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.font.Font#stringWidth" data-isabs="true">
+      <a id="stringWidth(String):Int"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">stringWidth</span>
+        
+        <span class="params">(<span name="str">str: String</span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Gives the width of a string using this font.</p><div class="fullcomment"><div class="comment cmt"><p>Gives the width of a string using this font.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
     </li><li visbl="pub" name="com.scan.nicol.font.Font#write" data-isabs="true">
       <a id="write(String,(Float, Float),(Float, Float, Float)):Unit"></a>
       <h4 class="signature">
@@ -92,7 +119,9 @@
         <span class="params">(<span name="str">str: String</span>, <span name="pos">pos: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>) = <span class="symbol">(0, 0)</span></span>, <span name="rgb">rgb: (<span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>, <span name="scala.Float" class="extype">Float</span>) = <span class="symbol">(1, 1, 1)</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+      <p class="shortcomment cmt">Writes a string with this font
+</p><div class="fullcomment"><div class="comment cmt"><p>Writes a string with this font
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
     </li></ol>
             </div>
 
@@ -347,7 +376,9 @@
     </li></ol>
             </div>
 
-        <div name="scala.AnyRef" class="parent">
+        <div name="scala.Immutable" class="parent">
+              <h3>Inherited from <span name="scala.Immutable" class="extype">Immutable</span></h3>
+            </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">
               <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>

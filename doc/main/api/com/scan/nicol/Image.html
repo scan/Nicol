@@ -28,7 +28,10 @@
       </span>
       </h4>
       
-          <div class="fullcommenttop" id="comment"><dl class="attributes block"> <dt>Attributes</dt><dd>sealed </dd></dl><div class="toggleContainer block">
+          <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Represents a loaded Image. It is very recommended to only create lazy vals of this.
+Currently, the java.awt.Image facilities are used to load the image, therefore
+any format is supported that Java supports: PNG, JPEG, GIF and BMP.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>sealed </dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span name="scala.Immutable" class="extype">Immutable</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
@@ -92,7 +95,8 @@
         <span class="params">(<span name="r">r: <a name="com.scan.nicol.math.Rect" class="extype" href="math/Rect.html">Rect</a></span>)</span><span class="result">: <a name="com.scan.nicol.Image" class="extype" href="">Image</a></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+      <p class="shortcomment cmt">Creates an independent sub-image.</p><div class="fullcomment"><div class="comment cmt"><p>Creates an independent sub-image. If the coordinates are outside of the original, they're clipped.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
     </li><li visbl="pub" name="com.scan.nicol.Image#width" data-isabs="true">
       <a id="width:Int"></a>
       <h4 class="signature">

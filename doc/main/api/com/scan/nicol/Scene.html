@@ -24,18 +24,18 @@
       <span class="symbol"> 
         <span class="name">Scene</span>
         
-        <span class="result"> extends <span name="scala.Mutable" class="extype">Mutable</span></span>
+        <span class="result"> extends () ⇒ <span name="scala.Unit" class="extype">Unit</span> with <span name="scala.Mutable" class="extype">Mutable</span></span>
       </span>
       </h4>
       
           <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>A Scene is an object that has a state and is a master to many other object. There may not be more than one Scene active
 at the same time.
-</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></dd></dl><div class="toggleContainer block">
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span name="scala.Mutable" class="extype">Mutable</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><span name="scala.Mutable" class="extype">Mutable</span>, () ⇒ <span name="scala.Unit" class="extype">Unit</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a name="com.scan.nicol.End" class="extype" href="End$.html">End</a>, <a name="com.scan.nicol.GameScene" class="extype" href="GameScene.html">GameScene</a></div>
+          <div class="subClasses hiddenContent"><a name="com.scan.nicol.End" class="extype" href="End$.html">End</a>, <a name="com.scan.nicol.GameScene" class="extype" href="GameScene.html">GameScene</a>, <a name="com.scan.nicol.Init" class="extype" href="Init.html">Init</a>, <a name="com.scan.nicol.LoopScene" class="extype" href="LoopScene.html">LoopScene</a>, <a name="com.scan.nicol.RefererScene" class="extype" href="RefererScene.html">RefererScene</a>, <a name="com.scan.nicol.StaticScene" class="extype" href="StaticScene.html">StaticScene</a></div>
         </div></div>
         
 
@@ -51,7 +51,7 @@ at the same time.
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall out"><span>Hide All</span></li>
                 <li class="showall in"><span>Show all</span></li></ol>
-                <ol id="linearization"><li name="com.scan.nicol.Scene" class="in"><span>Scene</span></li><li name="scala.Mutable" class="in"><span>Mutable</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+                <ol id="linearization"><li name="com.scan.nicol.Scene" class="in"><span>Scene</span></li><li name="scala.Mutable" class="in"><span>Mutable</span></li><li name="scala.Function0" class="in"><span>Function0</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
               </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
@@ -65,17 +65,17 @@ at the same time.
         
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
-              <ol><li visbl="pub" name="com.scan.nicol.Scene#run" data-isabs="true">
-      <a id="run:Scene"></a>
+              <ol><li visbl="pub" name="scala.Function0#apply" data-isabs="true">
+      <a id="apply():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol"> 
-        <span class="name">run</span>
+        <span class="name">apply</span>
         
-        <span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>
+        <span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd><dt>Definition Classes</dt><dd>Function0</dd></dl></div>
     </li></ol>
             </div>
 
@@ -114,18 +114,6 @@ at the same time.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Scene#&lt;&lt;" data-isabs="false">
-      <a id="&lt;&lt;(Scene):Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">&lt;&lt;</span>
-        
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">The followedBy combinator makes a scene that first runs the other scene, then this,
-ignoring the returned Scene that other scene.</p>
     </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
       <a id="==(AnyRef):Boolean"></a>
       <h4 class="signature">
@@ -154,29 +142,6 @@ ignoring the returned Scene that other scene.</p>
       <span class="kind">def</span>
       <span class="symbol"> 
         <span class="name">&gt;&gt;</span>
-        
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">The follow combinator makes a scene that first runs this scene, then the other,
-ignoring the returned Scene of this run.</p>
-    </li><li visbl="pub" name="com.scan.nicol.Scene#?&lt;" data-isabs="false">
-      <a id="?&lt;(Scene):Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">?&lt;</span>
-        
-        <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>
-      </span>
-      </h4>
-      
-    </li><li visbl="pub" name="com.scan.nicol.Scene#?&gt;" data-isabs="false">
-      <a id="?&gt;(Scene):Scene"></a>
-      <h4 class="signature">
-      <span class="kind">def</span>
-      <span class="symbol"> 
-        <span class="name">?&gt;</span>
         
         <span class="params">(<span name="that">that: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>)</span><span class="result">: <a name="com.scan.nicol.Scene" class="extype" href="">Scene</a></span>
       </span>
@@ -320,7 +285,7 @@ ignoring the returned Scene of this run.</p>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+    </li><li visbl="pub" name="scala.Function0#toString" data-isabs="false">
       <a id="toString():String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
@@ -330,7 +295,7 @@ ignoring the returned Scene of this run.</p>
         <span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function0 → AnyRef → Any</dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
       <a id="wait():Unit"></a>
       <h4 class="signature">
@@ -378,6 +343,8 @@ ignoring the returned Scene of this run.</p>
 
         <div name="scala.Mutable" class="parent">
               <h3>Inherited from <span name="scala.Mutable" class="extype">Mutable</span></h3>
+            </div><div name="scala.Function0" class="parent">
+              <h3>Inherited from () ⇒ <span name="scala.Unit" class="extype">Unit</span></h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">

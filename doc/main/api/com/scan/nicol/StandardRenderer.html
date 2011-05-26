@@ -24,13 +24,13 @@
       <span class="symbol"> 
         <span class="name">StandardRenderer</span>
         
-        <span class="result"> extends AnyRef</span>
+        <span class="result"> extends <a name="com.scan.nicol.renderer.StandardGeometryRenderer" class="extype" href="renderer/StandardGeometryRenderer.html">StandardGeometryRenderer</a> with <a name="com.scan.nicol.renderer.StringRenderer" class="extype" href="renderer/StringRenderer.html">StringRenderer</a></span>
       </span>
       </h4>
       
           <div class="fullcommenttop" id="comment"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><a name="com.scan.nicol.renderer.StringRenderer" class="extype" href="renderer/StringRenderer.html">StringRenderer</a>, <a name="com.scan.nicol.renderer.StandardGeometryRenderer" class="extype" href="renderer/StandardGeometryRenderer.html">StandardGeometryRenderer</a>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
         
 
@@ -46,7 +46,7 @@
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall out"><span>Hide All</span></li>
                 <li class="showall in"><span>Show all</span></li></ol>
-                <ol id="linearization"><li name="com.scan.nicol.StandardRenderer" class="in"><span>StandardRenderer</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+                <ol id="linearization"><li name="com.scan.nicol.StandardRenderer" class="in"><span>StandardRenderer</span></li><li name="com.scan.nicol.renderer.StringRenderer" class="in"><span>StringRenderer</span></li><li name="com.scan.nicol.renderer.StandardGeometryRenderer" class="in"><span>StandardGeometryRenderer</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
               </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
@@ -56,7 +56,45 @@
 
         
 
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.CenteredStringRenderer" data-isabs="false">
+      <a id="CenteredStringRenderer:CenteredStringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$CenteredStringRenderer.html"><span class="name">CenteredStringRenderer</span></a>
         
+        <span class="params">(<span name="font">font: Font</span>)</span><span class="result"> extends Renderer[String] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Centers the String around the given position
+</p>
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.RightStringRenderer" data-isabs="false">
+      <a id="RightStringRenderer:RightStringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$RightStringRenderer.html"><span class="name">RightStringRenderer</span></a>
+        
+        <span class="params">(<span name="font">font: Font</span>)</span><span class="result"> extends Renderer[String] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Writes the String left from the given position
+</p>
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.StringRenderer" data-isabs="false">
+      <a id="StringRenderer:StringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$StringRenderer.html"><span class="name">StringRenderer</span></a>
+        
+        <span class="params">(<span name="font">font: Font</span>)</span><span class="result"> extends Renderer[String] with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
         
         
 
@@ -117,28 +155,94 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>final </dd><dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.StandardRenderer.AABoxRenderer" data-isabs="false">
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.AABoxRenderer" data-isabs="false">
       <a id="AABoxRenderer:AABoxRenderer"></a>
       <h4 class="signature">
       <span class="kind">object</span>
       <span class="symbol"> 
-        <a href="StandardRenderer$AABoxRenderer$.html"><span class="name">AABoxRenderer</span></a>
+        <a href="renderer/StandardGeometryRenderer$AABoxRenderer$.html"><span class="name">AABoxRenderer</span></a>
         
         <span class="result"> extends Renderer[AABox]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.StandardRenderer.CircleRenderer" data-isabs="false">
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.ArialCenderedStringRenderer" data-isabs="false">
+      <a id="ArialCenderedStringRenderer:ArialCenderedStringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$ArialCenderedStringRenderer$.html"><span class="name">ArialCenderedStringRenderer</span></a>
+        
+        <span class="result"> extends CenteredStringRenderer</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.ArialRightStringRenderer" data-isabs="false">
+      <a id="ArialRightStringRenderer:ArialRightStringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$ArialRightStringRenderer$.html"><span class="name">ArialRightStringRenderer</span></a>
+        
+        <span class="result"> extends RightStringRenderer</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StringRenderer.ArialStringRenderer" data-isabs="false">
+      <a id="ArialStringRenderer:ArialStringRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StringRenderer$ArialStringRenderer$.html"><span class="name">ArialStringRenderer</span></a>
+        
+        <span class="result"> extends StringRenderer</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.CircleRenderer" data-isabs="false">
       <a id="CircleRenderer:CircleRenderer"></a>
       <h4 class="signature">
       <span class="kind">object</span>
       <span class="symbol"> 
-        <a href="StandardRenderer$CircleRenderer$.html"><span class="name">CircleRenderer</span></a>
+        <a href="renderer/StandardGeometryRenderer$CircleRenderer$.html"><span class="name">CircleRenderer</span></a>
         
         <span class="result"> extends Renderer[Circle]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.FilledAABoxRenderer" data-isabs="false">
+      <a id="FilledAABoxRenderer:FilledAABoxRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StandardGeometryRenderer$FilledAABoxRenderer$.html"><span class="name">FilledAABoxRenderer</span></a>
+        
+        <span class="result"> extends Renderer[AABox]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.FilledCircleRenderer" data-isabs="false">
+      <a id="FilledCircleRenderer:FilledCircleRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StandardGeometryRenderer$FilledCircleRenderer$.html"><span class="name">FilledCircleRenderer</span></a>
+        
+        <span class="result"> extends Renderer[Circle]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.FilledQuadRenderer" data-isabs="false">
+      <a id="FilledQuadRenderer:FilledQuadRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="renderer/StandardGeometryRenderer$FilledQuadRenderer$.html"><span class="name">FilledQuadRenderer</span></a>
+        
+        <span class="result"> extends Renderer[Quad]</span>
+      </span>
+      </h4>
+      
     </li><li visbl="pub" name="com.scan.nicol.StandardRenderer.ImageRenderer" data-isabs="false">
       <a id="ImageRenderer:ImageRenderer"></a>
       <h4 class="signature">
@@ -150,25 +254,25 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.StandardRenderer.LineRenderer" data-isabs="false">
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.LineRenderer" data-isabs="false">
       <a id="LineRenderer:LineRenderer"></a>
       <h4 class="signature">
       <span class="kind">object</span>
       <span class="symbol"> 
-        <a href="StandardRenderer$LineRenderer$.html"><span class="name">LineRenderer</span></a>
+        <a href="renderer/StandardGeometryRenderer$LineRenderer$.html"><span class="name">LineRenderer</span></a>
         
         <span class="result"> extends Renderer[Line]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.StandardRenderer.StringRenderer" data-isabs="false">
-      <a id="StringRenderer:StringRenderer"></a>
+    </li><li visbl="pub" name="com.scan.nicol.renderer.StandardGeometryRenderer.QuadRenderer" data-isabs="false">
+      <a id="QuadRenderer:QuadRenderer"></a>
       <h4 class="signature">
       <span class="kind">object</span>
       <span class="symbol"> 
-        <a href="StandardRenderer$StringRenderer$.html"><span class="name">StringRenderer</span></a>
+        <a href="renderer/StandardGeometryRenderer$QuadRenderer$.html"><span class="name">QuadRenderer</span></a>
         
-        <span class="result"> extends Renderer[String]</span>
+        <span class="result"> extends Renderer[Quad]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>implicit </dd></dl></div>
@@ -366,7 +470,11 @@
     </li></ol>
             </div>
 
-        <div name="scala.AnyRef" class="parent">
+        <div name="com.scan.nicol.renderer.StringRenderer" class="parent">
+              <h3>Inherited from <a name="com.scan.nicol.renderer.StringRenderer" class="extype" href="renderer/StringRenderer.html">StringRenderer</a></h3>
+            </div><div name="com.scan.nicol.renderer.StandardGeometryRenderer" class="parent">
+              <h3>Inherited from <a name="com.scan.nicol.renderer.StandardGeometryRenderer" class="extype" href="renderer/StandardGeometryRenderer.html">StandardGeometryRenderer</a></h3>
+            </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">
               <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>

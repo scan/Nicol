@@ -24,13 +24,13 @@
       <span class="symbol"> 
         <span class="name">Game</span>
         
-        <span class="result"> extends <span name="scala.actors.Actor" class="extype">Actor</span></span>
+        <span class="result"> extends <span name="scala.App" class="extype">App</span> with <span name="scala.actors.Actor" class="extype">Actor</span></span>
       </span>
       </h4>
       
           <div class="fullcommenttop" id="comment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span name="scala.actors.Actor" class="extype">Actor</span>, <span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, <span name="scala.actors.InputChannel" class="extype">InputChannel</span>[<span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.ActorCanReply" class="extype">ActorCanReply</span>, <span name="scala.actors.ReplyReactor" class="extype">ReplyReactor</span>, <span name="scala.actors.ReactorCanReply" class="extype">ReactorCanReply</span>, <span name="scala.actors.Reactor" class="extype">Reactor</span>[<span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.Combinators" class="extype">Combinators</span>, <span name="scala.actors.AbstractActor" class="extype">AbstractActor</span>, <span name="scala.actors.CanReply" class="extype">CanReply</span>[<span name="scala.Any" class="extype">Any</span>, <span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.OutputChannel" class="extype">OutputChannel</span>[<span name="scala.Any" class="extype">Any</span>], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><span name="scala.actors.Actor" class="extype">Actor</span>, <span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, <span name="scala.actors.InputChannel" class="extype">InputChannel</span>[<span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.ActorCanReply" class="extype">ActorCanReply</span>, <span name="scala.actors.ReplyReactor" class="extype">ReplyReactor</span>, <span name="scala.actors.ReactorCanReply" class="extype">ReactorCanReply</span>, <span name="scala.actors.Reactor" class="extype">Reactor</span>[<span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.Combinators" class="extype">Combinators</span>, <span name="scala.actors.AbstractActor" class="extype">AbstractActor</span>, <span name="scala.actors.CanReply" class="extype">CanReply</span>[<span name="scala.Any" class="extype">Any</span>, <span name="scala.Any" class="extype">Any</span>], <span name="scala.actors.OutputChannel" class="extype">OutputChannel</span>[<span name="scala.Any" class="extype">Any</span>], <span name="scala.App" class="extype">App</span>, <span name="scala.DelayedInit" class="extype">DelayedInit</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
         
 
@@ -46,7 +46,7 @@
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall out"><span>Hide All</span></li>
                 <li class="showall in"><span>Show all</span></li></ol>
-                <ol id="linearization"><li name="com.scan.nicol.Game" class="in"><span>Game</span></li><li name="scala.actors.Actor" class="in"><span>Actor</span></li><li name="scala.Serializable" class="in"><span>Serializable</span></li><li name="java.io.Serializable" class="in"><span>Serializable</span></li><li name="scala.actors.InputChannel" class="in"><span>InputChannel</span></li><li name="scala.actors.ActorCanReply" class="in"><span>ActorCanReply</span></li><li name="scala.actors.ReplyReactor" class="in"><span>ReplyReactor</span></li><li name="scala.actors.ReactorCanReply" class="in"><span>ReactorCanReply</span></li><li name="scala.actors.Reactor" class="in"><span>Reactor</span></li><li name="scala.actors.Combinators" class="in"><span>Combinators</span></li><li name="scala.actors.AbstractActor" class="in"><span>AbstractActor</span></li><li name="scala.actors.CanReply" class="in"><span>CanReply</span></li><li name="scala.actors.OutputChannel" class="in"><span>OutputChannel</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+                <ol id="linearization"><li name="com.scan.nicol.Game" class="in"><span>Game</span></li><li name="scala.actors.Actor" class="in"><span>Actor</span></li><li name="scala.Serializable" class="in"><span>Serializable</span></li><li name="java.io.Serializable" class="in"><span>Serializable</span></li><li name="scala.actors.InputChannel" class="in"><span>InputChannel</span></li><li name="scala.actors.ActorCanReply" class="in"><span>ActorCanReply</span></li><li name="scala.actors.ReplyReactor" class="in"><span>ReplyReactor</span></li><li name="scala.actors.ReactorCanReply" class="in"><span>ReactorCanReply</span></li><li name="scala.actors.Reactor" class="in"><span>Reactor</span></li><li name="scala.actors.Combinators" class="in"><span>Combinators</span></li><li name="scala.actors.AbstractActor" class="in"><span>AbstractActor</span></li><li name="scala.actors.CanReply" class="in"><span>CanReply</span></li><li name="scala.actors.OutputChannel" class="in"><span>OutputChannel</span></li><li name="scala.App" class="in"><span>App</span></li><li name="scala.DelayedInit" class="in"><span>DelayedInit</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
               </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
@@ -222,6 +222,17 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="com.scan.nicol.Game" class="extype" href="">Game</a> → Reactor</dd></dl></div>
+    </li><li visbl="prt" name="scala.App#args" data-isabs="false">
+      <a id="args:Array[String]"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">args</span>
+        
+        <span class="result">: <span name="scala.Array" class="extype">Array</span>[String]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>App</dd></dl></div>
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
@@ -258,6 +269,17 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Combinators</dd></dl></div>
+    </li><li visbl="pub" name="scala.App#delayedInit" data-isabs="false">
+      <a id="delayedInit(⇒ Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">delayedInit</span>
+        
+        <span class="params">(<span name="body">body: ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>App → DelayedInit</dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
       <a id="eq(AnyRef):Boolean"></a>
       <h4 class="signature">
@@ -291,6 +313,17 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="scala.actors" class="extype" href="../../../scala/actors/package.html">actors</a>] </dd><dt>Definition Classes</dt><dd>Reactor</dd></dl></div>
+    </li><li visbl="pub" name="scala.App#executionStart" data-isabs="false">
+      <a id="executionStart:Long"></a>
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol"> 
+        <span class="name">executionStart</span>
+        
+        <span class="result">: <span name="scala.Long" class="extype">Long</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>App</dd></dl></div>
     </li><li visbl="prt" name="scala.actors.Actor#exit" data-isabs="false">
       <a id="exit():Nothing"></a>
       <h4 class="signature">
@@ -437,17 +470,17 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="scala.actors" class="extype" href="../../../scala/actors/package.html">actors</a>] </dd><dt>Definition Classes</dt><dd>Reactor</dd></dl></div>
-    </li><li visbl="pub" name="com.scan.nicol.Game#main" data-isabs="false">
-      <a id="main(Array[String]):Actor"></a>
+    </li><li visbl="pub" name="scala.App#main" data-isabs="false">
+      <a id="main(Array[String]):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol"> 
         <span class="name">main</span>
         
-        <span class="params">(<span name="args">args: <span name="scala.Array" class="extype">Array</span>[String]</span>)</span><span class="result">: <span name="scala.actors.Actor" class="extype">Actor</span></span>
+        <span class="params">(<span name="args">args: <span name="scala.Array" class="extype">Array</span>[String]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
       </span>
       </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>App</dd></dl></div>
     </li><li visbl="pub" name="scala.actors.Reactor#mkBody" data-isabs="false">
       <a id="mkBody[A](⇒ A):Body[A]"></a>
       <h4 class="signature">
@@ -726,6 +759,10 @@
               <h3>Inherited from <span name="scala.actors.CanReply" class="extype">CanReply</span>[<span name="scala.Any" class="extype">Any</span>, <span name="scala.Any" class="extype">Any</span>]</h3>
             </div><div name="scala.actors.OutputChannel" class="parent">
               <h3>Inherited from <span name="scala.actors.OutputChannel" class="extype">OutputChannel</span>[<span name="scala.Any" class="extype">Any</span>]</h3>
+            </div><div name="scala.App" class="parent">
+              <h3>Inherited from <span name="scala.App" class="extype">App</span></h3>
+            </div><div name="scala.DelayedInit" class="parent">
+              <h3>Inherited from <span name="scala.DelayedInit" class="extype">DelayedInit</span></h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">
