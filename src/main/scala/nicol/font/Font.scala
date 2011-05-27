@@ -23,7 +23,7 @@ sealed trait Font extends Immutable {
   /**
    * Writes a string with this font
    */
-  def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))
+  def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0)
 
   /**
    * Gives the width of a string using this font.
@@ -43,18 +43,17 @@ object Font {
 
   private class GLFont(val name: String, val size: Int, val height: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
 
-    def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1)) = {
+    def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0) = preserve {
       glBindTexture(GL_TEXTURE_2D, tex)
-      var m = 0
+      translate(pos._1, pos._2)
+      rotate(rotation)
+      colour(rgb._1, rgb._2, rgb._3)
+
       str.foreach {
         c =>
           val g = glyphs(c.toInt)
-          preserve {
-            translate(pos._1 + m, pos._2)
-            colour(rgb._1, rgb._2, rgb._3)
-            g.list.call
-          }
-          m += g.off
+          g.list.call
+          translate(g.off, 0)
       }
     }
 

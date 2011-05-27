@@ -1,4 +1,4 @@
-package com.scan.nicol.math
+package nicol.math
 
 import org.scalacheck._
 

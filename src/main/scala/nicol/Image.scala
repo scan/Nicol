@@ -23,7 +23,7 @@ sealed trait Image extends Immutable {
 
   def bounds = Rect(0, 0, width, height)
 
-  def draw(position: (Float, Float) = (0, 0), layer: Float = 0, colour: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, scale: Float = 1)
+  def draw(position: (Float, Float) = (0, 0), layer: Float = 0, rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, scale: Float = 1, offset: (Float, Float) = (0, 0))
 }
 
 object Image {
@@ -41,12 +41,13 @@ object Image {
 
     def sub(r: Rect): Image = new GLSubImage(texture, r)
 
-    def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+    def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float, offset: (Float, Float)) = preserve {
       val (x, y) = p
       texture.bind
       translate(x + w2, y + h2)
       rotate(rotation)
       scale(s)
+      translate(offset._1, offset._2)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(0, 0)
@@ -61,7 +62,7 @@ object Image {
     }
   }
 
-  private class GLSubImage(tex:Texture, rect: Rect) extends GLImage(tex) {
+  private class GLSubImage(tex: Texture, rect: Rect) extends GLImage(tex) {
     val tx = (rect.left.toFloat / texture.imageSize._1.toFloat) * texture.width
     val ty = (rect.top.toFloat / texture.imageSize._2.toFloat) * texture.height
 
@@ -78,12 +79,13 @@ object Image {
 
     override def sub(r: Rect): Image = new GLSubImage(texture, Rect(rect.x + r.x, rect.y + r.y, min(r.width, rect.width), min(r.height, rect.height)))
 
-    override def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float) = preserve {
+    override def draw(p: (Float, Float), layer: Float, rgb: (Float, Float, Float), rotation: Float, s: Float, offset: (Float, Float)) = preserve {
       val (x, y) = p
       texture.bind
       translate(x + w2, y + h2)
       rotate(rotation)
       scale(s)
+      translate(offset._1, offset._2)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         texCoord(tx, ty)

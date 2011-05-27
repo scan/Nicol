@@ -6,14 +6,18 @@ import geom.{Quad, AABox, Circle, Line}
 import GLUtils._
 
 trait StandardGeometryRenderer {
+
   implicit object LineRenderer extends Renderer[Line] {
-    def draw(that: Line, x: Float, y: Float, rgb: (Float, Float, Float)) = withoutTextures {
+    def draw(that: Line, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(position._1, position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(Lines) {
         colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.start.x + x, that.start.y + y)
-        vertex(that.end.x + x, that.end.y + y)
+        vertex(that.start.x, that.start.y)
+        vertex(that.end.x, that.end.y)
       }
-    }
+    })
   }
 
   implicit object CircleRenderer extends Renderer[Circle] {
@@ -22,8 +26,10 @@ trait StandardGeometryRenderer {
 
     import scala.math.{cos, sin}
 
-    def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(that.center.x + x, that.center.y + y)
+    def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(that.center.x + position._1, that.center.y + position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(LineLoop) {
         colour(rgb._1, rgb._2, rgb._3)
         val r = that.radius
@@ -36,8 +42,10 @@ trait StandardGeometryRenderer {
   }
 
   implicit object AABoxRenderer extends Renderer[AABox] {
-    def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(x, y)
+    def draw(that: AABox, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(position._1, position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(LineLoop) {
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.left, that.top)
@@ -49,8 +57,10 @@ trait StandardGeometryRenderer {
   }
 
   implicit object QuadRenderer extends Renderer[Quad] {
-    def draw(that: Quad, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(x, y)
+    def draw(that: Quad, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(position._1, position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(LineLoop) {
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.p1.x, that.p1.y)
@@ -62,8 +72,9 @@ trait StandardGeometryRenderer {
   }
 
   object FilledQuadRenderer extends Renderer[Quad] {
-    def draw(that: Quad, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(x, y)
+    def draw(that: Quad, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(position._1, position._2)
+      rotate(rotation)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.p1.x, that.p1.y)
@@ -80,8 +91,10 @@ trait StandardGeometryRenderer {
 
     import scala.math.{cos, sin}
 
-    def draw(that: Circle, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(that.center.x + x, that.center.y + y)
+    def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(that.center.x + position._1, that.center.y + position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(Polygon) {
         colour(rgb._1, rgb._2, rgb._3)
         val r = that.radius
@@ -94,8 +107,10 @@ trait StandardGeometryRenderer {
   }
 
   object FilledAABoxRenderer extends Renderer[AABox] {
-    def draw(that: AABox, x: Float, y: Float, rgb: (Float, Float, Float)) = preserve(withoutTextures {
-      translate(x, y)
+    def draw(that: AABox, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = preserve(withoutTextures {
+      translate(position._1, position._2)
+      rotate(rotation)
+      translate(offset._1, offset._2)
       GLUtils.draw(Quads) {
         colour(rgb._1, rgb._2, rgb._3)
         vertex(that.left, that.top)
@@ -105,4 +120,5 @@ trait StandardGeometryRenderer {
       }
     })
   }
+
 }

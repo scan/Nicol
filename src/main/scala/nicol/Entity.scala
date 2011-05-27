@@ -14,14 +14,3 @@ trait Entity extends Mutable {
 trait DrawableEntity extends Entity {
   def draw(x: Float, y: Float)
 }
-
-object DrawableEntity {
-
-  /**
-   * Convenience object, so you can easily use [[GameScene.draw]] to draw these.
-   */
-  implicit object EntityRenderer extends renderer.Renderer[DrawableEntity] {
-    def draw(that: DrawableEntity, x: Float, y: Float, rgb: (Float, Float, Float)) = that.draw(x, y)
-  }
-
-}
