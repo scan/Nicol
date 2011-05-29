@@ -1,6 +1,6 @@
 package nicol
 
-import org.lwjgl.opengl.{Display, GL11}
+import org.lwjgl.opengl.{Display}
 import org.lwjgl.Sys
 
 import renderer._
@@ -9,7 +9,7 @@ import renderer._
  * This is the base class for any non-empty scene, any real game scene. You just override update to get a nice custom scene.
  */
 trait GameScene extends LoopScene {
-  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1))(implicit renderer: Renderer[A]): Unit = renderer.draw(that, position, rgb)
+  def draw[A](that: A, position: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0, offset: (Float, Float) = (0, 0))(implicit renderer: Renderer[A]): Unit = renderer.draw(that, position, rgb, rotation, offset)
 }
 
 object GameScene {

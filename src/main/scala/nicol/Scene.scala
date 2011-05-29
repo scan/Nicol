@@ -6,7 +6,7 @@ import org.lwjgl.opengl.{GL11, DisplayMode, Display}
  * A Scene is an object that has a state and is a master to many other object. There may not be more than one Scene active
  * at the same time.
  */
-trait Scene extends Function0[Unit] with Mutable {
+trait Scene extends (() => Unit) with Mutable {
   def >>(that: Scene) = Scene {
     this.apply
     that.apply

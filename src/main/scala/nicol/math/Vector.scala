@@ -5,6 +5,8 @@ sealed case class Vector(x: Float, y: Float) extends Immutable {
 
   def -(v: Vector) = Vector(x - v.x, y - v.y)
 
+  def unary_- = Vector(-x, -y)
+
   def *(v: Vector) = x * v.x + y * v.y
 
   def *(f: Float) = Vector(x * f, y * f)

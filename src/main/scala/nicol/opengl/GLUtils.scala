@@ -145,4 +145,6 @@ object GLUtils {
     body
     glEnable(GL_TEXTURE_2D)
   }
+
+  def resetTransforms = glLoadIdentity
 }
