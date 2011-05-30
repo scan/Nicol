@@ -67,6 +67,8 @@ object Font {
     import java.awt.image._
     import java.nio._
 
+    val cdist = 1
+
     def get2fold(t: Int): Int = {
       def tmp(v: Int): Int = {
         if (v < t) tmp(v * 2)
@@ -84,7 +86,7 @@ object Font {
     val width = (for (c <- 0 until 256) yield (fm.charWidth(c.toChar))).sum
     val height = fm.getHeight
 
-    val (rw, rh) = (get2fold(width), get2fold(fm.getHeight))
+    val (rw, rh) = (get2fold(width + cdist), get2fold(fm.getHeight))
 
     g.dispose
     img = new BufferedImage(rw, rh, BufferedImage.TYPE_4BYTE_ABGR)
@@ -97,9 +99,9 @@ object Font {
 
     var w = 0
     val glyphs = for (i <- 0 until 256) yield {
-      g.drawString(i.toChar.toString, w + 1, fm.getAscent)
+      g.drawString(i.toChar.toString, w + cdist, fm.getAscent)
 
-      val foff = (w.toFloat / rw.toFloat)
+      val foff = ((w.toFloat + cdist) / rw.toFloat)
       val off = fm.charWidth(i.toChar)
       val (tw, th) = ((off.toFloat / rw.toFloat), (height.toFloat / rh.toFloat))
 
