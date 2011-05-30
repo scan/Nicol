@@ -10,35 +10,30 @@ object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 object Main extends GameScene with SyncableScene with StandardRenderer with ShowFPS {
   scene =>
 
-  import scala.math.{sin, cos}
+  import scala.math.{sin, cos, Pi}
   import scala.util.Random._
 
   lazy val image = Image("sika.png")
 
-  val stars: Traversable[Line] = Seq.fill(1024) {
-    val v = Vector(nextFloat * 800, nextFloat * 600)
-    Line(v, v - (5, 5))
-  }
-
   var (x, y) = (400, 300)
-  var a = 0f
 
   var bullets = collection.mutable.ListBuffer[Bullet]()
+
+  val vs = Seq.fill(1024)(Vector(nextFloat * 800, nextFloat * 600))
 
   val camera = new View
 
   def update: Option[Scene] = {
-    // for (n <- 0 to tileset.length - 1) tileset(n).draw((n * tileset.tileWidth, 0))
-    if (left) a -= 0.1f
-    if (right) a += 0.1f
-    if (space) bullets += new Bullet(a)
 
     val (mx, my) = Mouse.apply
 
-    camera.position += new Vector(
-      if (mx <= 0) -1 else if (mx >= 799) 1 else 0,
-      if (my <= 0) -1 else if (my >= 599) 1 else 0)
+    val a = -(Vector(mx, my).angle((x, y))) - (Pi).toFloat
 
+    val stars: Traversable[Line] = vs.map {
+      v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)
+    }
+
+    if (space) bullets += new Bullet(a)
     bullets = bullets.filter(!_.finished)
 
     val r = 50f
@@ -66,6 +61,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
 
     Pretransformed {
       draw("Hello, Nicol!", position = (30, 30), rgb = (0.7f, 0.7f, 1f))
+      draw(a.toDegrees.toString, position = (30, 50))
     }
 
     sync
