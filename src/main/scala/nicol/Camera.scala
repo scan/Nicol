@@ -11,7 +11,7 @@ trait Camera extends ((=> Unit) => Unit) {
 }
 
 object Pretransformed extends Camera {
-  def bounds = Rect(0, 0, Display.getDisplayMode.getWidth, Display.getDisplayMode.getHeight)
+  lazy val bounds = Rect(0, 0, Display.getDisplayMode.getWidth, Display.getDisplayMode.getHeight)
 
   def apply(body: => Unit) = preserve {
     resetTransforms

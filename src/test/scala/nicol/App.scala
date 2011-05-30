@@ -1,6 +1,7 @@
 package nicol
 
 import input.Key._
+import input.Mouse
 import geom._
 import math._
 
@@ -10,8 +11,14 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
   scene =>
 
   import scala.math.{sin, cos}
+  import scala.util.Random._
 
   lazy val image = Image("sika.png")
+
+  val stars: Traversable[Line] = Seq.fill(1024) {
+    val v = Vector(nextFloat * 800, nextFloat * 600)
+    Line(v, v - (5, 5))
+  }
 
   var (x, y) = (400, 300)
   var a = 0f
@@ -26,8 +33,11 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
     if (right) a += 0.1f
     if (space) bullets += new Bullet(a)
 
-    if (up) camera.position += Vector.up
-    if (down) camera.position += Vector.down
+    val (mx, my) = Mouse.apply
+
+    camera.position += new Vector(
+      if (mx <= 0) -1 else if (mx >= 799) 1 else 0,
+      if (my <= 0) -1 else if (my >= 599) 1 else 0)
 
     bullets = bullets.filter(!_.finished)
 
@@ -40,13 +50,15 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
       ), radius = r / 5
     )
 
+    Pretransformed(draw(stars, rgb = (1, 1, 1)))
+
     camera {
       bullets.foreach {
         b =>
           b.update
           b.draw
       }
-      
+
       draw(redCircle, rgb = (1, 0, 0))
       draw(targetCircle, rgb = (0, 1, 0))
       draw(image, position = (x - image.width / 2, y - image.height / 2), rotation = a)

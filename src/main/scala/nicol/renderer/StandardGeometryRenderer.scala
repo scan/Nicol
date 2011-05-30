@@ -16,6 +16,18 @@ trait StandardGeometryRenderer {
       })
   }
 
+  implicit object LineListRenderer extends Renderer[Traversable[Line]] {
+    def draw(that: Traversable[Line], position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
+      stdDraw(position, rotation, offset)(GLUtils.draw(Lines) {
+        colour(rgb._1, rgb._2, rgb._3)
+        that.foreach {
+          line =>
+            vertex(line.start.x, line.start.y)
+            vertex(line.end.x, line.end.y)
+        }
+      })
+  }
+
   implicit object CircleRenderer extends Renderer[Circle] {
     private val sections = 24
     private val angles = for (a <- 0 until sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
@@ -25,7 +37,7 @@ trait StandardGeometryRenderer {
     def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
       stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
         colour(rgb._1, rgb._2, rgb._3)
-        angles.foreach(a => vertex(that.center.x+that.radius * cos(a).toFloat, that.center.y+that.radius * sin(a).toFloat))
+        angles.foreach(a => vertex(that.center.x + that.radius * cos(a).toFloat, that.center.y + that.radius * sin(a).toFloat))
       })
   }
 
@@ -72,7 +84,7 @@ trait StandardGeometryRenderer {
     def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
       stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
         colour(rgb._1, rgb._2, rgb._3)
-        angles.foreach(a => vertex(that.center.x+that.radius * cos(a).toFloat, that.center.y+that.radius * sin(a).toFloat))
+        angles.foreach(a => vertex(that.center.x + that.radius * cos(a).toFloat, that.center.y + that.radius * sin(a).toFloat))
       })
   }
 
