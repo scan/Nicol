@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nicol</title>
+		<link rel='stylesheet' href='styles.css' type='text/css' />
+	</head>
+	<body>
+		<div id='commits'></div>
+		<div id='main'>
+			<div id='banner'>
+				<h1>Nicol Graphics Framework</h1>
+			</div>
+			<div id='sidebar'>
+				<ul>
+					<li><a href='http://scan.github.com/Nicol/'>Home</a></li>
+					<li><a href='https://github.com/scan/Nicol/'>Source</a></li>
+					<li><a href='doc/main/api/'>Documentation</a></li>
+				</ul>
+			</div>
+			<div id='contents'>
+				<h1>Nicol Tutorial</h1>
+				<p>Welcome to the first draft of my Nicol Tutorial. We will cover some basic ideas here, like how to get started, use the Scenes, get user input and draw stuff.
+				<p>This Tutorial assumes you are familiar with Scala and SBT. If you don't know what either is, you should probably get somewhere else and return when you know.
+
+				<h2>Getting Started</h2>
+				<p>Nicol is based on <a href="http://code.google.com/p/simple-build-tool/">SBT</a> and I recommend that you will use it, too. This tutorial assumes that you do, and also know <a href="https://github.com/">Github</a>.
+
+				<h3>Using the Template</h3>
+				<p>For Nicol, we need to have <a href="http://lwjgl.org">LWJGL</a> correctly set up, which can be always a bit tricky. Fortunately, my friend <a href="http://philcali.github.com/">philcali</a> provides us with a plugin and a template for <a href="https://github.com/n8han/giter8">giter8</a>. Just follow the instructions there to install <tt>giter8</tt>, then you can start a new project with the template.</p>
+				<pre>$> g8 philcali/nicol-project.g8</pre>
+				<p>This will ask a few things from you, you should know what to answer.</p>
+
+				<h3>The Created Project</h3>
+				<p>The result will be a simple Nicol project with usual SBT file structure. Before you can get started, you must call</p>
+				<pre>$> sbt update</pre>
+				<p>at least once, to pull in all necessary .jars. Then you may try to run with</p>
+				<pre>$> sbt run</pre>
+				<p>Which should give you a nice little window with simple text. Congrats and welcome to Nicol!</p>
+
+				<h2>The Scenes</h2>
+				<p>In the file <tt>Stub.scala</tt>, the only source file of you project thus far, you see this code:</p>
+				<pre>
+import nicol._
+import input.Key._
+
+object App extends Game(Init("Nicol Project", 800, 600) >> Main)
+
+object Main extends GameScene with SyncableScene with StandardRenderer {
+  def update = {
+    draw("Hello Nicol Project! Thank you for using Nicol", position = (300, 300))
+
+    if (escape) End else None
+  }
+}
+				</pre>
+				<p>But what do these mean? Well, the imports are clear. And <tt>App</tt> seems to be the game entry point.</p>
+
+				<h3>The Game Class</h3>
+				<p>The Game class is probably one of the simples in the Framework. Basically, it is a startup for our Scenes and takes as only parameter the startup scene.</p>
+				<p>What is a Scene in Nicol and why does it have a captitalised S? Basically any closed section of the game. Scenes may be as small as you like, or as big as you need. Nicol gives you a couple of pre-defined Scenes for your convenience.</p>
+				<p><tt>Init</tt> is one of them. <tt>Init</tt> takes a window size and a title for the window, and opens it. And then... the Scene ends. And so does the game. Not very good.</p>
+
+				<h3>Scene Combination</h3>
+				<p><tt>Init</tt> needs a follow-up Scene, so the game can go on. The <tt>Scene</tt> trait provides us with an operator, <tt>&gt;&gt;</tt>, which combines two Scenes to a new one. They get executed in order.</p>
+				<p>So we combine the <tt>Init</tt> Scene with our own follow-up scene. For example, <tt>Main</tt>.</p>
+
+				<h3>A GameScene</h3>
+				<p>Main inherits from <tt>GameScene</tt>, among others. A GameScene is a Scene with a game loop in it, and one that provides its own follow-up. Any GameScene has to provide an <tt>update</tt> method which represents one frame in the loop. It is of the type <tt>() =&gt; Option[Scene]</tt> and returns a new Scene if this one is done, or <tt>None</tt>.</p>
+				<p>As a little side note, the returned Scene of this method is <em>always</em> executed before the one specified with <tt>&gt;&gt;</tt>.</p>
+
+				<h3>The End</h3>
+				<p>Another special provided Scene is <tt>End</tt>. This little Scene closes the window and cleans up the LWJGL subsystem, so it is a good idea to always make it the end of your game, too.</p>
+			</div>
+		</div>
+	</body>
+<html>

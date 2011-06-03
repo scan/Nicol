@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>nicol</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../lib/template.css" />
+      <script type="text/javascript" src="../lib/jquery.js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../lib/package_big.png" />
+        
+        <h1>nicol</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">nicol</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="nicol.Camera" data-isabs="true">
+      <a id="Camera:Camera"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Camera.html"><span class="name">Camera</span></a>
+        
+        <span class="result"> extends (⇒ Unit) ⇒ Unit</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.DrawableEntity" data-isabs="true">
+      <a id="DrawableEntity:DrawableEntity"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="DrawableEntity.html"><span class="name">DrawableEntity</span></a>
+        
+        <span class="result"> extends Entity</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This is an entity that can be drawn also.</p>
+    </li><li visbl="pub" name="nicol.Entity" data-isabs="true">
+      <a id="Entity:Entity"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Entity.html"><span class="name">Entity</span></a>
+        
+        <span class="result"> extends Mutable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">An Entity is an unimportant base class for anything that should have an update
+method.</p>
+    </li><li visbl="pub" name="nicol.Game" data-isabs="true">
+      <a id="Game:Game"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="Game.html"><span class="name">Game</span></a>
+        
+        <span class="result"> extends Actor</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li><li visbl="pub" name="nicol.GameScene" data-isabs="true">
+      <a id="GameScene:GameScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="GameScene.html"><span class="name">GameScene</span></a>
+        
+        <span class="result"> extends LoopScene</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This is the base class for any non-empty scene, any real game scene.</p>
+    </li><li visbl="pub" name="nicol.Image" data-isabs="true">
+      <a id="Image:Image"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Image.html"><span class="name">Image</span></a>
+        
+        <span class="result"> extends Immutable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents a loaded Image.</p>
+    </li><li visbl="pub" name="nicol.Init" data-isabs="false">
+      <a id="Init:Init"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="Init.html"><span class="name">Init</span></a>
+        
+        <span class="params">(<span name="title">title: String</span>, <span name="width">width: Int</span>, <span name="height">height: Int</span>)</span><span class="result"> extends Scene with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.LoopScene" data-isabs="true">
+      <a id="LoopScene:LoopScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="LoopScene.html"><span class="name">LoopScene</span></a>
+        
+        <span class="result"> extends Scene</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.RefererScene" data-isabs="true">
+      <a id="RefererScene:RefererScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="RefererScene.html"><span class="name">RefererScene</span></a>
+        
+        <span class="result"> extends Scene</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.Scene" data-isabs="true">
+      <a id="Scene:Scene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Scene.html"><span class="name">Scene</span></a>
+        
+        <span class="result"> extends () ⇒ Unit with Mutable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Scene is an object that has a state and is a master to many other object.</p>
+    </li><li visbl="pub" name="nicol.ShowFPS" data-isabs="true">
+      <a id="ShowFPS:ShowFPS"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="ShowFPS.html"><span class="name">ShowFPS</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This mixin gives you a method to write the current FPS into the title bar.</p>
+    </li><li visbl="pub" name="nicol.StandardRenderer" data-isabs="true">
+      <a id="StandardRenderer:StandardRenderer"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="StandardRenderer.html"><span class="name">StandardRenderer</span></a>
+        
+        <span class="result"> extends StandardGeometryRenderer with StringRenderer</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.StaticScene" data-isabs="true">
+      <a id="StaticScene:StaticScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="StaticScene.html"><span class="name">StaticScene</span></a>
+        
+        <span class="result"> extends Scene</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.SyncableScene" data-isabs="true">
+      <a id="SyncableScene:SyncableScene"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="SyncableScene.html"><span class="name">SyncableScene</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A mixin you can use if you need a <code>sync</code> method to keep within a certain fps.</p>
+    </li><li visbl="pub" name="nicol.View" data-isabs="false">
+      <a id="View:View"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="View.html"><span class="name">View</span></a>
+        
+        <span class="result"> extends Camera with Mutable</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="nicol.End" data-isabs="false">
+      <a id="End:End"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="End$.html"><span class="name">End</span></a>
+        
+        <span class="result"> extends Scene</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.GameScene" data-isabs="false">
+      <a id="GameScene:GameScene"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="GameScene$.html"><span class="name">GameScene</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.Image" data-isabs="false">
+      <a id="Image:Image"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Image$.html"><span class="name">Image</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.Pretransformed" data-isabs="false">
+      <a id="Pretransformed:Pretransformed"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Pretransformed$.html"><span class="name">Pretransformed</span></a>
+        
+        <span class="result"> extends Camera</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.Scene" data-isabs="false">
+      <a id="Scene:Scene"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Scene$.html"><span class="name">Scene</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.font" data-isabs="false">
+      <a id="font:font"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="font/package.html"><span class="name">font</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.geom" data-isabs="false">
+      <a id="geom:geom"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="geom/package.html"><span class="name">geom</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.input" data-isabs="false">
+      <a id="input:input"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="input/package.html"><span class="name">input</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.math" data-isabs="false">
+      <a id="math:math"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="math/package.html"><span class="name">math</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.opengl" data-isabs="false">
+      <a id="opengl:opengl"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="opengl/package.html"><span class="name">opengl</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.renderer" data-isabs="false">
+      <a id="renderer:renderer"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="renderer/package.html"><span class="name">renderer</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="nicol.tiles" data-isabs="false">
+      <a id="tiles:tiles"></a>
+      <h4 class="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <a href="tiles/package.html"><span class="name">tiles</span></a>
+        
+        
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>
