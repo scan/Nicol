@@ -13,7 +13,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
   import scala.math.{sin, cos, Pi}
   import scala.util.Random._
 
-  lazy val image = Image("sika.png")
+  lazy val image = Content.load[Image]("sika.png").get
 
   var (x, y) = (400, 300)
 

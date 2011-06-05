@@ -7,7 +7,7 @@ import opengl._
  * Represents a loaded font. Currently, BitmapFonts are not yet supported. For Font loading,
  * the [[java.awt.Font]] system is used.
  */
-sealed trait Font extends Immutable {
+sealed trait Font extends Resource {
   /**
    * @note Not the actual pixel height!
    */
@@ -41,7 +41,7 @@ object Font {
    */
   lazy val arial = apply("Arial", 12)
 
-  private class GLFont(val name: String, val size: Int, val height: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
+  private[nicol] class GLFont(val name: String, val size: Int, val height: Int, tex: Int, glyphs: IndexedSeq[GLGlyph]) extends Font {
 
     def write(str: String, pos: (Float, Float) = (0, 0), rgb: (Float, Float, Float) = (1, 1, 1), rotation: Float = 0) = preserve {
       glBindTexture(GL_TEXTURE_2D, tex)

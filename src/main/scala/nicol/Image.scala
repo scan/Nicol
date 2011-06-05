@@ -9,7 +9,7 @@ import GLUtils._
  * Currently, the [[java.awt.Image]] facilities are used to load the image, therefore
  * any format is supported that Java supports: PNG, JPEG, GIF and BMP.
  */
-sealed trait Image extends Immutable {
+sealed trait Image extends Resource {
   def width: Int
 
   def height: Int
@@ -30,7 +30,7 @@ object Image {
 
   import scala.math.min
 
-  private class GLImage(val texture: Texture) extends Image {
+  private[nicol] class GLImage(val texture: Texture) extends Image {
     def width = texture.imageSize._1
 
     def height = texture.imageSize._2
@@ -103,4 +103,11 @@ object Image {
   def apply(res: String): Image = new GLImage(Texture(res))
 
   def apply(tex: Texture): Image = new GLImage(tex)
+
+  import Texture._
+
+  implicit object ImageLoader extends ResourceLoader[Image] {
+    def apply(res: String) = getTexture(res).map(new GLImage(_))
+  }
+
 }

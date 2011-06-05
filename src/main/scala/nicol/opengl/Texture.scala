@@ -1,9 +1,11 @@
-package nicol.opengl
+package nicol
+package opengl
 
 import org.lwjgl.opengl._
 import GL11._
+import java.io.FileNotFoundException
 
-sealed abstract class Texture private(val resource: String) extends Immutable {
+sealed abstract class Texture private(val resource: String) extends Resource {
   def width: Float
 
   def height: Float
@@ -38,12 +40,11 @@ object Texture {
     def bind = glBindTexture(GL_TEXTURE_2D, id)
   }
 
-
-  def apply(res: String): Texture = getTexture(res)
+  def apply(res: String): Texture = getTexture(res).get
 
   def apply(xs: String*): Seq[Texture] = xs.map(apply _)
 
-  private def getTexture(res: String, srcPixel: Int = GL_RGBA, minFilter: Int = GL_LINEAR, magFilter: Int = GL_LINEAR): Texture = {
+  private[nicol] def getTexture(res: String, srcPixel: Int = GL_RGBA, minFilter: Int = GL_LINEAR, magFilter: Int = GL_LINEAR): Option[Texture] = {
     import java.awt._
     import java.awt.image._
     import java.nio._
@@ -86,7 +87,6 @@ object Texture {
       (buf, texSize)
     }
 
-    @throws(classOf[java.io.FileNotFoundException])
     def loadImage = {
       val img = new javax.swing.ImageIcon(res).getImage
       if (img == null)
@@ -104,18 +104,22 @@ object Texture {
     val id = glGenTextures
     glBindTexture(GL_TEXTURE_2D, id)
 
-    val img = loadImage
+    try {
+      val img = loadImage
 
-    val pixel = if (img.getColorModel.hasAlpha) GL_RGBA else GL_RGB
+      val pixel = if (img.getColorModel.hasAlpha) GL_RGBA else GL_RGB
 
-    val (buf, texSize) = convertImageData(img)
+      val (buf, texSize) = convertImageData(img)
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, magFilter)
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter)
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, magFilter)
 
-    glTexImage2D(GL_TEXTURE_2D, 0, pixel, get2fold(img.getWidth), get2fold(img.getHeight), 0, srcPixel, GL_UNSIGNED_BYTE, buf)
+      glTexImage2D(GL_TEXTURE_2D, 0, pixel, get2fold(img.getWidth), get2fold(img.getHeight), 0, srcPixel, GL_UNSIGNED_BYTE, buf)
 
-    new GLTexture(res, id, (img.getWidth, img.getHeight), texSize)
+      Some(new GLTexture(res, id, (img.getWidth, img.getHeight), texSize))
+    } catch {
+      case _: FileNotFoundException => None
+    }
   }
 
 }
