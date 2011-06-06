@@ -27,7 +27,7 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
 
     val (mx, my) = Mouse.apply
 
-    val a = -(Vector(mx, my).angle((x, y))) - (Pi).toFloat
+    val a = Vector.right angle (Vector(mx, my) - Vector(400, 300))
 
     val stars: Traversable[Line] = vs.map {
       v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)
