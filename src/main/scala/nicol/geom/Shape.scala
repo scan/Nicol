@@ -70,13 +70,15 @@ case class Line(start: Vector, end: Vector) extends Shape {
  * Circle shape, in strict mathematical sense. Graphical rendering may vary.
  */
 case class Circle(center: Vector, radius: Float) extends Shape {
-  override def area = scala.math.Pi.toFloat * radius * radius
+  val r2 = radius
+
+  override def area = scala.math.Pi.toFloat * r2
 
   def transposed(v: Vector) = Circle(center + v, radius)
 
   def bounds = AABox(center.x - radius, center.y - radius, radius * 2, radius * 2)
 
-  def intersects(that: Circle) = (that.center - this.center).lengthSqr < (radius * radius + that.radius * that.radius)
+  def intersects(that: Circle) = (that.center - this.center).lengthSqr < (r2 + that.r2)
 }
 
 /**
