@@ -8,6 +8,8 @@ import nicol.math.Rect
 sealed class AABox(val x: Float, val y: Float, val width: Float, val height: Float) extends Immutable {
   def overlaps(that: AABox) = ((this.width + that.width) / 2 > math.abs(this.x - that.x)) && ((this.height + that.height) / 2 > math.abs(this.y - that.y))
 
+  def intersects(that:AABox) = !(this.bottom < that.top) && !(this.top > that.bottom) && !(this.right < that.left) && !(this.left > that.right)
+
   def top = y
 
   def bottom = y + height
