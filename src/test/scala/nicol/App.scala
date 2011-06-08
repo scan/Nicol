@@ -5,7 +5,7 @@ import input.Mouse
 import geom._
 import math._
 
-object App extends Game(Init("Nicol example App", 800, 600) >> Main)
+object App extends Game(Init("Nicol example App", 800, 600, true) >> Main)
 
 object Main extends BasicScene with ShowFPS { 
   scene =>
