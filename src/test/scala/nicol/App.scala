@@ -67,7 +67,20 @@ object Main extends BasicScene with ShowFPS {
     sync
     showFPS
 
-    if (escape) End else None
+    if (escape) End
+    else if (enter) Paused
+    else None
+  }
+
+  object Paused extends BasicScene {
+    def update = {
+      draw("Paused", position=(350, 300))
+      sync
+      
+      if (escape) End 
+      else if (enter) Main
+      else None
+    }
   }
 
   class Bullet(d: Float) extends Entity {
