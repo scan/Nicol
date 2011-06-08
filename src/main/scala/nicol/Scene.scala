@@ -23,12 +23,23 @@ object Scene {
   implicit def asOption(s: Scene): Option[Scene] = Some(s)
 }
 
-case class Init(title: String, width: Int = 800, height: Int = 600) extends Scene {
+case class Init(title: String, width: Int = 800, height: Int = 600, fullscreen: Boolean = false) extends Scene {
   def apply = {
     import Display._
 
-    setDisplayMode(new DisplayMode(width, height))
     setTitle(title)
+
+    setVSyncEnabled(true)
+
+    val target = getAvailableDisplayModes.find { d =>
+      d.getWidth == width && d.getHeight == height
+    } getOrElse (new DisplayMode(width, height))
+
+    setDisplayMode(target)
+
+    // Try fullscreen
+    setFullscreen(fullscreen)
+
     create
 
     import GL11._
@@ -44,11 +55,14 @@ case class Init(title: String, width: Int = 800, height: Int = 600) extends Scen
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+    glViewport(0, 0, width, height)
+
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
     glOrtho(0, width, height, 0, 1, -1)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity
+
   }
 }
 
