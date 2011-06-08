@@ -21,6 +21,8 @@ object Mouse {
     val button = 2
   }
 
+  def grabbed = setGrabbed _
+
   def apply: (Float, Float) = (getX, Display.getDisplayMode.getHeight - getY)
 
   def apply(btn: Button): Boolean = isButtonDown(btn.button)

@@ -17,15 +17,28 @@ object Main extends BasicScene with ShowFPS {
 
   var (x, y) = (400, 300)
 
+  // Keyboard delay
+  val interval = 7 
+  var delay = 0
+
   var bullets = collection.mutable.ListBuffer[Bullet]()
 
   val vs = Seq.fill(1024)(Vector(nextFloat * 800, nextFloat * 600))
 
   val camera = new View
 
+  Mouse.grabbed(true)
+  
   def update: Option[Scene] = {
 
     val (mx, my) = Mouse.apply
+
+    val point = Vector(mx, my)
+    draw(Line(point, (point.x, point.y + 10)), rgb = (1f, 0f, 0f))
+    draw(Line(point, (point.x + 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Line(point, (point.x, point.y - 10)), rgb = (1f, 0f, 0f))
+    draw(Line(point, (point.x - 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Circle((mx - 0.5f, my + 0.5f), 5f), rgb = (1f, 0f, 0f))
 
     val a = Vector.right angle (Vector(mx, my) - Vector(400, 300))
 
@@ -33,7 +46,16 @@ object Main extends BasicScene with ShowFPS {
       v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)
     }
 
-    if (space) bullets += new Bullet(a)
+    delay += -1
+
+    if (delay <= 0) delay = 0
+
+    if (space && delay == 0) {
+      bullets += new Bullet(a)
+      delay = interval
+    }
+
+
     bullets = bullets.filter(!_.finished)
 
     val r = 50f
@@ -68,8 +90,10 @@ object Main extends BasicScene with ShowFPS {
     showFPS
 
     if (escape) End
-    else if (enter) Paused
-    else None
+    else if (enter && delay == 0) {
+      delay = interval
+      Paused
+    } else None
   }
 
   object Paused extends BasicScene {
@@ -77,9 +101,15 @@ object Main extends BasicScene with ShowFPS {
       draw("Paused", position=(350, 300))
       sync
       
+      scene.delay -= 1
+
+      if(scene.delay < 0) scene.delay = 0
+
       if (escape) End 
-      else if (enter) Main
-      else None
+      else if (enter && scene.delay == 0) {
+        scene.delay = scene.interval
+        Main
+      }else None
     }
   }
 
