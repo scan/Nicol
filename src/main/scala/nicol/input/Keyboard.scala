@@ -7,6 +7,11 @@ import org.lwjgl.input.Keyboard._
  * on your keyboard.
  */
 object Key {
+  /** Enable / Disable Event key repeats */
+  def repeat = enableRepeatEvents _
+
+  /** Is Repeat events enabled */
+  def isRepeat = areRepeatEventsEnabled
 
   // This is awful, but LWJGL keys are not consecutive values
   /**
@@ -95,6 +100,11 @@ object Key {
       case 15 => KEY_F15
     })
   } else false
+
+  /**
+   * Any enter / return keys.
+   */
+  def enter = Keyboard(KEY_RETURN)
 
   /**
    * Any of the shift keys.
