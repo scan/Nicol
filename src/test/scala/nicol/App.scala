@@ -7,7 +7,7 @@ import math._
 
 object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 
-object Main extends GameScene with SyncableScene with StandardRenderer with ShowFPS {
+object Main extends BasicScene with ShowFPS { 
   scene =>
 
   import scala.math.{sin, cos, Pi}
@@ -71,14 +71,14 @@ object Main extends GameScene with SyncableScene with StandardRenderer with Show
   }
 
   class Bullet(d: Float) extends Entity {
-    var (bx, by) = (x, y)
+    var (bx, by) = (x.toFloat, y.toFloat)
     var finished = false
     val speed = 10
 
     def update = {
-      bx += (speed * cos(d)).toInt
-      by += (speed * sin(d)).toInt
-      finished = !camera.bounds.collides((bx, by))
+      bx += (speed * cos(d)).toFloat
+      by += (speed * sin(d)).toFloat
+      finished = !camera.bounds.collides((bx.toInt, by.toInt))
     }
 
     def draw = {
