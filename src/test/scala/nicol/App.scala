@@ -5,7 +5,7 @@ import input.Mouse
 import geom._
 import math._
 
-object App extends Game(Init("Nicol example App", 800, 600, true) >> Main)
+object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 
 object Main extends BasicScene with ShowFPS { 
   scene =>
@@ -16,10 +16,6 @@ object Main extends BasicScene with ShowFPS {
   lazy val image = Image("sika.png")
 
   var (x, y) = (400, 300)
-
-  // Keyboard delay
-  val interval = 7 
-  var delay = 0
 
   var bullets = collection.mutable.ListBuffer[Bullet]()
 
@@ -46,16 +42,9 @@ object Main extends BasicScene with ShowFPS {
       v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)
     }
 
-    delay += -1
-
-    if (delay <= 0) delay = 0
-
-    if (space && delay == 0) {
+    if (keyDown("space", interval = 100)) {
       bullets += new Bullet(a)
-      delay = interval
     }
-
-
     bullets = bullets.filter(!_.finished)
 
     val r = 50f
@@ -89,27 +78,31 @@ object Main extends BasicScene with ShowFPS {
     sync
     showFPS
 
-    if (escape) End
-    else if (enter && delay == 0) {
-      delay = interval
-      Paused
-    } else None
+    keyPressed {
+      case "escape" => End
+      case "enter" => Paused
+    }
+    /*
+    if (keyDown("escape")) End
+    else if(keyDown("enter", 500)) Paused
+    else None
+    */
   }
 
   object Paused extends BasicScene {
     def update = {
       draw("Paused", position=(350, 300))
       sync
-      
-      scene.delay -= 1
-
-      if(scene.delay < 0) scene.delay = 0
-
-      if (escape) End 
-      else if (enter && scene.delay == 0) {
-        scene.delay = scene.interval
-        Main
-      }else None
+  
+      keyPressed {
+        case "escape" => End
+        case "enter" => Main
+      } 
+      /* 
+      if (keyDown("escape")) End
+      else if(keyDown("enter", 500)) Main
+      else None  
+      */
     }
   }
 
