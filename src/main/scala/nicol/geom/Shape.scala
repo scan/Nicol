@@ -1,11 +1,11 @@
 package nicol
 package geom
 
-import math.{Vector, Rect, Matrix}
-import scala.math.{abs, sin, cos}
-import scala.Float._
+import math.{Vector, Matrix}
+import scala.math.{abs, min, max}
 
 sealed trait Shape extends Immutable {
+  shape =>
   /**
    * General bounds of this Shape.
    *
@@ -22,6 +22,16 @@ sealed trait Shape extends Immutable {
    * Same shape, somewhere else.
    */
   def transposed(v: Vector): Shape
+
+  def +(that: Shape): Shape = new Shape {
+    def bounds = shape.bounds + that.bounds
+
+    def transposed(v: Vector) = shape.transposed(v) + that.transposed(v)
+
+    private[nicol] override val containedShapes = shape.containedShapes ++ that.containedShapes
+  }
+
+  private[nicol] val containedShapes = Seq(this)
 }
 
 /**
@@ -49,16 +59,25 @@ sealed class AABox(val x: Float, val y: Float, val width: Float, val height: Flo
   def bounds = this
 
   override def area = (width * height).toFloat
+
+  def contains(t: (Int, Int)) = (t._1 > left && t._1 < right) && (t._2 > top && t._2 < bottom)
+
+  def +(that: AABox): AABox = {
+    val nx = min(x, that.x)
+    val ny = min(y, that.y)
+
+    AABox(nx, ny, max(right - nx, that.right - nx), max(bottom - ny, that.bottom - ny))
+  }
+
+  def normalise = AABox(if (width < 0) x + width else x,
+    if (height < 0) y + height else y,
+    abs(width), abs(height))
 }
 
 object AABox {
   def apply(x: Float, y: Float, width: Float, height: Float): AABox = new AABox(x, y, width, height)
 
   def apply(width: Float, height: Float): AABox = new AABox(0, 0, width, height)
-
-  implicit def asRect(that: AABox) = Rect(that.x.toInt, that.y.toInt, that.width.toInt, that.height.toInt)
-
-  implicit def fromRect(that: Rect) = AABox(that.x.toFloat, that.y.toFloat, that.width.toFloat, that.height.toFloat)
 }
 
 /**
@@ -156,7 +175,7 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
 trait Curve extends Shape {
   def b(t: Float): Vector
 
-  def bounds = throw NotSupportedException("Bounds of bezier curves not yet supported")
+  def bounds = throw NotImplementedException("Bounds of bezier curves not yet implemented!")
 }
 
 object Curve {

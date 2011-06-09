@@ -38,6 +38,7 @@ trait StandardGeometryRenderer {
         case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(LineStrip) {
           for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
         })
+        case s: Shape => s.containedShapes.map(draw(_, position, rgb, rotation, offset))
       }
     }
   }
@@ -85,6 +86,7 @@ trait StandardGeometryRenderer {
         case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
           for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
         })
+        case s: Shape => s.containedShapes.map(draw(_, position, rgb, rotation, offset))
       }
     }
   }
