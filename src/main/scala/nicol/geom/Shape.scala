@@ -1,7 +1,9 @@
 package nicol
 package geom
 
-import math._
+import math.{Vector, Rect, Matrix}
+import scala.math.{abs, sin, cos}
+import scala.Float._
 
 sealed trait Shape extends Immutable {
   /**
@@ -20,6 +22,43 @@ sealed trait Shape extends Immutable {
    * Same shape, somewhere else.
    */
   def transposed(v: Vector): Shape
+}
+
+/**
+ * An axis-aligned box for simple collision detection.
+ */
+sealed class AABox(val x: Float, val y: Float, val width: Float, val height: Float) extends Shape {
+  def overlaps(that: AABox) = ((this.width + that.width) / 2 > abs(this.x - that.x)) && ((this.height + that.height) / 2 > abs(this.y - that.y))
+
+  def intersects(that: AABox) = !(this.bottom < that.top) && !(this.top > that.bottom) && !(this.right < that.left) && !(this.left > that.right)
+
+  def top = y
+
+  def bottom = y + height
+
+  def left = x
+
+  def right = x + width
+
+  def transposed(v: Vector) = new AABox(x + v.x, y + v.y, width, height)
+
+  def transposed(dx: Float, dy: Float) = new AABox(x + dx, y + dy, width, height)
+
+  override def toString = "[AABox: " + width + " by " + height + "]"
+
+  def bounds = this
+
+  override def area = (width * height).toFloat
+}
+
+object AABox {
+  def apply(x: Float, y: Float, width: Float, height: Float): AABox = new AABox(x, y, width, height)
+
+  def apply(width: Float, height: Float): AABox = new AABox(0, 0, width, height)
+
+  implicit def asRect(that: AABox) = Rect(that.x.toInt, that.y.toInt, that.width.toInt, that.height.toInt)
+
+  implicit def fromRect(that: Rect) = AABox(that.x.toFloat, that.y.toFloat, that.width.toFloat, that.height.toFloat)
 }
 
 /**
@@ -112,4 +151,25 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
    * @note May or may not be inside the Shape.
    */
   val max = (min_x, min_y)
+}
+
+case class Curve(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
+  def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
+
+  private lazy val (min_x, max_x) = {
+    val tmp = Seq(p1.x, p2.x, p3.x, p4.x)
+    (tmp.min, tmp.max)
+  }
+
+  private lazy val (min_y, max_y) = {
+    val tmp = Seq(p1.y, p2.y, p3.y, p4.y)
+    (tmp.min, tmp.max)
+  }
+
+  def bounds = AABox(min_x, min_y, max_x - min_x, max_y - min_y)
+
+  def b(t: Float) = {
+    val mt = 1 - t
+    p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+  }
 }
