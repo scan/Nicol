@@ -23,9 +23,18 @@ object Main extends BasicScene with ShowFPS {
 
   val camera = new View
 
+  Mouse.grabbed(true)
+  
   def update: Option[Scene] = {
 
     val (mx, my) = Mouse.apply
+
+    val point = Vector(mx, my)
+    draw(Line(point, (point.x, point.y + 10)), rgb = (1f, 0f, 0f))
+    draw(Line(point, (point.x + 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Line(point, (point.x, point.y - 10)), rgb = (1f, 0f, 0f))
+    draw(Line(point, (point.x - 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Circle((mx - 0.5f, my + 0.5f), 5f), rgb = (1f, 0f, 0f))
 
     if (left) camera.position += Vector.left
     if (right) camera.position += Vector.right
@@ -74,19 +83,27 @@ object Main extends BasicScene with ShowFPS {
     sync
     showFPS
 
-    if (escape) End
-    else if (enter) Paused
-    else None
+    keyEvent { e =>
+      e released {
+        case _ => 
+          draw("Releasd %s".format(e.name), position = (350, 100), rgb = (1, 0, 0))
+      }
+      e pressed {
+        case "escape" => End
+        case "enter" => Paused
+      }
+    }
   }
 
   object Paused extends BasicScene {
     def update = {
       draw("Paused", position = (350, 300))
       sync
-
-      if (escape) End
-      else if (enter) Main
-      else None
+ 
+      keyEvent( _.pressed {
+        case "escape" => End
+        case "enter" => Main
+      })
     }
   }
 
