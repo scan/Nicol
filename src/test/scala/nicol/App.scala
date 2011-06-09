@@ -47,9 +47,7 @@ object Main extends BasicScene with ShowFPS {
       v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)
     }
 
-    if (keyDown("space", interval = 100)) {
-      bullets += new Bullet(a)
-    }
+    if (space) bullets += new Bullet(a)
     bullets = bullets.filter(!_.finished)
 
     val r = 50f
@@ -85,9 +83,15 @@ object Main extends BasicScene with ShowFPS {
     sync
     showFPS
 
-    keyPressed {
-      case "escape" => End
-      case "enter" => Paused
+    keyEvent { e =>
+      e released {
+        case _ => 
+          draw("Releasd %s".format(e.name), position = (350, 100), rgb = (1, 0, 0))
+      }
+      e pressed {
+        case "escape" => End
+        case "enter" => Paused
+      }
     }
   }
 
@@ -95,10 +99,11 @@ object Main extends BasicScene with ShowFPS {
     def update = {
       draw("Paused", position = (350, 300))
       sync
-  
-      if (keyDown("escape")) End
-      else if(keyDown("enter", 500)) Main
-      else None  
+ 
+      keyEvent( _.pressed {
+        case "escape" => End
+        case "enter" => Main
+      })
     }
   }
 
