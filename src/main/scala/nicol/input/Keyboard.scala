@@ -1,160 +1,145 @@
 package nicol.input
 
 import org.lwjgl.input.Keyboard._
+import java.util.{Timer, TimerTask}
 
 /**
  * A Key is, not very surprisingly, anything you can find in front of you,
  * on your keyboard.
  */
 object Key {
+  private val keys = Map (
+    // Special Events
+    KEY_ESCAPE -> "escape",
+    KEY_RETURN ->"enter",
+    KEY_SPACE -> "space",
+    KEY_LSHIFT -> "shift",
+    KEY_RSHIFT -> "shift",
+    KEY_LCONTROL -> "ctrl",
+    KEY_RCONTROL -> "ctrl",
+    KEY_LMETA -> "meta",
+    KEY_RMETA -> "meta",
+    // Arrow Keys
+    KEY_UP -> "up",
+    KEY_DOWN -> "down",
+    KEY_LEFT -> "left",
+    KEY_RIGHT -> "right",
+    // Function Keys
+    KEY_F1 -> "F1",
+    KEY_F2 -> "F2",
+    KEY_F3 -> "F3",
+    KEY_F4 -> "F4",
+    KEY_F5 -> "F5",
+    KEY_F6 -> "F6",
+    KEY_F7 -> "F7",
+    KEY_F8 -> "F8",
+    KEY_F9 -> "F9",
+    KEY_F10 -> "F10",
+    KEY_F11 -> "F11",
+    KEY_F12 -> "F12",
+    KEY_F13 -> "F13",
+    KEY_F14 -> "F14",
+    KEY_F15 -> "F15",
+    KEY_A -> "a",
+    KEY_B -> "b",
+    KEY_C -> "c",
+    KEY_D -> "d",
+    KEY_E -> "e",
+    KEY_F -> "f",
+    KEY_G -> "g",
+    KEY_H -> "h",
+    KEY_I -> "i",
+    KEY_J -> "j",
+    KEY_K -> "k",
+    KEY_L -> "l",
+    KEY_M -> "m",
+    KEY_N -> "n",
+    KEY_O -> "o",
+    KEY_P -> "p",
+    KEY_Q -> "q",
+    KEY_R -> "r",
+    KEY_S -> "s",
+    KEY_T -> "t",
+    KEY_U -> "u",
+    KEY_V -> "v",
+    KEY_W -> "w",
+    KEY_X -> "x",
+    KEY_Y -> "y",
+    KEY_Z -> "z",
+    // Numbers
+    KEY_0 -> "0",
+    KEY_1 -> "1",
+    KEY_2 -> "2",
+    KEY_3 -> "3",
+    KEY_4 -> "4",
+    KEY_5 -> "5",
+    KEY_6 -> "6",
+    KEY_7 -> "7",
+    KEY_8 -> "8",
+    KEY_9 -> "9",
+    // Other Keys
+    KEY_MINUS -> "-",
+    KEY_ADD -> "+",
+    KEY_EQUALS -> "=",
+    KEY_TAB -> "\t",
+    KEY_LBRACKET -> "[",
+    KEY_RBRACKET -> "]",
+    KEY_SEMICOLON -> ";",
+    KEY_APOSTROPHE -> "'",
+    KEY_BACKSLASH -> "\\",
+    KEY_COMMA -> ",",
+    KEY_PERIOD -> ".",
+    KEY_SLASH -> "/",
+    KEY_MULTIPLY -> "*",
+    KEY_COLON -> ":",
+    KEY_UNDERLINE -> "_"
+  )
+
+  private val ready = collection.mutable.Map[Int, Boolean](
+    keys.keys.map((_, true)).toList: _*
+  )
+ 
+  private var nexted = false
+ 
+  private def delay(event: Int, interval: Long) {
+    val timer = new Timer
+    timer.schedule(new TimerTask {
+      def run = ready(event) = true 
+    }, interval)
+  }
+
+  def clearDelays = 
+    ready.filter(_._2 == false).foreach(t => ready(t._1) = true)
+
+  def keyDown(key: String, interval: Long = 0) = {
+    val event = keys.find(_._2 == key).map(_._1).getOrElse(KEY_NONE)
+    if (ready(event)) {
+      val pressed = isKeyDown(event)
+      if (pressed && interval > 0) {
+        ready(event) = false
+        delay(event, interval)
+      }
+      pressed
+    } else false
+  }
+
+  def keyPressed[A](partial: String => A): Option[A] = {
+    if (getEventKeyState) handler(partial)
+    else if (next && getEventKeyState) handler(partial)
+    else None 
+  }
+
+  private def handler[A](partial: String => A): Option[A] = try {
+    Some(partial(keys(getEventKey)))
+  } catch {
+    case e: MatchError => None
+  }
+
   /** Enable / Disable Event key repeats */
   def repeat = enableRepeatEvents _
 
   /** Is Repeat events enabled */
   def isRepeat = areRepeatEventsEnabled
-
-  // This is awful, but LWJGL keys are not consecutive values
-  /**
-   * Gets if a standard char key is pressed.
-   * Uppercase and lowercase letters make no difference here.
-   */
-  def char(c: Char) = Keyboard(c.toLower match {
-    case 'a' => KEY_A
-    case 'b' => KEY_B
-    case 'c' => KEY_C
-    case 'd' => KEY_D
-    case 'e' => KEY_E
-    case 'f' => KEY_F
-    case 'g' => KEY_G
-    case 'h' => KEY_H
-    case 'i' => KEY_I
-    case 'j' => KEY_J
-    case 'k' => KEY_K
-    case 'l' => KEY_L
-    case 'm' => KEY_M
-    case 'n' => KEY_N
-    case 'o' => KEY_O
-    case 'p' => KEY_P
-    case 'q' => KEY_Q
-    case 'r' => KEY_R
-    case 's' => KEY_S
-    case 't' => KEY_T
-    case 'u' => KEY_U
-    case 'v' => KEY_V
-    case 'w' => KEY_W
-    case 'x' => KEY_X
-    case 'y' => KEY_Y
-    case 'z' => KEY_Z
-
-    case '0' => KEY_0
-    case '1' => KEY_1
-    case '2' => KEY_2
-    case '3' => KEY_3
-    case '4' => KEY_4
-    case '5' => KEY_5
-    case '6' => KEY_6
-    case '7' => KEY_7
-    case '8' => KEY_8
-    case '9' => KEY_9
-
-    case '-' => KEY_MINUS
-    case '+' => KEY_ADD
-    case '=' => KEY_EQUALS
-    case '\t' => KEY_TAB
-    case '\n' => KEY_RETURN
-    case '(' => KEY_LBRACKET
-    case ')' => KEY_RBRACKET
-    case ';' => KEY_SEMICOLON
-    case '\'' => KEY_APOSTROPHE
-    case '\\' => KEY_BACKSLASH
-    case ',' => KEY_COMMA
-    case '.' => KEY_PERIOD
-    case '/' => KEY_SLASH
-    case '*' => KEY_MULTIPLY
-    case ' ' => KEY_SPACE
-    case ':' => KEY_COLON
-    case '_' => KEY_UNDERLINE
-
-    case _ => KEY_NONE
-  })
-
-  /**
-   * Tests if one of the F keys is pressed.
-   */
-  def F(n: Int) = if (n < 1 || n > 15) {
-    Keyboard(n match {
-      case 1 => KEY_F1
-      case 2 => KEY_F2
-      case 3 => KEY_F3
-      case 4 => KEY_F4
-      case 5 => KEY_F5
-      case 6 => KEY_F6
-      case 7 => KEY_F7
-      case 8 => KEY_F8
-      case 9 => KEY_F9
-      case 10 => KEY_F10
-      case 11 => KEY_F11
-      case 12 => KEY_F12
-      case 13 => KEY_F13
-      case 14 => KEY_F14
-      case 15 => KEY_F15
-    })
-  } else false
-
-  /**
-   * Any enter / return keys.
-   */
-  def enter = Keyboard(KEY_RETURN)
-
-  /**
-   * Any of the shift keys.
-   */
-  def shift = Keyboard(KEY_LSHIFT) || Keyboard(KEY_RSHIFT)
-
-  /**
-   * Any of the CTRL keys.
-   */
-  def ctrl = Keyboard(KEY_LCONTROL) || Keyboard(KEY_RCONTROL)
-
-  /**
-   * Any of the WIN or META keys.
-   */
-  def meta = Keyboard(KEY_LMETA) || Keyboard(KEY_RMETA)
-
-  /**
-   * Space key. Is equal to char(' ').
-   */
-  def space = Keyboard(KEY_SPACE)
-
-  /**
-   * The up arrow.
-   */
-  def up = Keyboard(KEY_UP)
-
-  /**
-   * The down arrow.
-   */
-  def down = Keyboard(KEY_DOWN)
-
-  /**
-   * The left arrow.
-   */
-  def left = Keyboard(KEY_LEFT)
-
-  /**
-   * The right arrow.
-   */
-  def right = Keyboard(KEY_RIGHT)
-
-  /**
-   * The Esc key.
-   */
-  def escape = Keyboard(KEY_ESCAPE)
-
-  /**
-   * Shortcut for char.
-   */
-  def apply(c: Char) = char(c)
 }
 
 private[nicol] object Keyboard {
