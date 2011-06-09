@@ -153,23 +153,34 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
   val max = (min_x, min_y)
 }
 
-case class Curve(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
-  def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
+trait Curve extends Shape {
+  def b(t: Float): Vector
 
-  private lazy val (min_x, max_x) = {
-    val tmp = Seq(p1.x, p2.x, p3.x, p4.x)
-    (tmp.min, tmp.max)
+  def bounds = throw NotSupportedException("Bounds of bezier curves not yet supported")
+}
+
+object Curve {
+  def apply(p1: Vector, p2: Vector, p3: Vector, p4: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v, p3 + v, p4 + v)
+
+    def b(t: Float) = {
+      val mt = 1 - t
+      p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+    }
   }
 
-  private lazy val (min_y, max_y) = {
-    val tmp = Seq(p1.y, p2.y, p3.y, p4.y)
-    (tmp.min, tmp.max)
+  def apply(p1: Vector, p2: Vector, p3: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v, p3 + v)
+
+    def b(t: Float) = {
+      val mt = 1 - t
+      p1 * (mt * mt) + p2 * (2 * mt * t) + p3 * (t * t)
+    }
   }
 
-  def bounds = AABox(min_x, min_y, max_x - min_x, max_y - min_y)
+  def apply(p1: Vector, p2: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v)
 
-  def b(t: Float) = {
-    val mt = 1 - t
-    p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+    def b(t: Float) = p1 * (1 - t) + p2 * t
   }
 }
