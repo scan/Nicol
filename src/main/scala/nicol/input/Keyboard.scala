@@ -10,129 +10,106 @@ import java.util.{Timer, TimerTask}
 object Key {
   private val keys = Map (
     // Special Events
-    KEY_ESCAPE -> "escape",
-    KEY_RETURN ->"enter",
-    KEY_SPACE -> "space",
-    KEY_LSHIFT -> "shift",
-    KEY_RSHIFT -> "shift",
-    KEY_LCONTROL -> "ctrl",
-    KEY_RCONTROL -> "ctrl",
-    KEY_LMETA -> "meta",
-    KEY_RMETA -> "meta",
+    "escape" -> KEY_ESCAPE,
+    "enter" -> KEY_RETURN,
+    "space" ->  KEY_SPACE,
+    "lshift" ->  KEY_LSHIFT,
+    "rshift" ->  KEY_RSHIFT,
+    "lctrl" ->  KEY_LCONTROL,
+    "rctrl" ->  KEY_RCONTROL,
+    "lmeta" ->  KEY_LMETA,
+    "rmeta" ->  KEY_RMETA,
     // Arrow Keys
-    KEY_UP -> "up",
-    KEY_DOWN -> "down",
-    KEY_LEFT -> "left",
-    KEY_RIGHT -> "right",
+    "up" ->   KEY_UP,
+    "down" -> KEY_DOWN,
+    "left" -> KEY_LEFT,
+    "right" ->  KEY_RIGHT,
     // Function Keys
-    KEY_F1 -> "F1",
-    KEY_F2 -> "F2",
-    KEY_F3 -> "F3",
-    KEY_F4 -> "F4",
-    KEY_F5 -> "F5",
-    KEY_F6 -> "F6",
-    KEY_F7 -> "F7",
-    KEY_F8 -> "F8",
-    KEY_F9 -> "F9",
-    KEY_F10 -> "F10",
-    KEY_F11 -> "F11",
-    KEY_F12 -> "F12",
-    KEY_F13 -> "F13",
-    KEY_F14 -> "F14",
-    KEY_F15 -> "F15",
-    KEY_A -> "a",
-    KEY_B -> "b",
-    KEY_C -> "c",
-    KEY_D -> "d",
-    KEY_E -> "e",
-    KEY_F -> "f",
-    KEY_G -> "g",
-    KEY_H -> "h",
-    KEY_I -> "i",
-    KEY_J -> "j",
-    KEY_K -> "k",
-    KEY_L -> "l",
-    KEY_M -> "m",
-    KEY_N -> "n",
-    KEY_O -> "o",
-    KEY_P -> "p",
-    KEY_Q -> "q",
-    KEY_R -> "r",
-    KEY_S -> "s",
-    KEY_T -> "t",
-    KEY_U -> "u",
-    KEY_V -> "v",
-    KEY_W -> "w",
-    KEY_X -> "x",
-    KEY_Y -> "y",
-    KEY_Z -> "z",
+    "F1" -> KEY_F1,
+    "F2" -> KEY_F2,
+    "F3" -> KEY_F3,
+    "F4" -> KEY_F4,
+    "F5" -> KEY_F5,
+    "F6" -> KEY_F6,
+    "F7" -> KEY_F7,
+    "F8" -> KEY_F8,
+    "F9" -> KEY_F9,
+    "F10" -> KEY_F10,
+    "F11" -> KEY_F11,
+    "F12" -> KEY_F12,
+    "F13" -> KEY_F13,
+    "F14" -> KEY_F14,
+    "F15" -> KEY_F15,
+    // Letters
+    "a" -> KEY_A,
+    "b" -> KEY_B,
+    "c" -> KEY_C,
+    "d" -> KEY_D,
+    "e" -> KEY_E,
+    "f" -> KEY_F,
+    "g" -> KEY_G,
+    "h" -> KEY_H,
+    "i" -> KEY_I,
+    "j" -> KEY_J,
+    "k" -> KEY_K,
+    "l" -> KEY_L,
+    "m" -> KEY_M,
+    "n" -> KEY_N,
+    "o" -> KEY_O,
+    "p" -> KEY_P,
+    "q" -> KEY_Q,
+    "r" -> KEY_R,
+    "s" -> KEY_S,
+    "t" -> KEY_T,
+    "u" -> KEY_U,
+    "v" -> KEY_V,
+    "w" -> KEY_W,
+    "x" -> KEY_X,
+    "y" -> KEY_Y,
+    "z" -> KEY_Z,
     // Numbers
-    KEY_0 -> "0",
-    KEY_1 -> "1",
-    KEY_2 -> "2",
-    KEY_3 -> "3",
-    KEY_4 -> "4",
-    KEY_5 -> "5",
-    KEY_6 -> "6",
-    KEY_7 -> "7",
-    KEY_8 -> "8",
-    KEY_9 -> "9",
+    "0" -> KEY_0,
+    "1" -> KEY_1,
+    "2" -> KEY_2,
+    "3" -> KEY_3,
+    "4" -> KEY_4,
+    "5" -> KEY_5,
+    "6" -> KEY_6,
+    "7" -> KEY_7,
+    "8" -> KEY_8,
+    "9" -> KEY_9,
     // Other Keys
-    KEY_MINUS -> "-",
-    KEY_ADD -> "+",
-    KEY_EQUALS -> "=",
-    KEY_TAB -> "\t",
-    KEY_LBRACKET -> "[",
-    KEY_RBRACKET -> "]",
-    KEY_SEMICOLON -> ";",
-    KEY_APOSTROPHE -> "'",
-    KEY_BACKSLASH -> "\\",
-    KEY_COMMA -> ",",
-    KEY_PERIOD -> ".",
-    KEY_SLASH -> "/",
-    KEY_MULTIPLY -> "*",
-    KEY_COLON -> ":",
-    KEY_UNDERLINE -> "_"
+    "-" -> KEY_MINUS,
+    "+" -> KEY_ADD,
+    "=" -> KEY_EQUALS,
+    "\t" -> KEY_TAB,
+    "[" -> KEY_LBRACKET,
+    "]" -> KEY_RBRACKET,
+    ";" -> KEY_SEMICOLON,
+    "'" -> KEY_APOSTROPHE,
+    "\\" -> KEY_BACKSLASH,
+    "," -> KEY_COMMA,
+    "." -> KEY_PERIOD,
+    "/" -> KEY_SLASH,
+    "*" -> KEY_MULTIPLY,
+    ":" -> KEY_COLON,
+    "_" -> KEY_UNDERLINE,
+    "none" -> KEY_NONE
   )
 
-  private val ready = collection.mutable.Map[Int, Boolean](
-    keys.keys.map((_, true)).toList: _*
-  )
- 
-  private var nexted = false
- 
-  private def delay(event: Int, interval: Long) {
-    val timer = new Timer
-    timer.schedule(new TimerTask {
-      def run = ready(event) = true 
-    }, interval)
+  def keyDown(key: String) = {
+    val event = keys.get(key).getOrElse(KEY_NONE)
+    isKeyDown(event)
   }
 
-  def clearDelays = 
-    ready.filter(_._2 == false).foreach(t => ready(t._1) = true)
-
-  def keyDown(key: String, interval: Long = 0) = {
-    val event = keys.find(_._2 == key).map(_._1).getOrElse(KEY_NONE)
-    if (ready(event)) {
-      val pressed = isKeyDown(event)
-      if (pressed && interval > 0) {
-        ready(event) = false
-        delay(event, interval)
-      }
-      pressed
-    } else false
-  }
-
-  def keyPressed[A](partial: String => A): Option[A] = {
-    if (getEventKeyState) handler(partial)
-    else if (next && getEventKeyState) handler(partial)
-    else None 
-  }
-
-  private def handler[A](partial: String => A): Option[A] = try {
-    Some(partial(keys(getEventKey)))
-  } catch {
-    case e: MatchError => None
+  def keyEvent[A](consumer: KeyEvent => Option[A]): Option[A] = {
+    if (next) {
+      val eventid = getEventKey
+      val name = keys.find(_._2 == eventid).map(_._1).getOrElse("none")
+      val state = getEventKeyState
+      val event = KeyEvent(eventid, name, state)
+      consumer(event)
+    } else None
   }
 
   /** Enable / Disable Event key repeats */
@@ -140,6 +117,37 @@ object Key {
 
   /** Is Repeat events enabled */
   def isRepeat = areRepeatEventsEnabled
+
+  def space = keyDown("space")
+  def escape = keyDown("escape")
+  def enter = keyDown("enter")
+
+  def meta = keyDown("lmeta") || keyDown("rmeta")
+  def ctrl = keyDown("lctrl") || keyDown("rctrl")
+  def shift = keyDown("lshift") || keyDown("rshift")
+
+  def left = keyDown("left")
+  def right = keyDown("right")
+  def up = keyDown("up")
+  def down = keyDown("down")
+
+  def char(a: Char) = keyDown(a.toLower.toString)
+}
+
+private [nicol] case class KeyEvent(id: Int, name: String, state: Boolean) {
+  def pressed[A] (consumer: String => A): Option[A] = {
+    if (state) handler(consumer) else None
+  }
+
+  def released[A] (consumer: String => A): Option[A] = {
+    if (!state) handler(consumer) else None
+  }
+
+  private def handler[A] (consumer: String => A): Option[A] = try {
+    Some(consumer(name))
+  } catch {
+    case e: MatchError => None
+  }
 }
 
 private[nicol] object Keyboard {
