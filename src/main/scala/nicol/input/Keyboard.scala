@@ -128,7 +128,7 @@ object Key {
    * Tests if one of the F keys is pressed.
    */
   def F(n: Int) = if (n < 1 || n > 15) {
-    keyDown(n.toString)
+    keyDown("F%d".format(n))
   } else false
 
   /**
