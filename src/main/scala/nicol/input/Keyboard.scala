@@ -118,20 +118,68 @@ object Key {
   /** Is Repeat events enabled */
   def isRepeat = areRepeatEventsEnabled
 
-  def space = keyDown("space")
-  def escape = keyDown("escape")
+  /**
+   * Gets if a standard char key is pressed.
+   * Uppercase and lowercase letters make no difference here.
+   */
+  def char(a: Char) = keyDown(a.toLower.toString)
+
+  /**
+   * Tests if one of the F keys is pressed.
+   */
+  def F(n: Int) = if (n < 1 || n > 15) {
+    keyDown(n.toString)
+  } else false
+
+  /**
+   * Any enter / return keys.
+   */
   def enter = keyDown("enter")
 
-  def meta = keyDown("lmeta") || keyDown("rmeta")
-  def ctrl = keyDown("lctrl") || keyDown("rctrl")
+  /**
+   * Any of the shift keys.
+   */
   def shift = keyDown("lshift") || keyDown("rshift")
 
-  def left = keyDown("left")
-  def right = keyDown("right")
+  /**
+   * Any of the CTRL keys.
+   */
+  def ctrl = keyDown("lctrl") || keyDown("rctrl")
+
+  /**
+   * Any of the WIN or META keys.
+   */
+  def meta = keyDown("lmeta") || keyDown("rmeta")
+
+  /**
+   * Space key.
+   */
+  def space = keyDown("space")
+
+  /**
+   * The up arrow.
+   */
   def up = keyDown("up")
+
+  /**
+   * The down arrow.
+   */
   def down = keyDown("down")
 
-  def char(a: Char) = keyDown(a.toLower.toString)
+  /**
+   * The left arrow.
+   */
+  def left = keyDown("left")
+
+  /**
+   * The right arrow.
+   */
+  def right = keyDown("right")
+
+  /**
+   * The Esc key.
+   */
+  def escape = keyDown("escape")
 }
 
 private [nicol] case class KeyEvent(id: Int, name: String, state: Boolean) {
