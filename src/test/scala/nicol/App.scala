@@ -95,7 +95,7 @@ object Main extends BasicScene with ShowFPS {
     }
 
     def draw = {
-      scene.draw(Circle((bx, by), 3), rgb = (250, 250, 210))(FilledCircleRenderer)
+      scene.draw(Circle((bx, by), 3), rgb = (250, 250, 210))(Filled)
     }
   }
 
