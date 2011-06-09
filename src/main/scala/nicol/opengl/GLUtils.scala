@@ -115,6 +115,8 @@ object GLUtils {
    */
   def vertex(x: Float, y: Float) = glVertex2f(x, y)
 
+  def vertex(f: (Float, Float)) = glVertex2f(f._1, f._2)
+
   /**
    * Draws a 3D vertex.
    */

@@ -2,7 +2,7 @@ package nicol
 package renderer
 
 import opengl.GLUtils
-import geom.{Shape, Quad, AABox, Circle, Line}
+import geom.{Shape, Quad, AABox, Circle, Line, Curve}
 import GLUtils._
 
 trait StandardGeometryRenderer {
@@ -30,10 +30,13 @@ trait StandardGeometryRenderer {
           vertex(b.left, b.bottom)
         })
         case Quad(p1, p2, p3, p4) => stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
-          vertex(p1.x, p1.y)
-          vertex(p2.x, p2.y)
-          vertex(p3.x, p3.y)
-          vertex(p4.x, p4.y)
+          vertex(p1)
+          vertex(p2)
+          vertex(p3)
+          vertex(p4)
+        })
+        case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(LineStrip) {
+          for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
         })
       }
     }
@@ -78,6 +81,9 @@ trait StandardGeometryRenderer {
           vertex(p2.x, p2.y)
           vertex(p3.x, p3.y)
           vertex(p4.x, p4.y)
+        })
+        case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
+          for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
         })
       }
     }

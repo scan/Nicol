@@ -5,9 +5,9 @@ import input.Mouse
 import geom._
 import math._
 
-object App extends Game(Init("Nicol example App", 800, 600, true) >> Main)
+object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 
-object Main extends BasicScene with ShowFPS { 
+object Main extends BasicScene with ShowFPS {
   scene =>
 
   import scala.math.{sin, cos, Pi}
@@ -26,6 +26,11 @@ object Main extends BasicScene with ShowFPS {
   def update: Option[Scene] = {
 
     val (mx, my) = Mouse.apply
+
+    if (left) camera.position += Vector.left
+    if (right) camera.position += Vector.right
+    if (up) camera.position += Vector.up
+    if (down) camera.position += Vector.down
 
     val a = Vector.right angle (Vector(mx, my) - Vector(400, 300))
 
@@ -57,6 +62,8 @@ object Main extends BasicScene with ShowFPS {
       draw(redCircle, rgb = (1, 0, 0))
       draw(targetCircle, rgb = (0, 1, 0))
       draw(image, position = (x - image.width / 2, y - image.height / 2), rotation = a)
+
+      draw(Curve((0, 0), (800, 0), (0, 600), (800, 600)))
     }
 
     Pretransformed {
@@ -74,10 +81,10 @@ object Main extends BasicScene with ShowFPS {
 
   object Paused extends BasicScene {
     def update = {
-      draw("Paused", position=(350, 300))
+      draw("Paused", position = (350, 300))
       sync
-      
-      if (escape) End 
+
+      if (escape) End
       else if (enter) Main
       else None
     }

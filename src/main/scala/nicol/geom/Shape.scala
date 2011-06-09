@@ -3,6 +3,7 @@ package geom
 
 import math.{Vector, Rect, Matrix}
 import scala.math.{abs, sin, cos}
+import scala.Float._
 
 sealed trait Shape extends Immutable {
   /**
@@ -150,4 +151,25 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
    * @note May or may not be inside the Shape.
    */
   val max = (min_x, min_y)
+}
+
+case class Curve(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
+  def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
+
+  private lazy val (min_x, max_x) = {
+    val tmp = Seq(p1.x, p2.x, p3.x, p4.x)
+    (tmp.min, tmp.max)
+  }
+
+  private lazy val (min_y, max_y) = {
+    val tmp = Seq(p1.y, p2.y, p3.y, p4.y)
+    (tmp.min, tmp.max)
+  }
+
+  def bounds = AABox(min_x, min_y, max_x - min_x, max_y - min_y)
+
+  def b(t: Float) = {
+    val mt = 1 - t
+    p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+  }
 }
