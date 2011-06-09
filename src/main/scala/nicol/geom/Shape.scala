@@ -1,11 +1,11 @@
 package nicol
 package geom
 
-import math.{Vector, Rect, Matrix}
-import scala.math.{abs, sin, cos}
-import scala.Float._
+import math.{Vector, Matrix}
+import scala.math.{abs, min, max}
 
 sealed trait Shape extends Immutable {
+  shape =>
   /**
    * General bounds of this Shape.
    *
@@ -22,6 +22,16 @@ sealed trait Shape extends Immutable {
    * Same shape, somewhere else.
    */
   def transposed(v: Vector): Shape
+
+  def +(that: Shape): Shape = new Shape {
+    def bounds = shape.bounds + that.bounds
+
+    def transposed(v: Vector) = shape.transposed(v) + that.transposed(v)
+
+    private[nicol] override val containedShapes = shape.containedShapes ++ that.containedShapes
+  }
+
+  private[nicol] val containedShapes = Seq(this)
 }
 
 /**
@@ -49,16 +59,25 @@ sealed class AABox(val x: Float, val y: Float, val width: Float, val height: Flo
   def bounds = this
 
   override def area = (width * height).toFloat
+
+  def contains(t: (Int, Int)) = (t._1 > left && t._1 < right) && (t._2 > top && t._2 < bottom)
+
+  def +(that: AABox): AABox = {
+    val nx = min(x, that.x)
+    val ny = min(y, that.y)
+
+    AABox(nx, ny, max(right - nx, that.right - nx), max(bottom - ny, that.bottom - ny))
+  }
+
+  def normalise = AABox(if (width < 0) x + width else x,
+    if (height < 0) y + height else y,
+    abs(width), abs(height))
 }
 
 object AABox {
   def apply(x: Float, y: Float, width: Float, height: Float): AABox = new AABox(x, y, width, height)
 
   def apply(width: Float, height: Float): AABox = new AABox(0, 0, width, height)
-
-  implicit def asRect(that: AABox) = Rect(that.x.toInt, that.y.toInt, that.width.toInt, that.height.toInt)
-
-  implicit def fromRect(that: Rect) = AABox(that.x.toFloat, that.y.toFloat, that.width.toFloat, that.height.toFloat)
 }
 
 /**
@@ -153,23 +172,34 @@ case class Quad(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
   val max = (min_x, min_y)
 }
 
-case class Curve(p1: Vector, p2: Vector, p3: Vector, p4: Vector) extends Shape {
-  def transposed(v: Vector) = Quad(p1 + v, p2 + v, p3 + v, p4 + v)
+trait Curve extends Shape {
+  def b(t: Float): Vector
 
-  private lazy val (min_x, max_x) = {
-    val tmp = Seq(p1.x, p2.x, p3.x, p4.x)
-    (tmp.min, tmp.max)
+  def bounds = throw NotImplementedException("Bounds of bezier curves not yet implemented!")
+}
+
+object Curve {
+  def apply(p1: Vector, p2: Vector, p3: Vector, p4: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v, p3 + v, p4 + v)
+
+    def b(t: Float) = {
+      val mt = 1 - t
+      p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+    }
   }
 
-  private lazy val (min_y, max_y) = {
-    val tmp = Seq(p1.y, p2.y, p3.y, p4.y)
-    (tmp.min, tmp.max)
+  def apply(p1: Vector, p2: Vector, p3: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v, p3 + v)
+
+    def b(t: Float) = {
+      val mt = 1 - t
+      p1 * (mt * mt) + p2 * (2 * mt * t) + p3 * (t * t)
+    }
   }
 
-  def bounds = AABox(min_x, min_y, max_x - min_x, max_y - min_y)
+  def apply(p1: Vector, p2: Vector): Curve = new Curve {
+    def transposed(v: Vector) = Curve(p1 + v, p2 + v)
 
-  def b(t: Float) = {
-    val mt = 1 - t
-    p1 * (mt * mt * mt) + p2 * (3 * mt * mt) + p3 * (3 * mt * t * t) + p4 * (t * t * t)
+    def b(t: Float) = p1 * (1 - t) + p2 * t
   }
 }
