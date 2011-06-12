@@ -1,6 +1,7 @@
 package nicol.input
 
 import org.lwjgl.input.Mouse._
+import org.lwjgl.opengl.Display
 
 object Mouse {
 
@@ -20,9 +21,11 @@ object Mouse {
     val button = 2
   }
 
-  def apply: (Float, Float) = (getX, getY)
+  def grabbed = setGrabbed _
 
-  def apply(btn: Button):Boolean = isButtonDown(btn.button)
+  def apply: (Float, Float) = (getX, Display.getDisplayMode.getHeight - getY)
 
-  def apply(x:Float,y:Float) = setCursorPosition(x.toInt,y.toInt); updateCursor
+  def apply(btn: Button): Boolean = isButtonDown(btn.button)
+
+  def apply(x: Float, y: Float) = setCursorPosition(x.toInt, y.toInt); updateCursor
 }

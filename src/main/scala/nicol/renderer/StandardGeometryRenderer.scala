@@ -2,18 +2,45 @@ package nicol
 package renderer
 
 import opengl.GLUtils
-import geom.{Quad, AABox, Circle, Line}
+import geom.{Shape, Quad, AABox, Circle, Line, Curve}
 import GLUtils._
 
 trait StandardGeometryRenderer {
 
-  implicit object LineRenderer extends Renderer[Line] {
-    def draw(that: Line, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(Lines) {
-        colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.start.x, that.start.y)
-        vertex(that.end.x, that.end.y)
-      })
+  implicit object ShapeRenderer extends Renderer[Shape] {
+    private val sections = 24
+    private val angles = for (a <- 0 until sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
+
+    import scala.math.{cos, sin}
+
+    def draw(that: Shape, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = {
+      colour(rgb._1, rgb._2, rgb._3)
+      that match {
+        case Line(start, end) => stdDraw(position, rotation, offset)(GLUtils.draw(Lines) {
+          vertex(start.x, start.y)
+          vertex(end.x, end.y)
+        })
+        case Circle(center, radius) => stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
+          angles.foreach(a => vertex(center.x + radius * cos(a).toFloat, center.y + radius * sin(a).toFloat))
+        })
+        case b: AABox => stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
+          vertex(b.left, b.top)
+          vertex(b.right, b.top)
+          vertex(b.right, b.bottom)
+          vertex(b.left, b.bottom)
+        })
+        case Quad(p1, p2, p3, p4) => stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
+          vertex(p1)
+          vertex(p2)
+          vertex(p3)
+          vertex(p4)
+        })
+        case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(LineStrip) {
+          for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
+        })
+        case s: Shape => s.containedShapes.map(draw(_, position, rgb, rotation, offset))
+      }
+    }
   }
 
   implicit object LineListRenderer extends Renderer[Traversable[Line]] {
@@ -28,75 +55,40 @@ trait StandardGeometryRenderer {
       })
   }
 
-  implicit object CircleRenderer extends Renderer[Circle] {
+  object Filled extends Renderer[Shape] {
     private val sections = 24
     private val angles = for (a <- 0 until sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
 
     import scala.math.{cos, sin}
 
-    def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
-        colour(rgb._1, rgb._2, rgb._3)
-        angles.foreach(a => vertex(that.center.x + that.radius * cos(a).toFloat, that.center.y + that.radius * sin(a).toFloat))
-      })
-  }
-
-  implicit object AABoxRenderer extends Renderer[AABox] {
-    def draw(that: AABox, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = stdDraw(position, rotation, offset) {
-      GLUtils.draw(LineLoop) {
-        colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.left, that.top)
-        vertex(that.right, that.top)
-        vertex(that.right, that.bottom)
-        vertex(that.left, that.bottom)
+    def draw(that: Shape, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) = {
+      colour(rgb._1, rgb._2, rgb._3)
+      that match {
+        case Line(start, end) => stdDraw(position, rotation, offset)(GLUtils.draw(Lines) {
+          vertex(start.x, start.y)
+          vertex(end.x, end.y)
+        })
+        case Circle(center, radius) => stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
+          angles.foreach(a => vertex(center.x + radius * cos(a).toFloat, center.y + radius * sin(a).toFloat))
+        })
+        case b: AABox => stdDraw(position, rotation, offset)(GLUtils.draw(Quads) {
+          vertex(b.left, b.top)
+          vertex(b.right, b.top)
+          vertex(b.right, b.bottom)
+          vertex(b.left, b.bottom)
+        })
+        case Quad(p1, p2, p3, p4) => stdDraw(position, rotation, offset)(GLUtils.draw(Quads) {
+          vertex(p1.x, p1.y)
+          vertex(p2.x, p2.y)
+          vertex(p3.x, p3.y)
+          vertex(p4.x, p4.y)
+        })
+        case c: Curve => stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
+          for (s <- 0 to sections) vertex(c.b(s.toFloat / sections.toFloat))
+        })
+        case s: Shape => s.containedShapes.map(draw(_, position, rgb, rotation, offset))
       }
     }
-  }
-
-  implicit object QuadRenderer extends Renderer[Quad] {
-    def draw(that: Quad, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(LineLoop) {
-        colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.p1.x, that.p1.y)
-        vertex(that.p2.x, that.p2.y)
-        vertex(that.p3.x, that.p3.y)
-        vertex(that.p4.x, that.p4.y)
-      })
-  }
-
-  object FilledQuadRenderer extends Renderer[Quad] {
-    def draw(that: Quad, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(Quads) {
-        colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.p1.x, that.p1.y)
-        vertex(that.p2.x, that.p2.y)
-        vertex(that.p3.x, that.p3.y)
-        vertex(that.p4.x, that.p4.y)
-      })
-  }
-
-  object FilledCircleRenderer extends Renderer[Circle] {
-    private val sections = 24
-    private val angles = for (a <- 0 to sections) yield a * ((2 * scala.math.Pi.toFloat) / sections)
-
-    import scala.math.{cos, sin}
-
-    def draw(that: Circle, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(Polygon) {
-        colour(rgb._1, rgb._2, rgb._3)
-        angles.foreach(a => vertex(that.center.x + that.radius * cos(a).toFloat, that.center.y + that.radius * sin(a).toFloat))
-      })
-  }
-
-  object FilledAABoxRenderer extends Renderer[AABox] {
-    def draw(that: AABox, position: (Float, Float), rgb: (Float, Float, Float), rotation: Float, offset: (Float, Float)) =
-      stdDraw(position, rotation, offset)(GLUtils.draw(Quads) {
-        colour(rgb._1, rgb._2, rgb._3)
-        vertex(that.left, that.top)
-        vertex(that.right, that.top)
-        vertex(that.right, that.bottom)
-        vertex(that.left, that.bottom)
-      })
   }
 
   private def stdDraw(pos: (Float, Float), rot: Float, off: (Float, Float))(body: => Unit) =

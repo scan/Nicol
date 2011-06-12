@@ -19,7 +19,7 @@ sealed case class Vector(x: Float, y: Float) extends Immutable {
 
   def lengthSqr = x * x + y * y
 
-  def angle(that: Vector) = math.atan2(that.y - this.y, that.x - this.x).toFloat
+  def angle(that: Vector) = math.atan2(that.y, that.x).toFloat - math.atan2(this.y, this.x).toFloat
 
   def normalised = {
     val l = length
@@ -41,9 +41,9 @@ object Vector {
 
   object zero extends Vector(0, 0)
 
-  object up extends Vector(0, 1)
+  object up extends Vector(0, -1)
 
-  object down extends Vector(0, -1)
+  object down extends Vector(0, 1)
 
   object left extends Vector(-1, 0)
 
