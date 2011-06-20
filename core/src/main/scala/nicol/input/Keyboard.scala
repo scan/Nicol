@@ -1,201 +1,286 @@
 package nicol.input
 
 import org.lwjgl.input.Keyboard._
-import java.util.{Timer, TimerTask}
 
 /**
  * A Key is, not very surprisingly, anything you can find in front of you,
  * on your keyboard.
  */
+trait Key {
+  private[nicol] def getKey: Int
+
+  def apply: Boolean = Key.keyDown(this)
+
+  def or(that: Key) = new Key {
+    def getKey = KEY_NONE
+
+    override def apply: Boolean = this.apply || that.apply
+  }
+
+  def and(that: Key) = new Key {
+    def getKey = KEY_NONE
+
+    override def apply: Boolean = this.apply && that.apply
+  }
+
+  def name = toString
+}
+
 object Key {
-  private val keys = Map (
+
+  implicit def keyToBool(k: Key): Boolean = k.apply
+
+  private case class key(k: Int) extends Key {
+    def getKey = k
+  }
+
+  case class or(k1: Key, k2: Key) extends Key {
+    def getKey = KEY_NONE
+
+    override def apply: Boolean = k1.apply || k2.apply
+  }
+
+  case class and(k1: Key, k2: Key) extends Key {
+    def getKey = KEY_NONE
+
+    override def apply: Boolean = k1.apply && k2.apply
+  }
+
+  private val keys = Map(
     // Special Events
-    "escape" -> KEY_ESCAPE,
-    "enter" -> KEY_RETURN,
-    "space" ->  KEY_SPACE,
-    "lshift" ->  KEY_LSHIFT,
-    "rshift" ->  KEY_RSHIFT,
-    "lctrl" ->  KEY_LCONTROL,
-    "rctrl" ->  KEY_RCONTROL,
-    "lmeta" ->  KEY_LMETA,
-    "rmeta" ->  KEY_RMETA,
+    "escape" -> key(KEY_ESCAPE),
+    "enter" -> key(KEY_RETURN),
+    "space" -> key(KEY_SPACE),
+    "lshift" -> key(KEY_LSHIFT),
+    "rshift" -> key(KEY_RSHIFT),
+    "lctrl" -> key(KEY_LCONTROL),
+    "rctrl" -> key(KEY_RCONTROL),
+    "lmeta" -> key(KEY_LMETA),
+    "rmeta" -> key(KEY_RMETA),
     // Arrow Keys
-    "up" ->   KEY_UP,
-    "down" -> KEY_DOWN,
-    "left" -> KEY_LEFT,
-    "right" ->  KEY_RIGHT,
+    "up" -> key(KEY_UP),
+    "down" -> key(KEY_DOWN),
+    "left" -> key(KEY_LEFT),
+    "right" -> key(KEY_RIGHT),
     // Function Keys
-    "F1" -> KEY_F1,
-    "F2" -> KEY_F2,
-    "F3" -> KEY_F3,
-    "F4" -> KEY_F4,
-    "F5" -> KEY_F5,
-    "F6" -> KEY_F6,
-    "F7" -> KEY_F7,
-    "F8" -> KEY_F8,
-    "F9" -> KEY_F9,
-    "F10" -> KEY_F10,
-    "F11" -> KEY_F11,
-    "F12" -> KEY_F12,
-    "F13" -> KEY_F13,
-    "F14" -> KEY_F14,
-    "F15" -> KEY_F15,
+    "F1" -> key(KEY_F1),
+    "F2" -> key(KEY_F2),
+    "F3" -> key(KEY_F3),
+    "F4" -> key(KEY_F4),
+    "F5" -> key(KEY_F5),
+    "F6" -> key(KEY_F6),
+    "F7" -> key(KEY_F7),
+    "F8" -> key(KEY_F8),
+    "F9" -> key(KEY_F9),
+    "F10" -> key(KEY_F10),
+    "F11" -> key(KEY_F11),
+    "F12" -> key(KEY_F12),
+    "F13" -> key(KEY_F13),
+    "F14" -> key(KEY_F14),
+    "F15" -> key(KEY_F15),
     // Letters
-    "a" -> KEY_A,
-    "b" -> KEY_B,
-    "c" -> KEY_C,
-    "d" -> KEY_D,
-    "e" -> KEY_E,
-    "f" -> KEY_F,
-    "g" -> KEY_G,
-    "h" -> KEY_H,
-    "i" -> KEY_I,
-    "j" -> KEY_J,
-    "k" -> KEY_K,
-    "l" -> KEY_L,
-    "m" -> KEY_M,
-    "n" -> KEY_N,
-    "o" -> KEY_O,
-    "p" -> KEY_P,
-    "q" -> KEY_Q,
-    "r" -> KEY_R,
-    "s" -> KEY_S,
-    "t" -> KEY_T,
-    "u" -> KEY_U,
-    "v" -> KEY_V,
-    "w" -> KEY_W,
-    "x" -> KEY_X,
-    "y" -> KEY_Y,
-    "z" -> KEY_Z,
+    "a" -> key(KEY_A),
+    "b" -> key(KEY_B),
+    "c" -> key(KEY_C),
+    "d" -> key(KEY_D),
+    "e" -> key(KEY_E),
+    "f" -> key(KEY_F),
+    "g" -> key(KEY_G),
+    "h" -> key(KEY_H),
+    "i" -> key(KEY_I),
+    "j" -> key(KEY_J),
+    "k" -> key(KEY_K),
+    "l" -> key(KEY_L),
+    "m" -> key(KEY_M),
+    "n" -> key(KEY_N),
+    "o" -> key(KEY_O),
+    "p" -> key(KEY_P),
+    "q" -> key(KEY_Q),
+    "r" -> key(KEY_R),
+    "s" -> key(KEY_S),
+    "t" -> key(KEY_T),
+    "u" -> key(KEY_U),
+    "v" -> key(KEY_V),
+    "w" -> key(KEY_W),
+    "x" -> key(KEY_X),
+    "y" -> key(KEY_Y),
+    "z" -> key(KEY_Z),
     // Numbers
-    "0" -> KEY_0,
-    "1" -> KEY_1,
-    "2" -> KEY_2,
-    "3" -> KEY_3,
-    "4" -> KEY_4,
-    "5" -> KEY_5,
-    "6" -> KEY_6,
-    "7" -> KEY_7,
-    "8" -> KEY_8,
-    "9" -> KEY_9,
+    "0" -> key(KEY_0),
+    "1" -> key(KEY_1),
+    "2" -> key(KEY_2),
+    "3" -> key(KEY_3),
+    "4" -> key(KEY_4),
+    "5" -> key(KEY_5),
+    "6" -> key(KEY_6),
+    "7" -> key(KEY_7),
+    "8" -> key(KEY_8),
+    "9" -> key(KEY_9),
     // Other Keys
-    "-" -> KEY_MINUS,
-    "+" -> KEY_ADD,
-    "=" -> KEY_EQUALS,
-    "\t" -> KEY_TAB,
-    "[" -> KEY_LBRACKET,
-    "]" -> KEY_RBRACKET,
-    ";" -> KEY_SEMICOLON,
-    "'" -> KEY_APOSTROPHE,
-    "\\" -> KEY_BACKSLASH,
-    "," -> KEY_COMMA,
-    "." -> KEY_PERIOD,
-    "/" -> KEY_SLASH,
-    "*" -> KEY_MULTIPLY,
-    ":" -> KEY_COLON,
-    "_" -> KEY_UNDERLINE,
-    "none" -> KEY_NONE
+    "-" -> key(KEY_MINUS),
+    "+" -> key(KEY_ADD),
+    "=" -> key(KEY_EQUALS),
+    "\t" -> key(KEY_TAB),
+    "[" -> key(KEY_LBRACKET),
+    "]" -> key(KEY_RBRACKET),
+    ";" -> key(KEY_SEMICOLON),
+    "'" -> key(KEY_APOSTROPHE),
+    "\\" -> key(KEY_BACKSLASH),
+    "," -> key(KEY_COMMA),
+    "." -> key(KEY_PERIOD),
+    "/" -> key(KEY_SLASH),
+    "*" -> key(KEY_MULTIPLY),
+    ":" -> key(KEY_COLON),
+    "_" -> key(KEY_UNDERLINE),
+    "none" -> key(KEY_NONE)
   )
 
-  def keyDown(key: String) = {
-    val event = keys.get(key).getOrElse(KEY_NONE)
-    isKeyDown(event)
-  }
+  private[nicol] def keyDown(key: Key) = isKeyDown(key.getKey)
 
   def keyEvent[A](consumer: KeyEvent => Option[A]): Option[A] = {
     if (next) {
       val eventid = getEventKey
-      val name = keys.find(_._2 == eventid).map(_._1).getOrElse("none")
+      val name = key(eventid)
       val state = getEventKeyState
       val event = KeyEvent(eventid, name, state)
       consumer(event)
     } else None
   }
 
-  /** Enable / Disable Event key repeats */
+  /**Enable / Disable Event key repeats */
   def repeat = enableRepeatEvents _
 
-  /** Is Repeat events enabled */
+  /**Is Repeat events enabled */
   def isRepeat = areRepeatEventsEnabled
 
   /**
    * Gets if a standard char key is pressed.
    * Uppercase and lowercase letters make no difference here.
    */
-  def char(a: Char) = keyDown(a.toLower.toString)
+  def char(a: Char): Key = keys.getOrElse(a.toLower.toString, none)
 
   /**
    * Tests if one of the F keys is pressed.
    */
-  def F(n: Int) = if (n < 1 || n > 15) {
-    keyDown("F%d".format(n))
-  } else false
+  def F(n: Int): Key = if (n < 1 || n > 15) {
+    keys.getOrElse("F%d".format(n), none)
+  } else none
 
   /**
    * Any enter / return keys.
    */
-  def enter = keyDown("enter")
+  case object enter extends Key {
+    val getKey = KEY_RETURN
+  }
+
+  case object lshift extends Key {
+    val getKey = KEY_LSHIFT
+  }
+
+  case object rshift extends Key {
+    val getKey = KEY_RSHIFT
+  }
 
   /**
    * Any of the shift keys.
    */
-  def shift = keyDown("lshift") || keyDown("rshift")
+  object shift extends or(lshift, rshift)
+
+  case object lctrl extends Key {
+    val getKey = KEY_LCONTROL
+  }
+
+  case object rctrl extends Key {
+    val getKey = KEY_RCONTROL
+  }
 
   /**
    * Any of the CTRL keys.
    */
-  def ctrl = keyDown("lctrl") || keyDown("rctrl")
+  object ctrl extends or(lctrl, rctrl)
+
+  case object lmeta extends Key {
+    val getKey = KEY_LMETA
+  }
+
+  case object rmeta extends Key {
+    val getKey = KEY_RMETA
+  }
 
   /**
    * Any of the WIN or META keys.
    */
-  def meta = keyDown("lmeta") || keyDown("rmeta")
+  object meta extends or(lmeta, rmeta)
 
   /**
    * Space key.
    */
-  def space = keyDown("space")
+  case object space extends Key {
+    val getKey = KEY_SPACE
+  }
 
   /**
    * The up arrow.
    */
-  def up = keyDown("up")
+  case object up extends Key {
+    val getKey = KEY_UP
+  }
 
   /**
    * The down arrow.
    */
-  def down = keyDown("down")
+  case object down extends Key {
+    val getKey = KEY_DOWN
+  }
 
   /**
    * The left arrow.
    */
-  def left = keyDown("left")
+  case object left extends Key {
+    val getKey = KEY_LEFT
+  }
 
   /**
    * The right arrow.
    */
-  def right = keyDown("right")
+  case object right extends Key {
+    val getKey = KEY_RIGHT
+  }
 
   /**
    * The Esc key.
    */
-  def escape = keyDown("escape")
+  case object escape extends Key {
+    val getKey = KEY_ESCAPE
+  }
+
+  /**
+   * The key that is never pressed. Never. Never ever.
+   */
+  object none extends Key {
+    val getKey = KEY_NONE
+
+    override def apply: Boolean = false
+  }
+
 }
 
-private [nicol] case class KeyEvent(id: Int, name: String, state: Boolean) {
-  def pressed[A] (consumer: String => A): Option[A] = {
+private[nicol] case class KeyEvent(id: Int, key: Key, state: Boolean) {
+  def pressed[A](consumer: Key => A): Option[A] = {
     if (state) handler(consumer) else None
   }
 
-  def released[A] (consumer: String => A): Option[A] = {
+  def released[A](consumer: Key => A): Option[A] = {
     if (!state) handler(consumer) else None
   }
 
-  private def handler[A] (consumer: String => A): Option[A] = try {
-    Some(consumer(name))
+  private def handler[A](consumer: Key => A): Option[A] = try {
+    Some(consumer(key))
   } catch {
     case e: MatchError => None
   }
+
+  def name = key.name
 }
 
 private[nicol] object Keyboard {

@@ -89,8 +89,8 @@ object Main extends BasicScene with ShowFPS {
           draw("Releasd %s".format(e.name), position = (350, 100), rgb = (1, 0, 0))
       }
       e pressed {
-        case "escape" => End
-        case "enter" => Paused
+        case escape => End
+        case enter => Paused
       }
     }
   }
@@ -101,8 +101,8 @@ object Main extends BasicScene with ShowFPS {
       sync
  
       keyEvent( _.pressed {
-        case "escape" => End
-        case "enter" => Main
+        case escape => End
+        case enter => Main
       })
     }
   }
