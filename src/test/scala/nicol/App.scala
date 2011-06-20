@@ -24,16 +24,16 @@ object Main extends BasicScene with ShowFPS {
   val camera = new View
 
   Mouse.grabbed(true)
-  
+
   def update: Option[Scene] = {
 
     val (mx, my) = Mouse.apply
 
     val point = Vector(mx, my)
     draw(Line(point, (point.x, point.y + 10)), rgb = (1f, 0f, 0f))
-    draw(Line(point, (point.x + 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Line(point, (point.x + 10, point.y)), rgb = (1f, 0f, 0f))
     draw(Line(point, (point.x, point.y - 10)), rgb = (1f, 0f, 0f))
-    draw(Line(point, (point.x - 10, point.y)), rgb = (1f, 0f, 0f)) 
+    draw(Line(point, (point.x - 10, point.y)), rgb = (1f, 0f, 0f))
     draw(Circle((mx - 0.5f, my + 0.5f), 5f), rgb = (1f, 0f, 0f))
 
     if (left) camera.position += Vector.left
@@ -71,27 +71,27 @@ object Main extends BasicScene with ShowFPS {
       draw(redCircle, rgb = (1, 0, 0))
       draw(targetCircle, rgb = (0, 1, 0))
       draw(image, position = (x - image.width / 2, y - image.height / 2), rotation = a)
-
-      draw(Curve((0, 0), (800, 0), (0, 600), (800, 600)))
     }
 
     Pretransformed {
       draw("Hello, Nicol!", position = (30, 30), rgb = (0.7f, 0.7f, 1f))
       draw(a.toDegrees.toString, position = (30, 50))
+      draw(camera.transform(point).toString, position = (30, 70))
     }
 
     sync
     showFPS
 
-    keyEvent { e =>
-      e released {
-        case _ => 
-          draw("Releasd %s".format(e.name), position = (350, 100), rgb = (1, 0, 0))
-      }
-      e pressed {
-        case "escape" => End
-        case "enter" => Paused
-      }
+    keyEvent {
+      e =>
+        e released {
+          case _ =>
+            draw("Releasd %s".format(e.name), position = (350, 100), rgb = (1, 0, 0))
+        }
+        e pressed {
+          case "escape" => End
+          case "enter" => Paused
+        }
     }
   }
 
@@ -99,8 +99,8 @@ object Main extends BasicScene with ShowFPS {
     def update = {
       draw("Paused", position = (350, 300))
       sync
- 
-      keyEvent( _.pressed {
+
+      keyEvent(_.pressed {
         case "escape" => End
         case "enter" => Main
       })

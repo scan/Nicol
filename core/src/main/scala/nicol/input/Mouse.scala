@@ -21,7 +21,7 @@ object Mouse {
     val button = 2
   }
 
-  def grabbed = setGrabbed _
+  def grabbed(b: Boolean) = setGrabbed(b)
 
   def apply: (Float, Float) = (getX, Display.getDisplayMode.getHeight - getY)
 

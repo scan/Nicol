@@ -8,6 +8,8 @@ import org.lwjgl.opengl.Display
 
 trait Camera extends ((=> Unit) => Unit) {
   def bounds: Rect
+
+  def transform(v: Vector): Vector
 }
 
 object Pretransformed extends Camera {
@@ -17,6 +19,8 @@ object Pretransformed extends Camera {
     resetTransforms
     body
   }
+
+  def transform(v: Vector) = v
 }
 
 class View(var position: Vector = Vector.zero) extends Camera with Mutable {
@@ -41,4 +45,6 @@ class View(var position: Vector = Vector.zero) extends Camera with Mutable {
     translate(offset)
     body
   }
+
+  def transform(v: Vector) = (v - offset) * scale * Matrix.rotated(-rotation) + position
 }
