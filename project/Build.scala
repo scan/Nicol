@@ -16,9 +16,13 @@ object NicolEngine extends Build {
     "nicol", file("."), settings = General.settings ++ Seq (
       mainClass in (Test, run) := Some("nicol.App")
     )
-  ) dependsOn nicolCore aggregate (nicolCore)
+  ) dependsOn nicolCore aggregate (nicolCore, nicolTiles)
 
   lazy val nicolCore = Project(
     "nicol-core", file("core"), settings = General.settings
   )
+
+  lazy val nicolTiles = Project(
+    "nicol-tiles", file("tiles"), settings = General.settings
+  )  dependsOn nicolCore
 }

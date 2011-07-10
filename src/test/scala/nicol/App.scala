@@ -10,7 +10,7 @@ object App extends Game(Init("Nicol example App", 800, 600) >> Main)
 object Main extends BasicScene with ShowFPS {
   scene =>
 
-  import scala.math.{sin, cos, Pi}
+  import scala.math.{sin, cos}
   import scala.util.Random._
 
   lazy val image = Image("sika.png")
