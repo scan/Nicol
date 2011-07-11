@@ -23,7 +23,7 @@ object Main extends BasicScene with ShowFPS {
 
   val camera = new View
 
-  Mouse.grabbed(true)
+  Mouse.grab
 
   def update: Option[Scene] = {
 
