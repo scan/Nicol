@@ -1,7 +1,6 @@
 package nicol.input
 
 import org.lwjgl.input.Keyboard._
-import java.util.{Timer, TimerTask}
 
 /**
  * A Key is, not very surprisingly, anything you can find in front of you,
