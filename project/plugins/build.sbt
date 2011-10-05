@@ -1,3 +1,5 @@
-libraryDependencies += "com.github.philcali" %% "sbt-lwjgl-plugin" % "3.0.2"
+addSbtPlugin("com.github.philcali" %% "sbt-lwjgl-plugin" % "3.1.0")
 
-libraryDependencies += "org.sbtidea" %% "xsbt-idea" % "0.1"
+resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
+
+addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "0.11.0")
