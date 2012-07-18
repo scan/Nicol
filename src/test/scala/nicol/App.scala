@@ -41,7 +41,7 @@ object Main extends BasicScene with ShowFPS {
     if (up) camera.position += Vector.up
     if (down) camera.position += Vector.down
 
-    val a = Vector.right angle (Vector(mx, my) - Vector(400, 300))
+    val a = (Vector(mx, my) - Vector(400, 300)) angle Vector.right
 
     val stars: Traversable[Line] = vs.map {
       v => Line(v, v - Vector(cos(a).toFloat, sin(a).toFloat) * 5)

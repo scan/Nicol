@@ -2,12 +2,16 @@ import sbt._
 import Keys._
 
 object General {
-  val settings = Defaults.defaultSettings ++ Seq(
+  val settings = Defaults.defaultSettings ++ LWJGLPlugin.lwjglSettings ++ Seq(
     organization := "com.github.scan",
-    version := "0.1.1",
-    crossScalaVersions := Seq("2.9.1"),
+    scalaVersion := "2.9.2",
+    version := "0.1.2",
+    crossScalaVersions := Seq("2.9.2"),
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-    libraryDependencies += "org.scala-tools.testing" %% "scalacheck" % "1.9" % "test"
+    libraryDependencies ++= Seq(
+      "ch.qos.logback" % "logback-classic" % "1.0.6",
+      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
+    )
   )
 }
 

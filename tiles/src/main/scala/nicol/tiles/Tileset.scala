@@ -2,6 +2,7 @@ package nicol
 package tiles
 
 import math.Rect
+import nicol.{Image}
 
 trait Tile {
   def area: Rect
