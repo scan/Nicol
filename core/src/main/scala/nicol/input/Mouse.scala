@@ -7,7 +7,7 @@ import org.lwjgl.opengl.Display
  * This object represents the mouse. Nicol makes some assumptions about it,
  * so we assume here that there is exactly one connected to the computer, and
  * it only moves in two dimensions. Also, it has three buttons.
- * Mouse and Cursor are synonimous here.
+ * Mouse and Cursor are synonymous here.
  */
 object Mouse {
 
