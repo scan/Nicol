@@ -33,7 +33,7 @@ object Vector {
 
   implicit def asVector(t: (Float, Float)) = Vector(t._1, t._2)
 
-  implicit def intAsVector(t: (Int, Int)) = Vector(t._1.toFloat, t._2.toFloatVector.right)
+  implicit def intAsVector(t: (Int, Int)) = Vector(t._1.toFloat, t._2.toFloat)
 
   val zero = Vector(0, 0)
 
