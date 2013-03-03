@@ -31,25 +31,59 @@ object Tilemap {
     val width = (root \ "@width").text.toInt
     val height = (root \ "@height").text.toInt
 
-    val tileset = {
+    val tilesets = {
       val tw = (root \ "@tilewidth").text.toInt
       val th = (root \ "@tileheight").text.toInt
 
-      if ((root \ "tileset").length != 1) throw new FormatNotSupportException("Only one tileset per map supported")
-      val node = (root \ "tileset")(0)
-      if ((root \ "@tilewidth").text != (node \ "@tilewidth").text || (root \ "@tileheight").text != (node \ "@tileheight").text) throw new FormatNotSupportException("Root tilesize and tileset size must be equal")
+      for (node <- (root \ "tileset")) yield {
+        if ((root \ "@tilewidth").text != (node \ "@tilewidth").text || (root \ "@tileheight").text != (node \ "@tileheight").text) throw new FormatNotSupportException("Root tilesize and tileset size must be equal")
 
-      Tileset((node \ "@source").text, (tw, th))
+        val toffset = if (node.exists(_.label == "tileoffset")) {
+          val tnode = (node \ "tileoffset").head
+          ((tnode \ "@x").text.toInt, (tnode \ "@y").text.toInt)
+        } else (0,0)
+
+        Tileset((node \ "@source").text, (tw, th), toffset)
+      }
     }
 
     val layers = for(node <- (root \ "layer")) yield {
-      val data = node \ "data"
-      (data \ "@compression").text match {
-        case "gzip" => {}
-        case _ => throw new FormatNotSupportException("Compression method not supported");
+      val data = (node \ "data").head
+      val inflater = (data.attribute("compression")) match {
+        case None => IdentityInflater
+        case Some(attr) => attr.head.label match {
+          case "gzip" => GzipInflater
+          case x => throw new NotSupportedException("Compression method '" + x + "' not supported")
+        }
+      }
+
+      val importer = (data.attribute("encoding")) match {
+        case None => throw new NotImplementedException("Default encoding not yet implemented")
+        case Some(attr) => attr.head.label match {
+          case "base" => new Base64Importer(inflater)
+          case "csv" => new CSVImporter(inflater)
+          case x => throw new NotSupportedException("Compression method '" + x + "' not supported")
+        }
       }
     }
 
     null
+  }
+
+  private abstract class Importer(inflater: Inflater) extends (String => Array[Array[Int]])
+  private class Base64Importer(inflater: Inflater) extends Importer(inflater) {
+    def apply(s: String): Array[Array[Int]] = throw new NotImplementedException("To be implemented: Base64 importer")
+  }
+  private class CSVImporter(inflater: Inflater) extends Importer(inflater) {
+    def apply(s: String): Array[Array[Int]] = throw new NotImplementedException("To be implemented: CSV importer")
+  }
+
+  private trait Inflater extends (String => String)
+  private object IdentityInflater extends Inflater {
+    @inline
+    def apply(s: String) = s
+  }
+  private object GzipInflater extends Inflater {
+    def apply(s: String): String = throw new NotImplementedException("To be implemented: Gzip importer")
   }
 }
