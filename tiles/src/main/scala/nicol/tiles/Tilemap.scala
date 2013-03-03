@@ -41,13 +41,16 @@ object Tilemap {
         val toffset = if (node.exists(_.label == "tileoffset")) {
           val tnode = (node \ "tileoffset").head
           ((tnode \ "@x").text.toInt, (tnode \ "@y").text.toInt)
-        } else (0,0)
+        } else (0, 0)
 
         Tileset((node \ "@source").text, (tw, th), toffset)
       }
     }
+    val tset = tilesets.head
 
-    val layers = for(node <- (root \ "layer")) yield {
+    var level = 0
+    val layers = for (node <- (root \ "layer")) yield {
+      level += 1
       val data = (node \ "data").head
       val inflater = (data.attribute("compression")) match {
         case None => IdentityInflater
@@ -60,30 +63,51 @@ object Tilemap {
       val importer = (data.attribute("encoding")) match {
         case None => throw new NotImplementedException("Default encoding not yet implemented")
         case Some(attr) => attr.head.label match {
-          case "base" => new Base64Importer(inflater)
+          case "base" => new Base64Importer(inflater, width)
           case "csv" => new CSVImporter(inflater)
           case x => throw new NotSupportedException("Compression method '" + x + "' not supported")
         }
       }
+
+      val tiles = importer(data.text).map(_.map(n => tset(n)))
+      new TileLayer(tiles, tset.tileSize, level.toFloat)
     }
 
-    null
+    new Tilemap(layers.toArray)
   }
 
-  private abstract class Importer(inflater: Inflater) extends (String => Array[Array[Int]])
-  private class Base64Importer(inflater: Inflater) extends Importer(inflater) {
-    def apply(s: String): Array[Array[Int]] = throw new NotImplementedException("To be implemented: Base64 importer")
+  private def byteToIntArray(bytes: Seq[Byte]): Seq[Int] = {
+    import java.nio.{ByteBuffer, ByteOrder}
+
+    val intBuf = ByteBuffer.wrap(bytes.toArray).order(ByteOrder.BIG_ENDIAN).asIntBuffer()
+    val array = Array.ofDim[Int](intBuf.remaining())
+    intBuf.get(array)
+    array.toSeq
   }
+
+  private abstract class Importer(inflater: Inflater) extends (String => Array[Array[Int]]) {
+    val FLIPPED_HORIZONTALLY_FLAG = 0x80000000
+    val FLIPPED_VERTICALLY_FLAG = 0x40000000
+    val FLIPPED_DIAGONALLY_FLAG = 0x20000000
+  }
+
+  private class Base64Importer(inflater: Inflater, pitch: Int) extends Importer(inflater) {
+    def apply(s: String): Array[Array[Int]] = byteToIntArray(inflater(nicol.util.base64_decode(s))).map(_ & ~(FLIPPED_DIAGONALLY_FLAG | FLIPPED_HORIZONTALLY_FLAG | FLIPPED_DIAGONALLY_FLAG)).grouped(pitch).map(_.toArray).toArray
+  }
+
   private class CSVImporter(inflater: Inflater) extends Importer(inflater) {
     def apply(s: String): Array[Array[Int]] = throw new NotImplementedException("To be implemented: CSV importer")
   }
 
-  private trait Inflater extends (String => String)
+  private trait Inflater extends (Seq[Byte] => Seq[Byte])
+
   private object IdentityInflater extends Inflater {
     @inline
-    def apply(s: String) = s
+    def apply(s: Seq[Byte]) = s
   }
+
   private object GzipInflater extends Inflater {
-    def apply(s: String): String = throw new NotImplementedException("To be implemented: Gzip importer")
+    def apply(s: Seq[Byte]) = nicol.util.decompress(s)
   }
+
 }

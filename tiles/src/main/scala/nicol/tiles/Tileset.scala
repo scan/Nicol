@@ -5,22 +5,7 @@ import math.Rect
 import nicol.{Image}
 
 trait Tile {
-  def area: Rect
-
-  def walkable: Boolean
-}
-
-case class StaticTile(area: Rect, walkable: Boolean = true) extends Tile
-
-case class AnimatedTile(areas: Array[Rect], walkable: Boolean = true) extends Tile {
-  private var n = 0
-
-  override def area = areas(n)
-
-  def tick = {
-    n += 1
-    n %= areas.length
-  }
+  def image: Image
 }
 
 sealed class Tileset private (res: String, tsize: (Int, Int), toffest: (Int, Int) = (0,0)) {
@@ -28,7 +13,7 @@ sealed class Tileset private (res: String, tsize: (Int, Int), toffest: (Int, Int
 
   lazy val tiles = {
     for (y <- 0 to num_y;
-         x <- 0 to num_x) yield StaticTile(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2))
+         x <- 0 to num_x) yield new Tile { val image = img.sub(Rect(x * tsize._1, y * tsize._2, tsize._1, tsize._2)) }
   }.toArray
 
   private[nicol] lazy val (num_x, num_y) = (img.width / tsize._1 - 1, img.height / tsize._2 - 1)
@@ -39,15 +24,15 @@ sealed class Tileset private (res: String, tsize: (Int, Int), toffest: (Int, Int
 
   def tileHeight = tsize._2
 
-  def apply(n: Int) = img.sub(tiles(n).area)
+  def apply(n: Int) = tiles(n)
 
-  def apply(t: Tile) = img.sub(t.area)
+  //def apply(t: Tile) = img.sub(t.area)
 
-  def apply(row: Int, col: Int) = img.sub(tiles(row * num_x + col).area)
+  def apply(row: Int, col: Int) = tiles(row * num_x + col)
 
   def length = tiles.length
 
-  def foreach(body: Image => Unit) = tiles foreach (t => body(img sub t.area))
+  def foreach(body: Image => Unit) = tiles foreach (t => body(t.image))
 }
 
 object Tileset {
