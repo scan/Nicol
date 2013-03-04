@@ -1,16 +1,27 @@
-package nicol
+package nicol.util
 
-package object util {
-
+object Base64 {
   private val encodeTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
-  def base64_encode(fromBytes: Seq[Byte]): String = {
+  def encode(fromBytes: Seq[Byte]): String = {
     val encoded =
       group6Bits(fromBytes)
         .map(x => encodeChar(binaryToDecimal(x)))
         .mkString
 
     encoded + "=" * ((4 - encoded.length % 4) % 4) grouped (76) mkString "\n"
+  }
+
+  def decode(src: String): Seq[Byte] = {
+    val BIT_LENGTH = 8
+
+    val indexSeq =
+      getEncodeTableIndexList(src.filterNot(_ == '\n'))
+        .map(x => toBinarySeq(6)(Seq.fill(1)(x.toByte)))
+
+    deleteExtraZero(indexSeq.flatMap(s => s))
+      .grouped(BIT_LENGTH)
+      .map(binaryToDecimal(_).toByte).toSeq
   }
 
   private def encodeChar(i: Int): Char = encodeTable(i)
@@ -42,22 +53,10 @@ package object util {
     result
   }
 
-  def deleteEqual(src: String): String = src.filter(_ != '=')
+  private def deleteEqual(src: String): String = src.filter(_ != '=')
 
   private def getEncodeTableIndexList(s: String): Seq[Int] = {
     deleteEqual(s).map(x => encodeTable.indexOf(x))
-  }
-
-  def base64_decode(src: String): Seq[Byte] = {
-    val BIT_LENGTH = 8
-
-    val indexSeq =
-      getEncodeTableIndexList(src.filterNot(_ == '\n'))
-        .map(x => toBinarySeq(6)(Seq.fill(1)(x.toByte)))
-
-    deleteExtraZero(indexSeq.flatMap(s => s))
-      .grouped(BIT_LENGTH)
-      .map(binaryToDecimal(_).toByte).toSeq
   }
 
   private def deleteExtraZero(s: Seq[Int]): Seq[Int] = {
@@ -74,24 +73,4 @@ package object util {
   }
 
   private def trimList[A](xss: List[List[A]], n: Int, c: A): List[List[A]] = xss.map(xs => trim[A](xs, n, c))
-
-  import java.io.ByteArrayOutputStream
-  import java.util.zip.GZIPOutputStream
-
-  def compress(bytes: Seq[Byte]) = {
-    val out = new ByteArrayOutputStream()
-    val gzip = new GZIPOutputStream(out)
-    gzip.write(bytes.toArray)
-    gzip.close()
-    out.toByteArray
-  }
-
-  import java.io.{InputStreamReader, BufferedReader, ByteArrayInputStream}
-  import java.util.zip.GZIPInputStream
-
-  def decompress(bytes: Seq[Byte]) = {
-    val r = new BufferedReader(new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(bytes.toArray))))
-
-    Iterator.continually(r.readLine()).takeWhile(_ != null).mkString.getBytes.toSeq
-  }
 }

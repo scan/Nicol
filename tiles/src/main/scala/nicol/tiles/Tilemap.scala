@@ -92,7 +92,7 @@ object Tilemap {
   }
 
   private class Base64Importer(inflater: Inflater, pitch: Int) extends Importer(inflater) {
-    def apply(s: String): Array[Array[Int]] = byteToIntArray(inflater(nicol.util.base64_decode(s))).map(_ & ~(FLIPPED_DIAGONALLY_FLAG | FLIPPED_HORIZONTALLY_FLAG | FLIPPED_DIAGONALLY_FLAG)).grouped(pitch).map(_.toArray).toArray
+    def apply(s: String): Array[Array[Int]] = byteToIntArray(inflater(nicol.util.Base64.decode(s))).map(_ & ~(FLIPPED_DIAGONALLY_FLAG | FLIPPED_HORIZONTALLY_FLAG | FLIPPED_DIAGONALLY_FLAG)).grouped(pitch).map(_.toArray).toArray
   }
 
   private class CSVImporter(inflater: Inflater) extends Importer(inflater) {
@@ -107,7 +107,8 @@ object Tilemap {
   }
 
   private object GzipInflater extends Inflater {
-    def apply(s: Seq[Byte]) = nicol.util.decompress(s)
+    @inline
+    def apply(s: Seq[Byte]) = nicol.util.GZip.decompress(s)
   }
 
 }
