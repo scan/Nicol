@@ -1564,4 +1564,4 @@ class WorldRayCastWrapper implements TreeRayCastCallback {
 
   BroadPhase broadPhase;
   RayCastCallback callback;
-};
+}

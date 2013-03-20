@@ -1,12 +1,18 @@
 package nicol.math
 
-import scala.annotation._
+/// @todo Turn these into traits to support other kind of matrices
 
+/**
+ * A 2x2 Matrix, stored in Row-Major order:
+ *
+ * ( a b )
+ * ( c d )
+ */
 sealed class Matrix private(val a: Float, val b: Float, val c: Float, val d: Float) extends Immutable {
-  def transposed = Matrix((a, b), (c, d))
+  lazy val transposed = Matrix((a, b), (c, d))
 
   @throws(classOf[ArithmeticException])
-  def invert = new Matrix(d, -b, -c, a) * (1f / (a * d - b * c))
+  lazy val invert = new Matrix(d, -b, -c, a) * (1f / (a * d - b * c))
 
   def *(m: Matrix) = new Matrix(a * m.a + b * m.c, a * m.b + b * m.d, c * m.a + d * m.c, c * m.b + d * m.d)
 
@@ -32,5 +38,19 @@ object Matrix {
 
   case class scaled(sx: Float, sy: Float) extends Matrix(sx, 0, 0, sy)
 
-  def apply(t1: (Float, Float), t2: (Float, Float)): Matrix = new Matrix(t1._1, t2._1, t1._2, t2._2)
+  /**
+   * Create a new Matrix from Column-Major tuples
+   *
+   * ( t1.x t2.x )
+   * ( t1.y t2.y )
+   */
+ def apply(t1: (Float, Float), t2: (Float, Float)): Matrix = new Matrix(t1._1, t2._1, t1._2, t2._2)
+
+  /**
+   * Create a new Matrix from Row-Major values
+   *
+   * ( a b )
+   * ( c d )
+   */
+  def apply(a: Float, b: Float, c: Float, d: Float): Matrix = new Matrix(a, b, c, d)
 }

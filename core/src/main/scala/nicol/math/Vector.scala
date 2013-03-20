@@ -1,5 +1,7 @@
 package nicol.math
 
+/// @todo Turn these into traits to support Vector2 and Vector3 classes
+
 sealed case class Vector(x: Float, y: Float) extends Immutable {
   def +(v: Vector) = Vector(x + v.x, y + v.y)
 

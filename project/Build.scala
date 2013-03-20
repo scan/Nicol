@@ -21,7 +21,7 @@ object NicolEngine extends Build {
     "nicol", file("."), settings = General.settings ++ Seq(
       mainClass in(Test, run) := Some("nicol.App")
     )
-  ) dependsOn nicolCore aggregate(nicolCore, nicolTiles)
+  ) dependsOn nicolCore aggregate(nicolCore, nicolTiles, nicolJBox2D)
 
   lazy val nicolCore = Project(
     "nicol-core", file("core"), settings = General.settings
