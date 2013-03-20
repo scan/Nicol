@@ -10,7 +10,8 @@ object General {
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     libraryDependencies ++= Seq(
       "ch.qos.logback" % "logback-classic" % "1.0.6",
-      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
+      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
+      "com.dadrox" %% "sbt-junit" % "0.1" % "test"
     )
   )
 }
@@ -28,5 +29,9 @@ object NicolEngine extends Build {
 
   lazy val nicolTiles = Project(
     "nicol-tiles", file("tiles"), settings = General.settings
+  ) dependsOn nicolCore
+
+  lazy val nicolJBox2D = Project(
+    "nicol-jbox2d", file("jbox2d"), settings = General.settings
   ) dependsOn nicolCore
 }
